@@ -18,37 +18,52 @@ if(isset($_POST['login'])) {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare(
-        "SELECT * FROM users WHERE email=?"
-    );
+    // ✅ VALIDATION (ADD HERE)
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format.";
+    }
 
-    $stmt->bind_param("s", $email);
+    if (strlen($password) < 6) {
+        $error = "Password must be at least 6 characters.";
+    }
 
-    $stmt->execute();
+    // stop execution if error exists
+    if (!empty($error)) {
+        include 'includes/header.php';
+        // will show error below form
+    } else {
 
-    $result = $stmt->get_result();
+            $stmt = $conn->prepare(
+            "SELECT * FROM users WHERE email=?"
+        );
 
-    if($user = $result->fetch_assoc()) {
+        $stmt->bind_param("s", $email);
 
-        if(password_verify($password, $user['password'])) {
+        $stmt->execute();
 
-            $_SESSION['user_id'] = $user['id'];
+        $result = $stmt->get_result();
 
-            header("Location: dashboard.php");
-            exit;
+        if($user = $result->fetch_assoc()) {
+
+            if(password_verify($password, $user['password'])) {
+
+                $_SESSION['user_id'] = $user['id'];
+
+                header("Location: dashboard.php");
+                exit;
+
+            } else {
+
+                $error = "Incorrect password.";
+            }
 
         } else {
 
-            $error = "Incorrect password.";
-
+            $error = "Account not found.";
         }
-
-    } else {
-
-        $error = "Account not found.";
-
-    }
+            }
 }
+
 
 /* HEADER */
 include 'includes/header.php';
@@ -76,8 +91,15 @@ include 'includes/header.php';
 
       <input class="input" type="email" name="email" placeholder="Email" required>
 
-      <input class="input" type="password" name="password" placeholder="Password" required>
+<div style="position:relative;">
+    <input class="input" type="password" name="password" id="password" placeholder="Password" required>
 
+    <button type="button"
+        onclick="togglePassword()"
+        style="position:absolute; right:10px; top:12px; background:none; border:none; color:#94a3b8; cursor:pointer;">
+        👁
+    </button>
+</div>
 <button class="btn btn-primary" type="submit" name="login">
   Login
 </button>

@@ -20,11 +20,18 @@ if(isset($_POST['register'])) {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    if(strlen($password) < 6) {
-
-        $error = "Password must be at least 6 characters.";
-
-    } else {
+if(strlen($password) < 8) {
+    $error = "Password must be at least 8 characters.";
+}
+elseif(!preg_match('/[A-Z]/', $password)) {
+    $error = "Password must contain at least 1 uppercase letter.";
+}
+elseif(!preg_match('/[0-9]/', $password)) {
+    $error = "Password must contain at least 1 number.";
+}
+elseif(!preg_match('/[^A-Za-z0-9]/', $password)) {
+    $error = "Password must contain at least 1 special character.";
+} else {
 
         $hashed = password_hash(
             $password,
@@ -125,14 +132,20 @@ include 'includes/header.php';
 
         <label>Password</label>
 
-        <input
-            class="input"
-            type="password"
-            name="password"
-            placeholder="Create password"
-            required
-        >
+<input
+    id="password"
+    class="input"
+    type="password"
+    name="password"
+    placeholder="Create password"
+    required
+>
 
+<div class="strength-meter">
+    <div id="strengthBar"></div>
+</div>
+
+<p id="strengthText" style="font-size:12px; margin-top:5px; color:#94a3b8;"></p>
     </div>
 
     <button
@@ -145,27 +158,18 @@ include 'includes/header.php';
 
 </form>
 
-        <div class="bottom-text">
+        <div class="auth-footer">
 
-            Already have an account?
+    <p class="auth-footer-text">
+        Already have an account?
+        <a href="login.php">Login</a>
+    </p>
 
-            <a href="login.php">
+    <a href="index.php" class="auth-home-link">
+        ← Back to Homepage
+    </a>
 
-                Login
-
-            </a>
-
-        </div>
-
-        <div class="home-link">
-
-            <a href="index.php">
-
-                ← Back to Homepage
-
-            </a>
-
-        </div>
+</div>
 
     </div>
 
