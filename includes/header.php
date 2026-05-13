@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <title>Lynk</title>
 
-<link rel="stylesheet" href="/assets/css/style.css?v=2">
+<link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime('assets/css/style.css') ?>">
 </head>
 
 <body>
@@ -21,6 +21,9 @@ if (session_status() === PHP_SESSION_NONE) {
     <a href="index.php" class="logo">Lyn<span>k</span></a>
 
     <div class="nav-links">
+        <div class="nav-user">
+    <?= htmlspecialchars($username) ?>
+</div>
         <a href="about.php">About</a>
 
         <?php if (isset($_SESSION['user_id'])): ?>

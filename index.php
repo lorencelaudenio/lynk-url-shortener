@@ -42,7 +42,7 @@ if (isset($_POST['shorten'])) {
 
 <div class="page-center">
 
-    <div class="auth-container" style="max-width:600px;">
+    <div class="hero-box">
 
         <div class="auth-title">
             Smart URL Shortener
@@ -52,29 +52,62 @@ if (isset($_POST['shorten'])) {
             Shorten long URLs instantly with analytics.
         </div>
 
-        <form method="POST">
+        <div class="form-box">
+    <form method="POST">
+        <input class="input" type="url" name="url" placeholder="Paste your long URL here..." required>
 
-            <input class="input" type="url" name="url" placeholder="Paste your long URL here..." required>
+        <button class="btn btn-primary" type="submit" name="shorten">
+            Shorten URL
+        </button>
+    </form>
+</div>
 
-            <button class="btn btn-primary" type="submit" name="shorten">
-                Shorten URL
-            </button>
+<?php if (!empty($short_url)): ?>
+    <div class="result-box">
 
-        </form>
+        <div class="result-icon">🎉</div>
 
-        <?php if (!empty($short_url)): ?>
-            <div class="alert alert-success">
-                <a href="<?= $short_url ?>" target="_blank">
-                    <?= $short_url ?>
-                </a>
-            </div>
-        <?php endif; ?>
+        <div class="result-title">
+            Your short link is ready
+        </div>
 
-        <?php if ($show_cta): ?>
-            <div class="cta-box">
-                🚀 Want analytics & dashboard?
-            </div>
-        <?php endif; ?>
+        <div class="result-link-box">
+            <a class="result-link" href="<?= $short_url ?>" target="_blank">
+                <?= $short_url ?>
+            </a>
+        </div>
+
+<button class="copy-btn"
+    onclick="copyLink('<?= $short_url ?>', this)">
+    Copy Link
+</button>
+
+    </div>
+<?php endif; ?>
+
+<?php if ($show_cta): ?>
+    <div class="cta-box">
+
+        <div class="cta-title">
+            🚀 Unlock full link analytics
+        </div>
+
+        <p class="cta-text">
+            Track clicks, manage all your links, and access your dashboard anytime.
+        </p>
+
+        <div class="cta-actions">
+            <a href="register.php" class="cta-primary">
+                Create Free Account
+            </a>
+
+            <a href="login.php" class="cta-secondary">
+                Login
+            </a>
+        </div>
+
+    </div>
+<?php endif; ?>
 
     </div>
 

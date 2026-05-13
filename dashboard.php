@@ -9,28 +9,84 @@ if(!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+/* GET USER INFO */
+$userStmt = $conn->prepare(
+    "SELECT username FROM users WHERE id=? LIMIT 1"
+);
+
+$userStmt->bind_param("i", $user_id);
+
+$userStmt->execute();
+
+$userResult = $userStmt->get_result();
+
+$userData = $userResult->fetch_assoc();
+
+$username = $userData['username'];
+
+$existing_link = false;
 
 /* CREATE SHORT LINK */
-if(isset($_POST['shorten'])) {
+$existing_link = false;
+$message = "";
+$type = "";
+$short_url = "";
+$original_url = "";
+
+if (isset($_POST['shorten'])) {
 
     $url = trim($_POST['url']);
 
-    if(!filter_var($url, FILTER_VALIDATE_URL)) {
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
 
-        $error = "Invalid URL";
+        $error = "Invalid URL format.";
 
     } else {
 
-        $short = substr(md5(uniqid()), 0, 6);
-
-        $stmt = $conn->prepare(
-            "INSERT INTO links(user_id, original_url, short_code)
-             VALUES(?,?,?)"
+        // CHECK EXISTING URL FOR THIS USER
+        $check = $conn->prepare(
+            "SELECT short_code FROM links 
+             WHERE user_id=? AND original_url=? 
+             LIMIT 1"
         );
 
-        $stmt->bind_param("iss", $user_id, $url, $short);
+        $check->bind_param("is", $user_id, $url);
+        $check->execute();
+        $result = $check->get_result();
 
-        $stmt->execute();
+        if ($row = $result->fetch_assoc()) {
+
+            $short = $row['short_code'];
+            $message = "⚠️ Destination already exists.";
+            $type = "info";
+
+        } else {
+
+            $short = substr(md5(uniqid()), 0, 6);
+
+            $stmt = $conn->prepare(
+                "INSERT INTO links(user_id, original_url, short_code)
+                 VALUES(?,?,?)"
+            );
+
+            $stmt->bind_param("iss", $user_id, $url, $short);
+            $stmt->execute();
+
+            $message = "🎉 New short link created!";
+            $type = "success";
+        }
+
+        // ALWAYS REDIRECT AFTER SETTING SESSION
+    $_SESSION['toast'] = [
+        'message' => $message,
+        'type' => $type
+    ];
+
+    header("Location: dashboard.php");
+    exit;
+
+        $short_url = "https://lynk.page.gd/$short";
+        $original_url = $url;
     }
 }
 
@@ -66,7 +122,9 @@ $totalClicks = $clickRow['total_clicks'] ?? 0;
 
 /* INCLUDE HEADER */
 include 'includes/header.php';
+
 ?>
+
 
 <div class="dashboard-container">
 
@@ -108,24 +166,38 @@ include 'includes/header.php';
     <!-- CREATE LINK -->
     <div class="form-box">
 
-        <h3>Create Short Link</h3>
+    <h3>Create Short Link</h3>
 
-        <form method="POST">
+    <form method="POST">
+
+        <div class="form-group">
 
             <input
+                class="input"
                 type="url"
                 name="url"
                 placeholder="Paste long URL..."
                 required
             >
 
-            <button name="shorten">
-                Shorten URL
-            </button>
+        </div>
 
-        </form>
+        <button class="btn btn-primary" name="shorten" type="submit">
+            🚀 Shorten URL
+        </button>
 
-    </div>
+    </form>
+    <?php if (!empty($message)): ?>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    showToast("<?= $message ?>", "<?= $type ?>");
+});
+</script>
+<?php endif; ?>
+
+</div>
+
+
 
     <?php if(isset($error)): ?>
 
@@ -197,13 +269,10 @@ include 'includes/header.php';
                 </a>
 
                 <!-- COPY -->
-                <button class="copy-btn"
-                        data-url="https://lynk.page.gd/<?php echo $row['short_code']; ?>"
-                        onclick="copyLink(this)">
-
-                    Copy
-
-                </button>
+<button class="copy-btn"
+    onclick="copyLink('https://lynk.page.gd/<?php echo $row['short_code']; ?>', this)">
+    Copy
+</button>
 
             </div>
 
