@@ -244,6 +244,11 @@ input{
     color:#22c55e;
 }
 
+.about-btn{
+    background:#334155 !important;
+    margin-right:10px;
+}
+
 </style>
 
 </head>
@@ -260,6 +265,9 @@ input{
 </a>
 
         <div class="logout">
+            <a href="about.php" class="about-btn">
+    About
+</a>
             <a href="logout.php">Logout</a>
         </div>
 

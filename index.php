@@ -313,6 +313,7 @@ if($stmt->execute()) {
         </div>
 
         <div class="nav-links">
+            <a href="about.php">About</a>
             <a href="login.php">Login</a>
             <a href="register.php">Register</a>
         </div>
