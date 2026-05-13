@@ -1,5 +1,12 @@
 <?php
 include 'config.php';
+include 'rate_limit.php';
+
+$ip = $_SERVER['REMOTE_ADDR'];
+
+if (!rateLimit("login_$ip", 5, 60)) {
+    die("Too many requests. Please wait a moment.");
+}
 
 $code = $_GET['code'];
 

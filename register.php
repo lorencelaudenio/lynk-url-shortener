@@ -2,6 +2,13 @@
 session_start();
 
 include 'config.php';
+include 'rate_limit.php';
+
+$ip = $_SERVER['REMOTE_ADDR'];
+
+if (!rateLimit("login_$ip", 5, 60)) {
+    die("Too many requests. Please wait a moment.");
+}
 
 if(isset($_SESSION['user_id'])) {
 
@@ -98,56 +105,31 @@ include 'includes/header.php';
     </div>
 <?php endif; ?>
 
-        <form method="POST">
+        <form method="POST" ">
 
     <div class="form-group">
+    <label>Username</label>
+    <input class="input" type="text" name="username" id="username" required>
+    <small id="usernameMsg" style="color:#94a3b8;"></small>
+</div>
 
-        <label>Username</label>
-
-        <input
-            class="input"
-            type="text"
-            name="username"
-            placeholder="Enter username"
-            required
-        >
-
-    </div>
-
-    <div class="form-group">
-
-        <label>Email Address</label>
-
-        <input
-            class="input"
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            required
-        >
-
-    </div>
+<div class="form-group">
+    <label>Email</label>
+    <input class="input" type="email" name="email" id="email" required>
+    <small id="emailMsg" style="color:#94a3b8;"></small>
+</div>
 
     <div class="form-group">
 
         <label>Password</label>
 
-<input
-    id="password"
-    class="input"
-    type="password"
-    name="password"
-    placeholder="Create password"
-    required
->
+<input id="register_password" class="input" type="password" name="password" required>
 
-<div class="strength-meter">
-    <div id="strengthBar"></div>
+<div class="pw-meter">
+    <div class="pw-bar" id="registerPwBar"></div>
 </div>
 
-<p id="strengthText" style="font-size:12px; margin-top:5px; color:#94a3b8;"></p>
-    </div>
-
+<p class="pw-text" id="registerPwText"></p>
     <button
         type="submit"
         name="register"

@@ -37,42 +37,126 @@ function togglePassword() {
     input.type = (input.type === "password") ? "text" : "password";
 }
 
-const passwordInput = document.getElementById("password");
-const strengthBar = document.getElementById("strengthBar");
-const strengthText = document.getElementById("strengthText");
+document.addEventListener("DOMContentLoaded", function () {
 
-if (passwordInput) {
-    passwordInput.addEventListener("input", function () {
-        const value = passwordInput.value;
-        let strength = 0;
+    function setupMeter(inputId, barId, textId) {
 
-        if (value.length >= 6) strength++;
-        if (value.match(/[A-Z]/)) strength++;
-        if (value.match(/[0-9]/)) strength++;
-        if (value.match(/[^A-Za-z0-9]/)) strength++;
+        const input = document.getElementById(inputId);
+        const bar = document.getElementById(barId);
+        const text = document.getElementById(textId);
 
-        let width = strength * 25;
+        if (!input || !bar || !text) return;
 
-        if (value.length === 0) {
-            strengthBar.style.width = "0%";
-            strengthText.innerText = "";
-            return;
-        }
+        input.addEventListener("input", function () {
 
-        if (strength <= 1) {
-            strengthBar.style.background = "red";
-            strengthText.innerText = "Weak password";
-        } else if (strength === 2) {
-            strengthBar.style.background = "orange";
-            strengthText.innerText = "Medium password";
-        } else if (strength === 3) {
-            strengthBar.style.background = "yellow";
-            strengthText.innerText = "Good password";
+            let value = input.value;
+            let score = 0;
+
+            if (value.length >= 6) score++;
+            if (value.match(/[A-Z]/)) score++;
+            if (value.match(/[0-9]/)) score++;
+            if (value.match(/[^A-Za-z0-9]/)) score++;
+
+            let percent = score * 25;
+
+            bar.style.width = percent + "%";
+
+            if (value.length === 0) {
+                bar.style.width = "0%";
+                text.innerText = "";
+                return;
+            }
+
+            if (score <= 1) {
+                bar.style.background = "#ef4444";
+                text.innerText = "Weak";
+            } 
+            else if (score === 2) {
+                bar.style.background = "#f59e0b";
+                text.innerText = "Medium";
+            } 
+            else if (score === 3) {
+                bar.style.background = "#eab308";
+                text.innerText = "Good";
+            } 
+            else {
+                bar.style.background = "#22c55e";
+                text.innerText = "Strong";
+            }
+        });
+    }
+
+    // REGISTER
+setupMeter("register_password", "registerPwBar", "registerPwText");
+    // PROFILE
+    setupMeter("profile_password", "profilePwBar", "profilePwText");
+
+});
+
+const usernameInput = document.getElementById("username");
+const emailInput = document.getElementById("email");
+
+const usernameMsg = document.getElementById("usernameMsg");
+const emailMsg = document.getElementById("emailMsg");
+
+let usernameValid = false;
+let emailValid = false;
+
+function checkUser() {
+
+    const username = usernameInput?.value;
+    const email = emailInput?.value;
+
+    fetch("check_user.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "username=" + encodeURIComponent(username) +
+              "&email=" + encodeURIComponent(email)
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        // USERNAME
+        if (data.username_exists) {
+            usernameMsg.innerText = "❌ Username already taken";
+            usernameMsg.style.color = "red";
+            usernameValid = false;
         } else {
-            strengthBar.style.background = "green";
-            strengthText.innerText = "Strong password";
+            usernameMsg.innerText = "✅ Username available";
+            usernameMsg.style.color = "green";
+            usernameValid = true;
         }
 
-        strengthBar.style.width = width + "%";
+        // EMAIL
+        if (data.email_exists) {
+            emailMsg.innerText = "❌ Email already exists";
+            emailMsg.style.color = "red";
+            emailValid = false;
+        } else {
+            emailMsg.innerText = "✅ Email available";
+            emailMsg.style.color = "green";
+            emailValid = true;
+        }
+
     });
+
+}
+
+// debounce simple
+if (usernameInput) usernameInput.addEventListener("input", checkUser);
+if (emailInput) emailInput.addEventListener("input", checkUser);
+
+const registerForm = document.getElementById("registerForm");
+
+if (registerForm) {
+
+    registerForm.addEventListener("submit", function (e) {
+
+        if (!usernameValid || !emailValid) {
+            e.preventDefault();
+            showToast("Username or email already exists", "error");
+        }
+
+    });
+
 }

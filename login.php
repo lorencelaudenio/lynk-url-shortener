@@ -2,6 +2,13 @@
 session_start();
 
 include 'config.php';
+include 'rate_limit.php';
+
+$ip = $_SERVER['REMOTE_ADDR'];
+
+if (!rateLimit("login_$ip", 5, 60)) {
+    die("Too many requests. Please wait a moment.");
+}
 
 if(isset($_SESSION['user_id'])) {
 
