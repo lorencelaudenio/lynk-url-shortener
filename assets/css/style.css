@@ -1,0 +1,384 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+/* =========================
+   GLOBAL LAYOUT
+========================= */
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* wrapper for all pages under navbar */
+.app-wrapper {
+    min-height: calc(100vh - 70px);
+    padding: 20px;
+}
+
+/* center layout (login/register/about) */
+.page-center {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.logo span {
+    color: #3b82f6;
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+.nav-links a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.nav-links a:hover {
+    color: #ffffff;
+}
+
+/* =========================
+   AUTH (LOGIN / REGISTER / ABOUT)
+========================= */
+
+.auth-container {
+    width: 100%;
+    max-width: 430px;
+    background: #111827;
+    border-radius: 24px;
+    padding: 35px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.auth-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.auth-title span {
+    color: #3b82f6;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: #1e293b;
+    color: #ffffff;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.btn-success {
+    background: #22c55e;
+    color: #ffffff;
+}
+
+.btn-dark {
+    background: #334155;
+    color: #ffffff;
+}
+
+/* =========================
+   ALERTS
+========================= */
+
+.alert {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.alert-error {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.alert-success {
+    background: #22c55e;
+    color: #ffffff;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logout a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.card h3 {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.card h1 {
+    margin-top: 10px;
+}
+
+/* form box */
+.form-box {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.link-card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.link-card a {
+    color: #3b82f6;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.link-card a:hover {
+    opacity: 0.8;
+}
+
+.short {
+    font-weight: bold;
+}
+
+.long {
+    color: #94a3b8;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.clicks {
+    float: right;
+    color: #22c55e;
+}
+
+/* =========================
+   COPY BUTTON
+========================= */
+
+.copy-btn {
+    display: inline-block;
+    width: auto;
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #22c55e;
+    color: #ffffff;
+}
+
+.copy-btn:hover {
+    background: #16a34a;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #111827;
+    padding: 25px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.close-btn {
+    margin-top: 10px;
+}
+
+/* =========================
+   UTILITIES
+========================= */
+
+.about-btn {
+    background: #334155;
+    margin-right: 10px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    text-align: center;
+    padding: 25px;
+    color: #94a3b8;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 40px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+}
+
+input.input {
+    all: unset;
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: #1e293b;
+    color: white;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.auth-container form {
+    margin-top: 15px;
+}
