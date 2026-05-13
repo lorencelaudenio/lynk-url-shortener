@@ -1,0 +1,33 @@
+<?php
+include 'config.php';
+
+$code = $_GET['code'];
+
+$stmt = $conn->prepare(
+    "SELECT * FROM links WHERE short_code=?"
+);
+
+$stmt->bind_param("s", $code);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+if($row = $result->fetch_assoc()) {
+
+    $update = $conn->prepare(
+        "UPDATE links
+         SET clicks = clicks + 1
+         WHERE id=?"
+    );
+
+    $update->bind_param("i", $row['id']);
+
+    $update->execute();
+
+    header("Location: " . $row['original_url']);
+    exit;
+}
+
+echo "404 Link Not Found";
+?>
