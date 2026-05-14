@@ -181,3 +181,14 @@ if (registerForm) {
 
 }
 
+function copyProfileLink() {
+    const copyText = document.getElementById("profileLink");
+
+    navigator.clipboard.writeText(copyText.value)
+        .then(() => {
+            alert("Profile link copied!");
+        })
+        .catch(err => {
+            console.error("Copy failed:", err);
+        });
+}

@@ -1,6 +1,18 @@
 RewriteEngine On
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# =========================
+# 1. Ignore real files/folders
+# =========================
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
-RewriteRule ^([A-Za-z0-9_-]+)$ redirect.php?code=$1 [L,QSA]
+# =========================
+# 2. PROFILE ROUTE (/@username)
+# =========================
+RewriteRule ^@([A-Za-z0-9_-]+)$ bio.php?username=$1 [L,QSA]
+
+# =========================
+# 3. SHORT LINKS (/abc123)
+# =========================
+RewriteRule ^([A-Za-z0-9]{3,20})$ redirect.php?code=$1 [L,QSA]

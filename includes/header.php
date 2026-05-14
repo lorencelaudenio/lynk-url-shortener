@@ -21,22 +21,25 @@ if (session_status() === PHP_SESSION_NONE) {
     <a href="index.php" class="logo">Lyn<span>k</span></a>
 
     <div class="nav-links">
-        <div class="nav-user">
-<?php if (!empty($_SESSION['user_id'])): ?>
-    <div class="nav-user">
-        <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?>
-    </div>
-<?php endif; ?></div>
-        
 
         <?php if (!empty($_SESSION['user_id'])): ?>
-            <a href="dashboard.php">Dashboard</a>
+
+            <span class="nav-user">
+                <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?>
+            </span>
+
+            <a href="dashboard.php">Links</a>
+            <a href="bio-settings.php">Bio Settings</a>
             <a href="profile.php">Profile</a>
             <a href="logout.php">Logout</a>
+
         <?php else: ?>
+
             <a href="login.php">Login</a>
             <a href="register.php">Register</a>
+
         <?php endif; ?>
+
     </div>
 </nav>
 
