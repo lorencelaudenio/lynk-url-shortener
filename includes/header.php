@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -10,8 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lynk</title>
-
+<title><?= $pageTitle ?? 'Lynk' ?></title>
 <link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime('assets/css/style.css') ?>">
 </head>
 
@@ -22,11 +22,14 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <div class="nav-links">
         <div class="nav-user">
-    <?= htmlspecialchars($username) ?>
-</div>
+<?php if (!empty($_SESSION['user_id'])): ?>
+    <div class="nav-user">
+        <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?>
+    </div>
+<?php endif; ?></div>
         <a href="about.php">About</a>
 
-        <?php if (isset($_SESSION['user_id'])): ?>
+        <?php if (!empty($_SESSION['user_id'])): ?>
             <a href="dashboard.php">Dashboard</a>
             <a href="profile.php">Profile</a>
             <a href="logout.php">Logout</a>

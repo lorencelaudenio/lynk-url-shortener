@@ -1,7 +1,18 @@
 </div> <!-- end app-wrapper -->
 
 <footer class="footer">
-    <p>© <?php echo date("Y"); ?> Lynk URL Shortener</p>
+    <div class="footer-inner">
+
+        <div class="footer-left">
+            © <?= date("Y"); ?> Lynk URL Shortener
+        </div>
+
+        <div class="footer-right">
+            <a href="privacy-policy.php">Privacy Policy</a>
+            <a href="terms-of-service.php">Terms of Service</a>
+        </div>
+
+    </div>
 </footer>
 
 <div id="toast" class="toast"></div>

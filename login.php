@@ -1,14 +1,13 @@
 <?php
 session_start();
+$pageTitle = "Login - Lynk URL Shortener";
 
 include 'config.php';
 include 'rate_limit.php';
 
-$ip = $_SERVER['REMOTE_ADDR'];
 
-if (!rateLimit("login_$ip", 5, 60)) {
-    die("Too many requests. Please wait a moment.");
-}
+
+
 
 if(isset($_SESSION['user_id'])) {
 
@@ -21,30 +20,26 @@ $error = "";
 
 /* LOGIN */
 if(isset($_POST['login'])) {
+  $ip = $_SERVER['REMOTE_ADDR'];
+  if (!rateLimit("login_$ip", 5, 60)) {
+    die("Too many requests. Please wait a moment.");
+}
 
-    $email = trim($_POST['email']);
+    $login = trim($_POST['email']); // email OR username
     $password = $_POST['password'];
 
-    // ✅ VALIDATION (ADD HERE)
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email format.";
-    }
+    $error = "";
 
+    // basic password check only (DO NOT force email validation)
     if (strlen($password) < 6) {
         $error = "Password must be at least 6 characters.";
-    }
-
-    // stop execution if error exists
-    if (!empty($error)) {
-        include 'includes/header.php';
-        // will show error below form
     } else {
 
-            $stmt = $conn->prepare(
-            "SELECT * FROM users WHERE email=?"
+        $stmt = $conn->prepare(
+            "SELECT * FROM users WHERE email=? OR username=? LIMIT 1"
         );
 
-        $stmt->bind_param("s", $email);
+        $stmt->bind_param("ss", $login, $login);
 
         $stmt->execute();
 
@@ -55,20 +50,19 @@ if(isset($_POST['login'])) {
             if(password_verify($password, $user['password'])) {
 
                 $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
 
                 header("Location: dashboard.php");
                 exit;
 
             } else {
-
                 $error = "Incorrect password.";
             }
 
         } else {
-
             $error = "Account not found.";
         }
-            }
+    }
 }
 
 
@@ -96,8 +90,7 @@ include 'includes/header.php';
 
     <form method="POST">
 
-      <input class="input" type="email" name="email" placeholder="Email" required>
-
+<input class="input" type="text" name="email" placeholder="Email or Username" required>
 <div style="position:relative;">
     <input class="input" type="password" name="password" id="password" placeholder="Password" required>
 

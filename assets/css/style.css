@@ -326,11 +326,31 @@ body {
 ========================= */
 
 .footer {
-    text-align: center;
-    padding: 25px;
+    padding: 20px;
+    border-top: 1px solid #2a2f3a;
+    background: #0f172a;
     color: #94a3b8;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    margin-top: 40px;
+    font-size: 14px;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: auto;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.footer-right a {
+    margin-left: 15px;
+    color: #94a3b8;
+    text-decoration: none;
+}
+
+.footer-right a:hover {
+    color: #60a5fa;
 }
 
 /* =========================
@@ -376,6 +396,11 @@ input.input {
     margin-bottom: 6px;
     font-size: 14px;
     color: #cbd5e1;
+}
+
+.form-group input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: #60a5fa;
 }
 
 .auth-container form {

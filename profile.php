@@ -1,5 +1,7 @@
 <?php
 session_start();
+$pageTitle = "Profile - Lynk URL Shortener";
+
 include 'config.php';
 
 if(!isset($_SESSION['user_id'])) {

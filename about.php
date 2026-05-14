@@ -1,5 +1,6 @@
 <?php
 session_start();
+$pageTitle = "About - Lynk URL Shortener";
 include 'includes/header.php';
 ?>
 

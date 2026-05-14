@@ -1,14 +1,26 @@
 <?php
 session_start();
+$pageTitle = "Register - Lynk URL Shortener";
+
+$_SESSION = [];
+
+session_unset();
+session_destroy();
+
+session_start();
 
 include 'config.php';
+
+// FORCE LOGOUT STATE ON REGISTER PAGE
+if (!empty($_SESSION['user_id'])) {
+    unset($_SESSION['user_id']);
+    unset($_SESSION);
+session_destroy();
+session_start();
+}
 include 'rate_limit.php';
 
-$ip = $_SERVER['REMOTE_ADDR'];
 
-if (!rateLimit("login_$ip", 5, 60)) {
-    die("Too many requests. Please wait a moment.");
-}
 
 if(isset($_SESSION['user_id'])) {
 
@@ -22,49 +34,58 @@ $success = "";
 
 /* REGISTER */
 if(isset($_POST['register'])) {
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+if (!rateLimit("login_$ip", 5, 60)) {
+    die("Too many requests. Please wait a moment.");
+}
 
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-if(strlen($password) < 8) {
-    $error = "Password must be at least 8 characters.";
-}
-elseif(!preg_match('/[A-Z]/', $password)) {
-    $error = "Password must contain at least 1 uppercase letter.";
-}
-elseif(!preg_match('/[0-9]/', $password)) {
-    $error = "Password must contain at least 1 number.";
-}
-elseif(!preg_match('/[^A-Za-z0-9]/', $password)) {
-    $error = "Password must contain at least 1 special character.";
-} else {
+    // RESET ERROR FIRST
+    $error = "";
 
-        $hashed = password_hash(
-            $password,
-            PASSWORD_DEFAULT
-        );
+    // 1. TERMS CHECK (STOP IMMEDIATELY)
+    if (!isset($_POST['terms'])) {
+        $error = "You must accept the Terms of Service and Privacy Policy.";
+    }
+
+    // 2. PASSWORD RULES (ONLY IF NO ERROR YET)
+    elseif(strlen($password) < 8) {
+        $error = "Password must be at least 8 characters.";
+    }
+    elseif(!preg_match('/[A-Z]/', $password)) {
+        $error = "Password must contain at least 1 uppercase letter.";
+    }
+    elseif(!preg_match('/[0-9]/', $password)) {
+        $error = "Password must contain at least 1 number.";
+    }
+    elseif(!preg_match('/[^A-Za-z0-9]/', $password)) {
+        $error = "Password must contain at least 1 special character.";
+    }
+
+    // 3. ONLY RUN DB INSERT IF NO ERROR
+    else {
+
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
 
         $stmt = $conn->prepare(
             "INSERT INTO users(username,email,password)
              VALUES(?,?,?)"
         );
 
-        $stmt->bind_param(
-            "sss",
-            $username,
-            $email,
-            $hashed
-        );
+        $stmt->bind_param("sss", $username, $email, $hashed);
 
         if($stmt->execute()) {
 
+            // IMPORTANT: DO NOT SET SESSION HERE
             $success = "Account created successfully.";
 
         } else {
 
             $error = "Username or email already exists.";
-
         }
     }
 }
@@ -105,7 +126,7 @@ include 'includes/header.php';
     </div>
 <?php endif; ?>
 
-        <form method="POST" ">
+        <form method="POST" >
 
     <div class="form-group">
     <label>Username</label>
@@ -128,7 +149,26 @@ include 'includes/header.php';
 <div class="pw-meter">
     <div class="pw-bar" id="registerPwBar"></div>
 </div>
+<div class="form-group">
 
+    <label style="display:flex; gap:10px; align-items:flex-start; font-size:13px; color:#94a3b8;">
+
+        <input type="checkbox" name="terms" required>
+
+        <span>
+            I agree to the 
+            <a href="terms-of-service.php" target="_blank" style="color:#60a5fa;">
+                Terms of Service
+            </a>
+            and
+            <a href="privacy-policy.php" target="_blank" style="color:#60a5fa;">
+                Privacy Policy
+            </a>.
+        </span>
+
+    </label>
+
+</div>
 <p class="pw-text" id="registerPwText"></p>
     <button
         type="submit"
