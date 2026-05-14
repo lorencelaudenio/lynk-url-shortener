@@ -159,4 +159,25 @@ if (registerForm) {
 
     });
 
+    document.getElementById("reportForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    const res = await fetch("send_report.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const text = await res.text();
+
+    if (text === "success") {
+        alert("Report submitted successfully!");
+        this.reset();
+    } else {
+        alert("Failed to submit report!");
+    }
+});
+
 }
+

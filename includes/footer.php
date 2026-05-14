@@ -12,6 +12,11 @@
             <a href="privacy-policy.php">Privacy Policy</a>
             <a href="terms-of-service.php">Terms of Service</a>
         </div>
+<div style="text-align:center; padding:20px;">
+  <a href="report.php?url=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>" style="color:red;">
+    Report Abuse
+  </a>
+</div>
 
     </div>
 </footer>

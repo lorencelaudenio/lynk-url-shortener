@@ -649,3 +649,13 @@ input.input {
     margin-top: 5px;
     color: #94a3b8;
 }
+
+textarea.input {
+    min-height: 120px;
+    resize: vertical;
+}
+
+select.input {
+    appearance: none;
+    cursor: pointer;
+}
