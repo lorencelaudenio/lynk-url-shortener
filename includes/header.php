@@ -27,7 +27,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?>
     </div>
 <?php endif; ?></div>
-        <a href="about.php">About</a>
+        
 
         <?php if (!empty($_SESSION['user_id'])): ?>
             <a href="dashboard.php">Dashboard</a>

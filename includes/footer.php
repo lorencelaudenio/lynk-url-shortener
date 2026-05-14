@@ -8,6 +8,7 @@
         </div>
 
         <div class="footer-right">
+            <a href="about.php">About</a>
             <a href="privacy-policy.php">Privacy Policy</a>
             <a href="terms-of-service.php">Terms of Service</a>
         </div>
