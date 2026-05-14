@@ -96,3 +96,75 @@ $mail->Body = "
         error_log("Mail error: " . $mail->ErrorInfo);
     }
 }
+
+function sendResetEmail($email, $username, $token) {
+
+    $resetLink = "https://lynk.page.gd/reset-password.php?token=$token";
+
+    $mail = new PHPMailer(true);
+
+    try {
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+
+        $mail->Username = SMTP_EMAIL;
+        $mail->Password = SMTP_PASSWORD;
+
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom(SMTP_EMAIL, SMTP_NAME);
+
+        $mail->addAddress($email, $username);
+
+        $mail->isHTML(true);
+
+        $mail->Subject = "Reset Your Password";
+
+        $mail->Body = "
+        <div style='font-family:Arial;padding:30px;background:#0f172a;color:#e5e7eb;'>
+
+            <div style='max-width:600px;margin:auto;background:#111827;padding:40px;border-radius:12px;'>
+
+                <h2 style='color:#fff;'>Password Reset Request</h2>
+
+                <p>Hello <strong>$username</strong>,</p>
+
+                <p>
+                    We received a request to reset your password.
+                </p>
+
+                <p>
+                    Click the button below to create a new password:
+                </p>
+
+                <a href='$resetLink'
+                   style='display:inline-block;
+                          padding:14px 24px;
+                          background:#3b82f6;
+                          color:white;
+                          text-decoration:none;
+                          border-radius:8px;
+                          margin-top:15px;'>
+
+                    Reset Password
+
+                </a>
+
+                <p style='margin-top:30px;font-size:13px;color:#94a3b8;'>
+                    This link will expire in 1 hour.
+                </p>
+
+            </div>
+
+        </div>";
+
+        $mail->send();
+
+    } catch (Exception $e) {
+
+        error_log($mail->ErrorInfo);
+    }
+}

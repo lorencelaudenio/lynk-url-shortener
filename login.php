@@ -105,6 +105,9 @@ include 'includes/header.php';
 </button>
 
     </form>
+<div class="forgot-link">
+    <a href="forgot-password.php">Forgot password?</a>
+</div>
 
     <div style="margin-top:15px;text-align:center;">
       <a href="register.php" style="color:#94a3b8;text-decoration:none;">
