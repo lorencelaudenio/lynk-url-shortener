@@ -676,3 +676,10 @@ select.input {
     color: #60a5fa;
     text-decoration: underline;
 }
+
+.report-box {
+    background: #111827;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
