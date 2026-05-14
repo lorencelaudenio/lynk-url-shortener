@@ -2,22 +2,10 @@
 session_start();
 $pageTitle = "Register - Lynk URL Shortener";
 
-$_SESSION = [];
 
-session_unset();
-session_destroy();
-
-session_start();
 
 include 'config.php';
-
-// FORCE LOGOUT STATE ON REGISTER PAGE
-if (!empty($_SESSION['user_id'])) {
-    unset($_SESSION['user_id']);
-    unset($_SESSION);
-session_destroy();
-session_start();
-}
+include 'includes/mailer.php';
 include 'rate_limit.php';
 
 
@@ -79,6 +67,9 @@ if (!rateLimit("login_$ip", 5, 60)) {
         $stmt->bind_param("sss", $username, $email, $hashed);
 
         if($stmt->execute()) {
+
+        // SEND WELCOME EMAIL HERE (RIGHT AFTER SUCCESS)
+    sendWelcomeEmail($email, $username);
 
             // IMPORTANT: DO NOT SET SESSION HERE
             $success = "Account created successfully.";

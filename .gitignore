@@ -3,3 +3,4 @@ config.php
 vendor/
 node_modules/
 .DS_Store
+PHPMailer-master.zip
