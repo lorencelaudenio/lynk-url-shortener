@@ -36,5 +36,7 @@ if($row = $result->fetch_assoc()) {
     exit;
 }
 
-echo "404 Link Not Found";
+http_response_code(404);
+include "404.php";
+exit;
 ?>

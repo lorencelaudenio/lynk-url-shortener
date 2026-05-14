@@ -138,6 +138,18 @@ body {
     transition: 0.2s ease;
 }
 
+.btn-inline {
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 .btn-primary {
     background: #3b82f6;
     color: #ffffff;
@@ -160,6 +172,12 @@ body {
 .btn-dark {
     background: #334155;
     color: #ffffff;
+}
+
+/* optional hover effect */
+.btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
 }
 
 /* =========================
