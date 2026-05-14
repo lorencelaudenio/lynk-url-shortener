@@ -1,5 +1,8 @@
 <?php
 session_start();
+$pageTitle = "Lynk - Smart URL Shortener";
+$pageDescription = "Free URL shortener with tracking, analytics, and dashboard.";
+$pageKeywords = "url shortener, link tracker, analytics, shorten link";
 include 'config.php';
 
 if (isset($_SESSION['user_id'])) {
@@ -39,6 +42,13 @@ if (isset($_POST['shorten'])) {
     }
 }
 ?>
+<title><?= $pageTitle ?? 'Lynk URL Shortener' ?></title>
+
+<meta name="description" content="<?= $pageDescription ?? 'Free URL shortener with tracking, analytics, and dashboard.' ?>">
+
+<meta name="keywords" content="<?= $pageKeywords ?? 'url shortener, link tracker, analytics, shorten link' ?>">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <div class="page-center">
 
