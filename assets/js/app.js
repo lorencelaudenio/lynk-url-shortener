@@ -258,3 +258,4 @@ if (window.__SHORT_URL__) {
 
     openModal();
 }
+

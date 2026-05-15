@@ -228,7 +228,7 @@ include 'includes/header.php';
         <input
             type="text"
             name="custom_slug"
-            placeholder="abc123"
+            placeholder="your-custom-link"
             class="url-slug"
         >
 

@@ -23,18 +23,25 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <div class="nav-links">
 
-        <?php if (!empty($_SESSION['user_id'])): ?>
+<?php if (!empty($_SESSION['user_id'])): ?>
 
-            <span class="nav-user">
-                <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?>
-            </span>
+    
 
-            <a href="dashboard.php">Links</a>
-            <a href="bio-settings.php">Bio Settings</a>
-            <a href="profile.php">Profile</a>
-            <a href="logout.php">Logout</a>
+    <a href="dashboard.php">Links</a>
+    <a href="bio-settings.php">Bio Settings</a>
+<div class="nav-user-dropdown nav-link">
 
-        <?php else: ?>
+    <span class="nav-user-trigger">
+        <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?> ▾
+    </span>
+
+    <div class="nav-user-menu">
+        <a href="profile.php">Profile Settings</a>
+        <a href="logout.php">Logout</a>
+    </div>
+
+</div>
+<?php else: ?>
 
             <a href="login.php">Login</a>
 <a href="register.php" class="btn-signup">Signup for FREE</a>

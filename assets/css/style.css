@@ -66,15 +66,17 @@ body {
     opacity: 0.8;
 }
 
-.nav-links a {
-    margin-left: 15px;
-    text-decoration: none;
-    color: #cbd5e1;
-    font-size: 14px;
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.nav-links a:hover {
-    color: #ffffff;
+.nav-links a,
+.nav-link {
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 14px;
 }
 
 /* =========================
@@ -1141,6 +1143,55 @@ input.input {
     font-weight: bold;
 }
 
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #334155;
+    box-shadow: 0 0 0 3px #0f172a;
+}
+
+.nav-user-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.nav-user-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #0f172a;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    min-width: 160px;
+    z-index: 999;
+}
+
+.nav-user-menu.show {
+    display: block;
+}
+
+/* show when hovering the WHOLE container */
+.nav-user-dropdown:hover .nav-user-menu {
+    display: block;
+}
+
+/* links */
+.nav-user-menu a {
+    display: block;
+    padding: 10px 12px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.nav-user-menu a:hover {
+    background: #1f2937;
+    color: #fff;
+}
+
 /* NEW LINK */
 .result-new {
     background: linear-gradient(135deg, #1e293b, #0f172a);
@@ -1297,4 +1348,5 @@ select.input {
     border-radius: 10px;
     margin-bottom: 15px;
 }
+
 
