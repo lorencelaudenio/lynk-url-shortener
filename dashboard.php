@@ -211,50 +211,34 @@ include 'includes/header.php';
         </div>
 
         <!-- CUSTOM SHORT LINK -->
-        <div class="form-group">
+<div class="form-group">
 
-            <label style="font-size:12px;color:#94a3b8;">
-                Custom Short Link (optional)
-            </label>
+    <label style="font-size:12px;color:#94a3b8;">
+        Custom Short Link (optional)
+    </label>
 
-            <div style="display:flex;">
+    <div class="url-input-group">
 
-                <!-- FIXED DOMAIN -->
-                <span style="
-                    background:#0f172a;
-                    padding:12px 10px;
-                    border:1px solid #1f2937;
-                    border-right:none;
-                    color:#94a3b8;
-                    border-radius:10px 0 0 10px;
-                    font-size:13px;
-                    display:flex;
-                    align-items:center;
-                    white-space:nowrap;
-                ">
-                    https://yourwebsite.com/
-                </span>
-
-                <!-- EDITABLE SLUG -->
-                <input
-                    type="text"
-                    name="custom_slug"
-                    placeholder="abc123"
-                    class="input"
-                    style="
-                        border-radius:0 10px 10px 0;
-                        margin:0;
-                        border-left:none;
-                    "
-                >
-
-            </div>
-
-            <small style="color:#64748b;font-size:11px;">
-                Leave empty to auto-generate
-            </small>
-
+        <!-- FIXED DOMAIN -->
+        <div class="url-domain">
+            https://lynk.page.gd/
         </div>
+
+        <!-- EDITABLE SLUG -->
+        <input
+            type="text"
+            name="custom_slug"
+            placeholder="abc123"
+            class="url-slug"
+        >
+
+    </div>
+
+    <small style="color:#64748b;font-size:11px;">
+        Leave empty to auto-generate
+    </small>
+
+</div>
 
         <button class="btn btn-primary" name="shorten" type="submit">
             🚀 Shorten URL

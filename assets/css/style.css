@@ -1034,6 +1034,34 @@ input.input {
     text-align: left;
 }
 
+.url-domain {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-right: none;
+    padding: 12px 12px;
+    color: #94a3b8;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 10px 0 0 10px;
+}
+
+.url-slug {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #ffffff;
+    padding: 12px;
+    font-size: 13px;
+    border-radius: 0 10px 10px 0;
+    outline: none;
+}
+
+.url-slug:focus {
+    border-color: #3b82f6;
+}
+
 .url-label {
     display: block;
     font-size: 12px;
