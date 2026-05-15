@@ -300,6 +300,78 @@ body {
 }
 
 /* =========================
+   DASHBOARD COPY BUTTON
+========================= */
+
+.dash-copy-btn {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.dash-copy-btn:hover {
+    background: #1e293b;
+    transform: scale(1.05);
+}
+
+/* =========================
+   ACTION BUTTONS (SAAS STYLE)
+========================= */
+
+.link-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* base button */
+.action-btn {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    transform: scale(1.08);
+    background: #1e293b;
+}
+
+/* EDIT */
+.action-edit:hover {
+    border-color: #3b82f6;
+}
+
+/* COPY */
+.action-copy:hover {
+    border-color: #22c55e;
+}
+
+/* DELETE */
+.action-delete:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+/* =========================
    COPY BUTTON
 ========================= */
 
@@ -336,11 +408,97 @@ body {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.65);
     justify-content: center;
     align-items: center;
-    z-index: 9998;
+    z-index: 9999;
+    padding: 20px;
 }
+
+.dash-modal-content {
+    background: #0f172a;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 16px;
+    padding: 26px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.dash-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+.dash-modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 18px;
+}
+
+/* FORM */
+.dash-form-group {
+    text-align: left;
+    margin-bottom: 14px;
+}
+
+.dash-label {
+    font-size: 12px;
+    color: #94a3b8;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.dash-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #1f2937;
+    background: #111827;
+    color: #fff;
+    outline: none;
+}
+
+.dash-input:focus {
+    border-color: #3b82f6;
+}
+
+/* BUTTONS */
+.dash-btn-primary {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #3b82f6;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.dash-btn-primary:hover {
+    background: #2563eb;
+}
+
+.dash-btn-secondary {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background: transparent;
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
 
 .url-modal {
     display: none;

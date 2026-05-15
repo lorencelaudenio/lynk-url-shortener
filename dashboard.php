@@ -247,36 +247,43 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
 
             <!-- ACTIONS -->
-            <div class="link-actions">
+<div class="link-actions">
 
-                <!-- EDIT -->
-                <a href="#"
-                   class="edit-link"
-                   onclick="openEditModal(
-                        <?php echo $row['id']; ?>,
-                        '<?php echo addslashes($row['original_url']); ?>'
-                   )">
+    <!-- EDIT -->
+    <button
+        class="action-btn action-edit"
+        onclick="openEditModal(
+            <?php echo $row['id']; ?>,
+            '<?php echo addslashes($row['original_url']); ?>'
+        )"
+        title="Edit link">
 
-                    Edit
+        ✏️
 
-                </a>
+    </button>
 
-                <!-- DELETE -->
-                <a href="delete.php?id=<?php echo $row['id']; ?>"
-                   class="delete-link"
-                   onclick="return confirm('Delete this link?')">
+    <!-- COPY -->
+    <button
+        class="action-btn action-copy"
+        onclick="copyLink('https://lynk.page.gd/<?php echo $row['short_code']; ?>', this)"
+        title="Copy link">
 
-                    Delete
+        📋
 
-                </a>
+    </button>
 
-                <!-- COPY -->
-<button class="copy-btn"
-    onclick="copyLink('https://lynk.page.gd/<?php echo $row['short_code']; ?>', this)">
-    Copy
-</button>
+    <!-- DELETE -->
+    <a
+        href="delete.php?id=<?php echo $row['id']; ?>"
+        class="action-btn action-delete"
+        onclick="return confirm('Delete this link?')"
+        title="Delete link">
 
-            </div>
+        🗑️
+
+    </a>
+
+</div>
 
         </div>
 
@@ -286,36 +293,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- EDIT MODAL -->
 <div id="editModal" class="dash-modal">
-    <div class="modal-content">
 
-        <h3>Edit Link</h3>
+    <div class="dash-modal-content">
 
+        <!-- CLOSE -->
+        <button class="dash-modal-close" onclick="closeEditModal()">×</button>
+
+        <!-- TITLE -->
+        <div class="dash-modal-title">
+            Edit Your Link
+        </div>
+
+        <!-- FORM -->
         <form method="POST" action="edit.php">
 
-            <input
-                type="hidden"
-                name="id"
-                id="edit_id"
-            >
+            <input type="hidden" name="id" id="edit_id">
 
-            <input
-                type="url"
-                name="url"
-                id="edit_url"
-                required
-            >
+            <div class="dash-form-group">
+                <label class="dash-label">Destination URL</label>
 
-            <button type="submit" name="update">
+                <input
+                    type="url"
+                    name="url"
+                    id="edit_url"
+                    class="dash-input"
+                    placeholder="https://example.com"
+                    required
+                >
+            </div>
 
+            <button type="submit" name="update" class="dash-btn-primary">
                 Update Link
-
             </button>
 
         </form>
 
-<button onclick="closeEditModal()" class="close-btn">
-    Close
-</button>
+        <!-- FOOTER ACTION -->
+        <button onclick="closeEditModal()" class="dash-btn-secondary">
+            Cancel
+        </button>
+
     </div>
 
 </div>
