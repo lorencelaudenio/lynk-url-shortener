@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <!-- EDIT -->
                 <a href="#"
                    class="edit-link"
-                   onclick="openModal(
+                   onclick="openEditModal(
                         <?php echo $row['id']; ?>,
                         '<?php echo addslashes($row['original_url']); ?>'
                    )">
@@ -285,8 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </div>
 
 <!-- EDIT MODAL -->
-<div id="editModal" class="modal">
-
+<div id="editModal" class="dash-modal">
     <div class="modal-content">
 
         <h3>Edit Link</h3>
@@ -314,14 +313,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         </form>
 
-        <button
-            onclick="closeModal()"
-            class="close-btn">
-
-            Close
-
-        </button>
-
+<button onclick="closeEditModal()" class="close-btn">
+    Close
+</button>
     </div>
 
 </div>

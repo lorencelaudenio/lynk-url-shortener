@@ -1,20 +1,30 @@
-function copyLink(url, btn = null) {
+function copyLink(url, btn = null, toastId = "copyToast") {
     if (!url) return;
+
+    const toast = document.getElementById(toastId);
 
     navigator.clipboard.writeText(url)
         .then(() => {
+
             if (btn) {
-                const originalText = btn.innerText;
-                btn.innerText = "Copied ✓";
+                const original = btn.innerText;
+                btn.innerText = "✓";
 
                 setTimeout(() => {
-                    btn.innerText = originalText;
-                }, 1500);
+                    btn.innerText = original;
+                }, 1200);
             }
+
+            if (toast) {
+                toast.classList.add("show");
+
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 1200);
+            }
+
         })
-        .catch(err => {
-            console.error("Copy failed:", err);
-        });
+        .catch(err => console.error("Copy failed:", err));
 }
 
 /* ✅ MUST BE OUTSIDE */
@@ -193,6 +203,19 @@ function copyProfileLink() {
         });
 }
 
+function openEditModal(id, url) {
+    const modal = document.getElementById("editModal");
+
+    document.getElementById("edit_id").value = id;
+    document.getElementById("edit_url").value = url;
+
+    modal.style.display = "flex";
+}
+
+function closeEditModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
 function openModal() {
     document.getElementById("resultModal").style.display = "flex";
 }
@@ -205,11 +228,29 @@ if (window.__SHORT_URL__) {
     document.getElementById("shortUrl").textContent = window.__SHORT_URL__;
     document.getElementById("shortUrl").href = window.__SHORT_URL__;
 
-    document.getElementById("copyBtn").onclick = function () {
-        navigator.clipboard.writeText(window.__SHORT_URL__);
-        this.innerText = "Copied!";
-        setTimeout(() => this.innerText = "Copy Link", 1500);
-    };
+    if (window.__SHORT_URL__) {
+
+    const shortUrlEl = document.getElementById("shortUrl");
+    const copyBtn = document.getElementById("copyBtn");
+
+    if (shortUrlEl) {
+        shortUrlEl.textContent = window.__SHORT_URL__;
+        shortUrlEl.href = window.__SHORT_URL__;
+    }
+
+    if (copyBtn) {
+        copyBtn.onclick = function () {
+            copyLink(window.__SHORT_URL__, this, "copyToast");
+        };
+    }
+
+    if (window.__SHOW_CTA__) {
+        const cta = document.getElementById("ctaSection");
+        if (cta) cta.style.display = "block";
+    }
+
+    openModal();
+}
 
     if (window.__SHOW_CTA__) {
         document.getElementById("ctaSection").style.display = "block";

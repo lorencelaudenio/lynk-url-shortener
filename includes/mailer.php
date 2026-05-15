@@ -49,11 +49,15 @@ $mail->Body = "
 
         <p style='font-size:16px;line-height:1.7;color:#cbd5e1;'>
             Your account has been successfully created.
-            You can now shorten URLs, manage links,
-            and track clicks from your dashboard.
+            You can now shorten URLs, manage your links, and track clicks anytime from your dashboard.
         </p>
 
-        <div style='margin:35px 0;'>
+        <p style='font-size:16px;line-height:1.7;color:#cbd5e1;'>
+            You can also set up your Link in Bio page to organize all your important links in one place.
+        </p>
+
+        <!-- MAIN CTA -->
+        <div style='margin:30px 0;'>
 
             <a href='https://lynk.page.gd/login.php'
                style='background:#3b82f6;
@@ -64,7 +68,7 @@ $mail->Body = "
                       font-weight:bold;
                       display:inline-block;'>
 
-                Open Dashboard
+                Login to your account
 
             </a>
 
@@ -73,16 +77,11 @@ $mail->Body = "
         <hr style='border:none;border-top:1px solid #1f2937;margin:30px 0;'>
 
         <p style='font-size:13px;color:#94a3b8;line-height:1.6;'>
-
-            You're receiving this email because you created
-            an account on Lynk URL Shortener.
-
+            You're receiving this email because you created an account on Lynk URL Shortener.
         </p>
 
         <p style='font-size:13px;color:#64748b;'>
-
             © " . date('Y') . " Lynk URL Shortener
-
         </p>
 
     </div>
