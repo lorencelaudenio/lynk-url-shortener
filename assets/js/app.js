@@ -192,3 +192,28 @@ function copyProfileLink() {
             console.error("Copy failed:", err);
         });
 }
+
+function openModal() {
+    document.getElementById("resultModal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("resultModal").style.display = "none";
+}
+
+if (window.__SHORT_URL__) {
+    document.getElementById("shortUrl").textContent = window.__SHORT_URL__;
+    document.getElementById("shortUrl").href = window.__SHORT_URL__;
+
+    document.getElementById("copyBtn").onclick = function () {
+        navigator.clipboard.writeText(window.__SHORT_URL__);
+        this.innerText = "Copied!";
+        setTimeout(() => this.innerText = "Copy Link", 1500);
+    };
+
+    if (window.__SHOW_CTA__) {
+        document.getElementById("ctaSection").style.display = "block";
+    }
+
+    openModal();
+}

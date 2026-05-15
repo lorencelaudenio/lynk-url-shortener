@@ -1,5 +1,38 @@
 </div> <!-- end app-wrapper -->
+<div id="resultModal" class="url-modal">
+    <div class="url-modal-content">
 
+        <button class="url-modal-close" onclick="closeModal()">×</button>
+
+        <div class="url-modal-icon">🎉</div>
+
+        <div class="url-modal-title">
+            Your short link is ready
+        </div>
+
+        <div class="url-modal-link">
+            <a id="shortUrl" href="#" target="_blank"></a>
+        </div>
+
+        <button class="copy-btn" id="copyBtn">
+            Copy Link
+        </button>
+
+        <div id="ctaSection" style="margin-top:20px; display:none;">
+            <div class="cta-title">🚀 Unlock full link analytics</div>
+
+            <p class="cta-text">
+                Track clicks, manage all your links, and access your dashboard anytime.
+            </p>
+
+            <div class="cta-actions">
+                <a href="register.php" class="cta-primary">Signup for FREE</a>
+                <a href="login.php" class="cta-secondary">Login</a>
+            </div>
+        </div>
+
+    </div>
+</div>
 <footer class="footer">
     <div class="footer-inner">
 
@@ -13,7 +46,7 @@
             <a href="terms-of-service.php">Terms of Service</a>
         </div>
 <div style="text-align:center; padding:20px;">
-  <a href="report.php?url=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>" style="color:red;text-decoration:none;">
+  <a href="report.php" style="color:red;text-decoration:none;">
     Report Abuse
   </a>
 </div>

@@ -1,4 +1,17 @@
 <?php include 'includes/header.php'; ?>
+<div style="text-align:center;margin-bottom:25px;">
+
+    <img
+        src="assets/images/link_not_found-removebg-preview.webp"
+        alt="Link Not Found"
+        style="
+            width:100%;
+            max-width:280px;
+            opacity:0.95;
+        "
+    >
+
+</div>
 
 <div class="container" style="text-align:center;padding:60px 20px;">
 

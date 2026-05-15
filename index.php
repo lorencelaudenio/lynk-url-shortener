@@ -53,6 +53,9 @@ if (isset($_POST['shorten'])) {
 <div class="page-center">
 
     <div class="hero-box">
+        <div class="hero-image">
+    <img src="assets/images/link%20in%20bio.webp" alt="Lynk Hero Image">
+</div>
 
         <div class="auth-title">
             Smart URL Shortener
@@ -73,50 +76,10 @@ if (isset($_POST['shorten'])) {
 </div>
 
 <?php if (!empty($short_url)): ?>
-    <div class="result-box">
-
-        <div class="result-icon">🎉</div>
-
-        <div class="result-title">
-            Your short link is ready
-        </div>
-
-        <div class="result-link-box">
-            <a class="result-link" href="<?= $short_url ?>" target="_blank">
-                <?= $short_url ?>
-            </a>
-        </div>
-
-<button class="copy-btn"
-    onclick="copyLink('<?= $short_url ?>', this)">
-    Copy Link
-</button>
-
-    </div>
-<?php endif; ?>
-
-<?php if ($show_cta): ?>
-    <div class="cta-box">
-
-        <div class="cta-title">
-            🚀 Unlock full link analytics
-        </div>
-
-        <p class="cta-text">
-            Track clicks, manage all your links, and access your dashboard anytime.
-        </p>
-
-        <div class="cta-actions">
-            <a href="register.php" class="cta-primary">
-                Create Free Account
-            </a>
-
-            <a href="login.php" class="cta-secondary">
-                Login
-            </a>
-        </div>
-
-    </div>
+<script>
+    window.__SHORT_URL__ = "<?= $short_url ?>";
+    window.__SHOW_CTA__ = true;
+</script>
 <?php endif; ?>
 
     </div>

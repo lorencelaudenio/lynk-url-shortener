@@ -13,6 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <title><?= $pageTitle ?? 'Lynk' ?></title>
 <link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime('assets/css/style.css') ?>">
+<link rel="icon" href="/assets/images/lynk.ico?v=2" type="image/x-icon">
 </head>
 
 <body>
@@ -36,8 +37,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php else: ?>
 
             <a href="login.php">Login</a>
-            <a href="register.php">Register</a>
-
+<a href="register.php" class="btn-signup">Signup for FREE</a>
         <?php endif; ?>
 
     </div>
