@@ -86,4 +86,8 @@ if (isset($_POST['shorten'])) {
 
 </div>
 
+
+
+
+
 <?php include 'includes/footer.php'; ?>
