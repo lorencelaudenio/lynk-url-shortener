@@ -39,6 +39,7 @@ $original_url = "";
 if (isset($_POST['shorten'])) {
 
     $url = trim($_POST['url']);
+    $custom = trim($_POST['custom_slug'] ?? '');
 
     if (!filter_var($url, FILTER_VALIDATE_URL)) {
 
@@ -46,50 +47,76 @@ if (isset($_POST['shorten'])) {
 
     } else {
 
-        // CHECK EXISTING URL FOR THIS USER
-        $check = $conn->prepare(
-            "SELECT short_code FROM links 
-             WHERE user_id=? AND original_url=? 
-             LIMIT 1"
-        );
+        // decide short code
+        if (!empty($custom)) {
 
-        $check->bind_param("is", $user_id, $url);
-        $check->execute();
-        $result = $check->get_result();
+            // sanitize slug (abc123 only)
+            $short = preg_replace('/[^a-zA-Z0-9\-]/', '', $custom);
 
-        if ($row = $result->fetch_assoc()) {
+            if (empty($short)) {
+                $error = "Invalid custom slug.";
+            } else {
 
-            $short = $row['short_code'];
-            $message = "⚠️ Destination already exists.";
-            $type = "info";
+                // check if slug exists
+                $check = $conn->prepare("SELECT id FROM links WHERE short_code=? LIMIT 1");
+                $check->bind_param("s", $short);
+                $check->execute();
+                $result = $check->get_result();
+
+                if ($result->num_rows > 0) {
+                    $error = "Custom slug already taken.";
+                }
+            }
 
         } else {
-
+            // auto generate
             $short = substr(md5(uniqid()), 0, 6);
-
-            $stmt = $conn->prepare(
-                "INSERT INTO links(user_id, original_url, short_code)
-                 VALUES(?,?,?)"
-            );
-
-            $stmt->bind_param("iss", $user_id, $url, $short);
-            $stmt->execute();
-
-            $message = "🎉 New short link created!";
-            $type = "success";
         }
 
-        // ALWAYS REDIRECT AFTER SETTING SESSION
-    $_SESSION['toast'] = [
-        'message' => $message,
-        'type' => $type
-    ];
+        // only insert if no error yet
+        if (empty($error)) {
 
-    header("Location: dashboard.php");
-    exit;
+            // CHECK EXISTING URL FOR THIS USER
+            $check = $conn->prepare(
+                "SELECT short_code FROM links 
+                 WHERE user_id=? AND original_url=? 
+                 LIMIT 1"
+            );
 
-        $short_url = "https://lynk.page.gd/$short";
-        $original_url = $url;
+            $check->bind_param("is", $user_id, $url);
+            $check->execute();
+            $result = $check->get_result();
+
+            if ($row = $result->fetch_assoc()) {
+
+                $short = $row['short_code'];
+                $message = "⚠️ Destination already exists.";
+                $type = "info";
+
+            } else {
+
+                $stmt = $conn->prepare(
+                    "INSERT INTO links(user_id, original_url, short_code)
+                     VALUES(?,?,?)"
+                );
+
+                $stmt->bind_param("iss", $user_id, $url, $short);
+                $stmt->execute();
+
+                $message = "🎉 New short link created!";
+                $type = "success";
+
+                
+            }
+
+            $_SESSION['toast'] = [
+                'message' => $message,
+                'type' => $type
+            ];
+
+            header("Location: dashboard.php");
+            exit;
+        }
     }
 }
 
@@ -172,8 +199,8 @@ include 'includes/header.php';
 
     <form method="POST">
 
+        <!-- LONG URL -->
         <div class="form-group">
-
             <input
                 class="input"
                 type="url"
@@ -181,6 +208,51 @@ include 'includes/header.php';
                 placeholder="Paste long URL..."
                 required
             >
+        </div>
+
+        <!-- CUSTOM SHORT LINK -->
+        <div class="form-group">
+
+            <label style="font-size:12px;color:#94a3b8;">
+                Custom Short Link (optional)
+            </label>
+
+            <div style="display:flex;">
+
+                <!-- FIXED DOMAIN -->
+                <span style="
+                    background:#0f172a;
+                    padding:12px 10px;
+                    border:1px solid #1f2937;
+                    border-right:none;
+                    color:#94a3b8;
+                    border-radius:10px 0 0 10px;
+                    font-size:13px;
+                    display:flex;
+                    align-items:center;
+                    white-space:nowrap;
+                ">
+                    https://yourwebsite.com/
+                </span>
+
+                <!-- EDITABLE SLUG -->
+                <input
+                    type="text"
+                    name="custom_slug"
+                    placeholder="abc123"
+                    class="input"
+                    style="
+                        border-radius:0 10px 10px 0;
+                        margin:0;
+                        border-left:none;
+                    "
+                >
+
+            </div>
+
+            <small style="color:#64748b;font-size:11px;">
+                Leave empty to auto-generate
+            </small>
 
         </div>
 
@@ -189,6 +261,8 @@ include 'includes/header.php';
         </button>
 
     </form>
+
+</div>
     <?php if (!empty($message)): ?>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
