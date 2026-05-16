@@ -28,7 +28,7 @@ if (session_status() === PHP_SESSION_NONE) {
     
 
     <a href="dashboard.php">Links</a>
-    <a href="bio-settings.php">Bio Settings</a>
+    <a href="bio-settings.php">Bio</a>
 <div class="nav-user-dropdown nav-link">
 
     <span class="nav-user-trigger">

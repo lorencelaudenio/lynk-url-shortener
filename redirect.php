@@ -8,7 +8,7 @@ if (!rateLimit("login_$ip", 5, 60)) {
     die("Too many requests. Please wait a moment.");
 }
 
-$code = $_GET['code'];
+$code = trim($_GET['code'] ?? '');
 
 $stmt = $conn->prepare(
     "SELECT * FROM links WHERE short_code=?"
