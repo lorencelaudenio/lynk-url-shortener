@@ -91,7 +91,9 @@ include 'includes/header.php';
 
         <div class="auth-title">
 
-            Lyn<span>k</span>
+<a href="https://lynk.page.gd/" class="logo lynk-logo">
+  Lyn<span>k</span>
+</a>
 
         </div>
 
@@ -119,24 +121,21 @@ include 'includes/header.php';
 
         <form method="POST" >
 
-    <div class="form-group">
-    <label>Username</label>
-    <input class="input" type="text" name="username" id="username" required>
-    <small id="usernameMsg" style="color:#94a3b8;"></small>
+<div class="form-group">
+    <label class="sr-only">Username</label>
+    <input class="input" type="text" name="username" placeholder="Username" required>
 </div>
 
 <div class="form-group">
-    <label>Email</label>
-    <input class="input" type="email" name="email" id="email" required>
-    <small id="emailMsg" style="color:#94a3b8;"></small>
+    <label class="sr-only">Email</label>
+    <input class="input" type="email" name="email" placeholder="Email address" required>
 </div>
 
-    <div class="form-group">
 
-        <label>Password</label>
-
-<input id="register_password" class="input" type="password" name="password" required>
-
+<div class="form-group">
+    <label class="sr-only">Password</label>
+    <input id="register_password" class="input" type="password" name="password" placeholder="Password" required>
+</div>
 <div class="pw-meter">
     <div class="pw-bar" id="registerPwBar"></div>
 </div>

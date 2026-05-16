@@ -18,6 +18,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <body>
 
+<div class="mobile-topbar">
+    <a href="index.php" class="mobile-logo">Lyn<span>k</span></a>
+
+    <div class="mobile-actions">
+        <a href="login.php" class="mobile-link">Login</a>
+        <a href="register.php" class="mobile-btn">Sign up</a>
+    </div>
+</div>
+
 <nav class="nav">
     <a href="index.php" class="logo">Lyn<span>k</span></a>
 

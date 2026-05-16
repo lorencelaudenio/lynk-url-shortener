@@ -80,6 +80,22 @@ body {
 }
 
 /* =========================
+   HIDE NAVBAR ON MOBILE
+========================= */
+
+@media (max-width:768px){
+
+    .nav{
+        display:none;
+    }
+
+    .page-center{
+        min-height:100vh;
+    }
+
+}
+
+/* =========================
    AUTH (LOGIN / REGISTER / ABOUT)
 ========================= */
 
@@ -1349,4 +1365,236 @@ select.input {
     margin-bottom: 15px;
 }
 
+/* desktop: normal text link feel */
+.lynk-logo{
+    text-decoration:none;
+    color:#fff;
+}
 
+/* mobile: make it feel clickable + visible */
+@media (max-width:768px){
+
+    .lynk-logo{
+        display:inline-block;
+    }
+
+    .lynk-logo:active{
+        opacity:0.7;
+    }
+}
+
+/* =========================
+   FULL MOBILE APP MODE
+========================= */
+
+@media (max-width:768px){
+
+    /* remove all “boxed card” feeling */
+    body{
+        background:#0f172a;
+    }
+
+    /* kill center alignment */
+    .page-center{
+        display:block;
+        min-height:100vh;
+        padding:0;
+    }
+
+    /* MAIN FIX: remove container look */
+    .auth-container{
+        width:100%;
+        max-width:100%;
+        min-height:100vh;
+        border:none;
+        border-radius:0;
+        box-shadow:none;
+        background:transparent;
+        padding:40px 20px;
+    }
+
+    /* make form feel native */
+    .input{
+        background:#1e293b;
+        border-radius:14px;
+        font-size:16px;
+        padding:16px;
+    }
+
+    .btn{
+        border-radius:14px;
+        padding:16px;
+        font-size:16px;
+    }
+
+    /* spacing like mobile app screen */
+    .auth-title{
+        margin-top:50px;
+    }
+
+    /* optional: reduce clutter */
+    .auth-subtitle{
+        margin-bottom:30px;
+    }
+}
+
+/* =========================
+   HOME PAGE - MOBILE APP MODE
+========================= */
+
+@media (max-width:768px){
+
+    /* remove centered layout */
+    .page-center{
+        display:block;
+        min-height:100vh;
+        padding:0;
+    }
+
+    /* kill the hero card container */
+    .hero-box{
+        max-width:100%;
+        width:100%;
+        min-height:100vh;
+        border:none;
+        border-radius:0;
+        box-shadow:none;
+        background:transparent;
+        padding:40px 20px;
+        text-align:left;
+    }
+
+    /* remove inner form box card */
+    .form-box{
+        background:transparent;
+        padding:0;
+        border-radius:0;
+        margin-bottom:20px;
+    }
+
+    /* image becomes more natural */
+    .hero-image img{
+        max-width:220px;
+        display:block;
+        margin:0 auto 20px auto;
+    }
+
+    /* typography feels mobile-native */
+    .auth-title{
+        font-size:30px;
+        margin-top:30px;
+        text-align:left;
+    }
+
+    .auth-subtitle{
+        text-align:left;
+    }
+
+    /* input becomes full app style */
+    .input{
+        font-size:16px;
+        padding:16px;
+        border-radius:14px;
+    }
+
+    .btn{
+        padding:16px;
+        font-size:16px;
+        border-radius:14px;
+    }
+}
+
+/* =========================
+   MOBILE TOP BAR (REPLACES NAV)
+========================= */
+
+.mobile-topbar{
+    display:none;
+}
+
+@media (max-width:768px){
+
+    /* show mini nav */
+    .mobile-topbar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:16px 20px;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        background:#0f172a;
+        border-bottom:1px solid #1e293b;
+        z-index:9999;
+    }
+
+    .mobile-logo{
+        font-size:20px;
+        font-weight:700;
+        color:#fff;
+        text-decoration:none;
+    }
+
+    .mobile-logo span{
+        color:#3b82f6;
+    }
+
+    .mobile-actions{
+        display:flex;
+        gap:10px;
+        align-items:center;
+    }
+
+    .mobile-link{
+        color:#cbd5e1;
+        font-size:14px;
+        text-decoration:none;
+    }
+
+    .mobile-btn{
+        background:#3b82f6;
+        color:#fff;
+        padding:8px 12px;
+        border-radius:10px;
+        font-size:13px;
+        font-weight:600;
+        text-decoration:none;
+    }
+
+    /* prevent content hiding behind fixed bar */
+    body{
+        padding-top:60px;
+    }
+}
+
+/* =========================
+   MOBILE LOGO ALIGN FIX
+========================= */
+
+@media (max-width:768px){
+
+    .auth-title,
+    .auth-subtitle{
+        text-align:center;
+    }
+
+    /* center Lynk logo properly */
+    .auth-title{
+        width:100%;
+        display:block;
+        margin-top:60px;
+    }
+}
+
+/* visually hide labels but keep accessibility */
+.sr-only{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    border:0;
+}

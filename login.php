@@ -75,7 +75,9 @@ include 'includes/header.php';
   <div class="auth-container">
 
     <div class="auth-title">
-      Lyn<span>k</span>
+<a href="https://lynk.page.gd/" class="logo lynk-logo">
+  Lyn<span>k</span>
+</a>
     </div>
 
     <div class="auth-subtitle">
