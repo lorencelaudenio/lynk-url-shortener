@@ -1331,8 +1331,9 @@ input.input {
 }
 
 textarea.input {
-    min-height: 120px;
+    min-height: 110px;
     resize: vertical;
+    color: #cbd5e1;
 }
 
 select.input {

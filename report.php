@@ -60,21 +60,33 @@ include 'includes/header.php';
     </div>
     </div>
 
-        <div class="form-group">
-            <label>Reason</label>
-            <select name="reason" class="input" required>
-                <option value="">Select reason</option>
-                <option value="spam">Spam</option>
-                <option value="scam">Scam</option>
-                <option value="hate">Hate Speech</option>
-            </select>
-        </div>
+<div class="form-group">
+    <label>Reason</label>
+    <select name="reason" class="input" required>
+        <option value="">Select reason</option>
 
-        <div class="form-group">
-            <label>Details (optional)</label>
-            <textarea name="details" class="input"
-                    placeholder="Add more information..."></textarea>
-        </div>
+        <option value="spam">Spam / Unwanted Ads</option>
+        <option value="scam">Scam / Fraudulent Link</option>
+        <option value="phishing">Phishing (Stealing Info)</option>
+        <option value="malware">Malware / Virus</option>
+        <option value="hate">Hate Speech / Abuse</option>
+        <option value="adult">Adult / Explicit Content</option>
+        <option value="violence">Violence / Harmful Content</option>
+        <option value="impersonation">Impersonation / Fake Identity</option>
+        <option value="copyright">Copyright Violation</option>
+        <option value="other">Other</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>Details (optional)</label>
+    <textarea name="details" class="input"
+        placeholder="Add more information (e.g. what happened, why this link is harmful)..."></textarea>
+
+    <small style="color:#94a3b8;">
+        Help us understand the issue clearly.
+    </small>
+</div>
 
     <button type="submit" class="btn btn-danger" id="submitBtn" disabled>
         Submit Report
