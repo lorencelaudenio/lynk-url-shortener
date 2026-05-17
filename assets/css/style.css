@@ -1541,3 +1541,95 @@ select.input {
     clip:rect(0,0,0,0);
     border:0;
 }
+
+.avatar-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto; /* 👈 this centers it */
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-upload-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    background: #3b82f6;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    border: 2px solid #0f172a;
+}
+
+.icon-btn {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.icon-btn:hover {
+    background: #334155;
+    transform: scale(1.05);
+}
+
+.profile-link-box {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    border: 1px solid #334155;
+    background: #0f172a;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.profile-url-text {
+    flex: 1;
+    color: #94a3b8;
+    word-break: break-all;
+    font-size: 14px;
+}
+
+@keyframes copyFade {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+.copy-animate {
+    animation: copyFade 1.2s ease forwards;
+}

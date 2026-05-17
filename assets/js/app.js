@@ -259,3 +259,75 @@ if (window.__SHORT_URL__) {
     openModal();
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarForm = document.getElementById('avatarForm');
+
+    if (avatarInput && avatarForm) {
+        avatarInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                avatarForm.submit();
+            }
+        });
+    }
+});
+
+avatarInput.addEventListener('change', function () {
+    if (this.files.length > 0) {
+        avatarForm.querySelector('.avatar-upload-btn').innerText = '...';
+        avatarForm.submit();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const profileData = document.getElementById('profileData');
+    const profileUrl = profileData.getAttribute('data-url');
+
+    const copyBtn = document.getElementById('copyBtn');
+    const openBtn = document.getElementById('openBtn');
+
+    let isCopying = false;
+
+    copyBtn.addEventListener('click', async function () {
+
+    if (isCopying) return;
+    isCopying = true;
+
+    const originalHTML = copyBtn.innerHTML;
+
+    try {
+        await navigator.clipboard.writeText(profileUrl);
+
+        // show success state
+        copyBtn.innerHTML = `
+            <span style="font-size:12px;">✓</span>
+        `;
+
+        copyBtn.classList.add("copy-animate");
+
+        setTimeout(() => {
+            copyBtn.classList.remove("copy-animate");
+            copyBtn.innerHTML = originalHTML;
+            isCopying = false;
+        }, 1200);
+
+    } catch (err) {
+
+        copyBtn.innerHTML = `
+            <span style="font-size:12px;">Error</span>
+        `;
+
+        setTimeout(() => {
+            copyBtn.innerHTML = originalHTML;
+            isCopying = false;
+        }, 1200);
+    }
+
+});
+
+    openBtn.addEventListener('click', function () {
+        window.open(profileUrl, '_blank');
+    });
+
+});

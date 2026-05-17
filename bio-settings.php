@@ -218,33 +218,36 @@ $links = $linkStmt->get_result();
              AVATAR
         ========================== -->
 
-        <form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" id="avatarForm">
 
-            <div style="text-align:center;margin-bottom:20px;">
+    <div class="avatar-wrapper">
 
-                <img
-    src="<?= !empty($user['avatar']) ? htmlspecialchars($user['avatar']) : 'https://via.placeholder.com/120'; ?>"
-    class="profile-avatar"
-/>
+        <img
+            src="<?= !empty($user['avatar']) ? htmlspecialchars($user['avatar']) : 'https://via.placeholder.com/120'; ?>"
+            class="profile-avatar"
+            id="avatarPreview"
+        >
 
-            </div>
+        <!-- hidden file input -->
+        <input
+            type="file"
+            name="avatar"
+            id="avatarInput"
+            accept="image/*"
+            hidden
+        >
 
-            <input
-                type="file"
-                name="avatar"
-                class="input"
-                required
-            >
+        <!-- overlay button -->
+        <label for="avatarInput" class="avatar-upload-btn">
+            +
+        </label>
 
-            <button
-                class="btn btn-primary"
-                name="upload_avatar"
-            >
-                Upload Avatar
-            </button>
+    </div>
 
-        </form>
+    <!-- optional fallback (no button needed anymore) -->
+    <input type="hidden" name="upload_avatar" value="1">
 
+</form>
         <hr style="margin:30px 0;border-color:#1e293b;">
 
         <!-- =========================
@@ -258,33 +261,48 @@ $links = $linkStmt->get_result();
 
     <label>Your Profile Link</label>
 
-    <div style="display:flex; gap:10px;">
+    <div class="profile-link-box">
 
-        <input 
-            type="text" 
-            id="profileLink" 
-            class="input" 
-            value="<?= $profile_url; ?>" 
-            readonly
+        <!-- plain text -->
+        <div 
+            id="profileLinkText"
+            class="profile-url-text"
         >
+            <?= $profile_url; ?>
+        </div>
 
+        <!-- copy button -->
+<button 
+    type="button"
+    class="icon-btn"
+    id="copyBtn"
+    title="Copy link"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" 
+        viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+
+    </svg>
+</button>
+
+        <!-- open button -->
         <button 
-            type="button" 
-            class="btn btn-primary"
-            onclick="copyProfileLink()"
+            type="button"
+            class="icon-btn"
+            id="openBtn"
+            title="Open profile"
         >
-            Copy
+            ↗
         </button>
 
-        <a 
-            href="<?= $profile_url; ?>" 
-            target="_blank"
-            class="btn btn-success"
-        >
-            Open
-        </a>
-
     </div>
+
+    <div id="profileData" data-url="<?= htmlspecialchars($profile_url); ?>"></div>
+
+    <small id="copyStatus" style="color:#94a3b8;"></small>
 
 </div>
 
