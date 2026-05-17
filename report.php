@@ -1,11 +1,23 @@
 <?php
+$bodyClass = "auth-page";
 include 'includes/header.php';
 
 ?>
-
+<body class="<?= $bodyClass ?? '' ?>">
 <div class="page-center">
     <div class="auth-container">
-    <h2>🚨 Report Abuse</h2>
+        <div class="auth-title">
+
+<a href="https://lynk.page.gd/" class="logo lynk-logo">
+    Lyn<span>k</span>
+</a>
+
+</div>
+
+<div class="auth-subtitle">
+    Report abusive or harmful short links.
+</div>
+<h2 style="display:none;">Report Abuse</h2>
 
 
 

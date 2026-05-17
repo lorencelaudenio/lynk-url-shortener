@@ -65,7 +65,7 @@ if(isset($_POST['reset'])) {
 
 include 'includes/header.php';
 ?>
-
+<meta name="robots" content="noindex, nofollow">
 <div class="page-center">
 
     <div class="auth-container">

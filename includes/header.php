@@ -14,18 +14,20 @@ if (session_status() === PHP_SESSION_NONE) {
 <title><?= $pageTitle ?? 'Lynk' ?></title>
 <link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime('assets/css/style.css') ?>">
 <link rel="icon" href="/assets/images/lynk.ico?v=2" type="image/x-icon">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XVKZ3HCS93"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-XVKZ3HCS93');
+</script>
 </head>
 
 <body>
 
-<div class="mobile-topbar">
-    <a href="index.php" class="mobile-logo">Lyn<span>k</span></a>
-
-    <div class="mobile-actions">
-        <a href="login.php" class="mobile-link">Login</a>
-        <a href="register.php" class="mobile-btn">Sign up</a>
-    </div>
-</div>
 
 <nav class="nav">
     <a href="index.php" class="logo">Lyn<span>k</span></a>

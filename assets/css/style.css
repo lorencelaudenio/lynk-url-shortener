@@ -32,12 +32,12 @@ body {
 }
 
 /* center layout (login/register/about) */
-.page-center {
+.page-center{
     min-height: calc(100vh - 70px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
 }
 
 /* =========================
@@ -79,22 +79,21 @@ body {
     font-size: 14px;
 }
 
-/* =========================
-   HIDE NAVBAR ON MOBILE
-========================= */
 
+.page-center {
+    min-height: calc(100vh - 40px);
+    align-items: flex-start;
+    padding: 20px;
+}
+
+/* hide navbar ONLY on auth pages mobile */
 @media (max-width:768px){
 
-    .nav{
+    .auth-page .nav{
         display:none;
     }
 
-    .page-center{
-        min-height:100vh;
-    }
-
 }
-
 /* =========================
    AUTH (LOGIN / REGISTER / ABOUT)
 ========================= */
@@ -1445,11 +1444,15 @@ select.input {
 @media (max-width:768px){
 
     /* remove centered layout */
+ @media (max-width:768px){
+
     .page-center{
-        display:block;
         min-height:100vh;
         padding:0;
+        align-items:flex-start;
     }
+
+}
 
     /* kill the hero card container */
     .hero-box{
@@ -1504,69 +1507,8 @@ select.input {
     }
 }
 
-/* =========================
-   MOBILE TOP BAR (REPLACES NAV)
-========================= */
 
-.mobile-topbar{
-    display:none;
-}
 
-@media (max-width:768px){
-
-    /* show mini nav */
-    .mobile-topbar{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        padding:16px 20px;
-        position:fixed;
-        top:0;
-        left:0;
-        right:0;
-        background:#0f172a;
-        border-bottom:1px solid #1e293b;
-        z-index:9999;
-    }
-
-    .mobile-logo{
-        font-size:20px;
-        font-weight:700;
-        color:#fff;
-        text-decoration:none;
-    }
-
-    .mobile-logo span{
-        color:#3b82f6;
-    }
-
-    .mobile-actions{
-        display:flex;
-        gap:10px;
-        align-items:center;
-    }
-
-    .mobile-link{
-        color:#cbd5e1;
-        font-size:14px;
-        text-decoration:none;
-    }
-
-    .mobile-btn{
-        background:#3b82f6;
-        color:#fff;
-        padding:8px 12px;
-        border-radius:10px;
-        font-size:13px;
-        font-weight:600;
-        text-decoration:none;
-    }
-
-    /* prevent content hiding behind fixed bar */
-    body{
-        padding-top:60px;
-    }
-}
 
 /* =========================
    MOBILE LOGO ALIGN FIX

@@ -67,9 +67,11 @@ if(isset($_POST['login'])) {
 
 
 /* HEADER */
+$bodyClass = "auth-page";
 include 'includes/header.php';
 ?>
-
+<meta name="robots" content="noindex, nofollow">
+<body class="<?= $bodyClass ?? '' ?>">
 <div class="page-center">
 
   <div class="auth-container">
