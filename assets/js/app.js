@@ -331,3 +331,46 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+function triggerUpload(id) {
+    document.getElementById('file-' + id).click();
+}
+
+function uploadThumb(event, id) {
+
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("link_id", id);
+    formData.append("thumbnail", file);
+
+    fetch("update-thumbnail.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.success) {
+            document.getElementById('thumb-' + id).src = data.url;
+        } else {
+            alert("Upload failed");
+        }
+
+    });
+}
+
+function editLink(id) {
+
+    document.getElementById('view-' + id).style.display = 'none';
+
+    document.getElementById('edit-' + id).style.display = 'block';
+}
+
+function cancelEdit(id) {
+
+    document.getElementById('view-' + id).style.display = 'block';
+
+    document.getElementById('edit-' + id).style.display = 'none';
+}

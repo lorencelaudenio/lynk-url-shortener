@@ -36,7 +36,7 @@ $links = $linkStmt->get_result();
 <title>
 @<?= htmlspecialchars($user['username']); ?> | Lynk Page
 </title>
-    <link rel="stylesheet" href="assets/css/bio.css">
+    <link rel="stylesheet" href="assets/css/bio.css?v=<?= filemtime('assets/css/bio.css') ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="description"
@@ -105,15 +105,36 @@ $links = $linkStmt->get_result();
 
         <?php while($link = $links->fetch_assoc()): ?>
 
-            <a
-                href="<?= htmlspecialchars($link['url']); ?>"
-                target="_blank"
-                class="bio-link"
-            >
-                <?= htmlspecialchars($link['title']); ?>
-            </a>
+<a
+    href="track-click.php?id=<?= $link['id']; ?>"
+    target="_blank"
+    class="bio-link-card"
+>
 
-        <?php endwhile; ?>
+    <!-- thumbnail -->
+    <img
+        src="<?= !empty($link['thumbnail']) 
+            ? htmlspecialchars($link['thumbnail']) 
+            : 'https://www.google.com/s2/favicons?sz=128&domain=' . parse_url($link['url'], PHP_URL_HOST); ?>"
+        class="bio-link-thumb"
+    >
+
+    <!-- text -->
+    <div class="bio-link-content">
+
+        <div class="bio-link-title">
+            <?= htmlspecialchars($link['title']); ?>
+        </div>
+
+        <div class="bio-link-url">
+            <?= htmlspecialchars($link['url']); ?>
+        </div>
+
+    </div>
+
+</a>
+
+<?php endwhile; ?>
     </div>
 <a href="register.php" class="join-float-btn">
     Join Lynk Page

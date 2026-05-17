@@ -111,22 +111,69 @@ if(isset($_POST['add_link'])) {
     $title = trim($_POST['title']);
     $url = trim($_POST['url']);
 
+    $thumbnailPath = null;
+
     if(
         !empty($title) &&
         filter_var($url, FILTER_VALIDATE_URL)
     ) {
 
+        /*
+        |--------------------------------------------------------------------------
+        | 1. USER UPLOADED THUMBNAIL (HIGHEST PRIORITY)
+        |--------------------------------------------------------------------------
+        */
+        if(!empty($_FILES['thumbnail']['name'])) {
+
+            $file = $_FILES['thumbnail'];
+
+            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowed = ['jpg','jpeg','png','webp'];
+
+            if(in_array($ext, $allowed)) {
+
+                if(!is_dir("uploads/link_thumbnails")) {
+                    mkdir("uploads/link_thumbnails", 0777, true);
+                }
+
+                $filename = time() . "_" . rand(1000,9999) . "." . $ext;
+
+                $thumbnailPath = "uploads/link_thumbnails/" . $filename;
+
+                move_uploaded_file($file['tmp_name'], $thumbnailPath);
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 2. AUTO FALLBACK (FAVICON IF NO UPLOAD)
+        |--------------------------------------------------------------------------
+        */
+        if(empty($thumbnailPath)) {
+
+            $host = parse_url($url, PHP_URL_HOST);
+
+            if($host) {
+                $thumbnailPath = "https://www.google.com/s2/favicons?sz=128&domain=" . $host;
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 3. SAVE TO DB
+        |--------------------------------------------------------------------------
+        */
         $stmt = $conn->prepare(
-            "INSERT INTO bio_links
-            (user_id,title,url)
-            VALUES(?,?,?)"
+            "INSERT INTO bio_links (user_id, title, url, thumbnail)
+             VALUES (?, ?, ?, ?)"
         );
 
         $stmt->bind_param(
-            "iss",
+            "isss",
             $user_id,
             $title,
-            $url
+            $url,
+            $thumbnailPath
         );
 
         $stmt->execute();
@@ -134,7 +181,6 @@ if(isset($_POST['add_link'])) {
         $success = "Link added successfully.";
 
     } else {
-
         $error = "Invalid link.";
     }
 }
@@ -326,23 +372,23 @@ $links = $linkStmt->get_result();
 
                 <select name="theme" class="input">
 
-                    <option value="default">
-                        Default
-                    </option>
+    <option value="default" <?= $user['theme']=='default'?'selected':'' ?>>
+        Default
+    </option>
 
-                    <option value="dark">
-                        Dark
-                    </option>
+    <option value="dark" <?= $user['theme']=='dark'?'selected':'' ?>>
+        Dark
+    </option>
 
-                    <option value="light">
-                        Light
-                    </option>
+    <option value="light" <?= $user['theme']=='light'?'selected':'' ?>>
+        Light
+    </option>
 
-                    <option value="purple">
-                        Purple
-                    </option>
+    <option value="purple" <?= $user['theme']=='purple'?'selected':'' ?>>
+        Purple
+    </option>
 
-                </select>
+</select>
 
             </div>
 
@@ -361,36 +407,24 @@ $links = $linkStmt->get_result();
              ADD LINK
         ========================== -->
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
 
-            <h3 style="margin-bottom:15px;">
-                Add New Link
-            </h3>
+    <h3 style="margin-bottom:15px;">
+        Add New Link
+    </h3>
 
-            <input
-                type="text"
-                name="title"
-                class="input"
-                placeholder="Button Title"
-                required
-            >
+    <input type="text" name="title" class="input" placeholder="Button Title" required>
 
-            <input
-                type="url"
-                name="url"
-                class="input"
-                placeholder="https://example.com"
-                required
-            >
+    <input type="url" name="url" class="input" placeholder="https://example.com" required>
 
-            <button
-                class="btn btn-primary"
-                name="add_link"
-            >
-                Add Link
-            </button>
+    <!-- NEW: thumbnail upload -->
+    <input type="file" name="thumbnail" class="input" accept="image/*">
 
-        </form>
+    <button class="btn btn-primary" name="add_link">
+        Add Link
+    </button>
+
+</form>
 
         <hr style="margin:30px 0;border-color:#1e293b;">
 
@@ -404,36 +438,145 @@ $links = $linkStmt->get_result();
 
         <?php while($link = $links->fetch_assoc()): ?>
 
-            <div class="link-card">
+<div class="ig-card" data-id="<?= $link['id']; ?>">
 
-                <strong>
-                    <?= htmlspecialchars($link['title']); ?>
-                </strong>
+    <!-- LEFT: THUMBNAIL -->
+    <div class="ig-thumb-wrapper">
 
-                <div class="long">
-                    <?= htmlspecialchars($link['url']); ?>
-                </div>
+        <img 
+            src="<?= !empty($link['thumbnail']) 
+                ? htmlspecialchars($link['thumbnail']) 
+                : 'https://via.placeholder.com/80'; ?>"
+            class="ig-thumb"
+            onclick="triggerUpload(<?= $link['id']; ?>)"
+            id="thumb-<?= $link['id']; ?>"
+        >
 
-                <div style="margin-top:10px;">
+        <input 
+            type="file"
+            accept="image/*"
+            hidden
+            id="file-<?= $link['id']; ?>"
+            onchange="uploadThumb(event, <?= $link['id']; ?>)"
+        >
 
-<form method="POST" style="display:inline;">
-    <input type="hidden" name="delete_id" value="<?= $link['id']; ?>">
+    </div>
+
+    <!-- RIGHT: CONTENT -->
+<div class="ig-content">
+
+    <!-- VIEW MODE -->
+    <div id="view-<?= $link['id']; ?>">
+
+        <div class="ig-title">
+            <?= htmlspecialchars($link['title']); ?>
+        </div>
+
+        <div class="ig-url">
+            <?= htmlspecialchars($link['url']); ?>
+        </div>
+
+        <!-- CLICK ANALYTICS -->
+    <div class="ig-actions-row">
+    <span class="click-badge">👁 <?= (int)$link['clicks']; ?></span>
+</div>
+
+    </div>
+
+    <!-- EDIT MODE -->
+    <form 
+        method="POST"
+        action="update-link.php"
+        id="edit-<?= $link['id']; ?>"
+        style="display:none;"
+    >
+
+        <input type="hidden" name="id" value="<?= $link['id']; ?>">
+
+        <input
+            type="text"
+            name="title"
+            value="<?= htmlspecialchars($link['title']); ?>"
+            class="ig-input"
+            required
+        >
+
+        <input
+            type="url"
+            name="url"
+            value="<?= htmlspecialchars($link['url']); ?>"
+            class="ig-input"
+            required
+        >
+
+        <div class="ig-actions">
+
+            <button class="ig-save">
+                Save
+            </button>
+
+            <button
+                type="button"
+                class="ig-cancel"
+                onclick="cancelEdit(<?= $link['id']; ?>)"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </form>
+
+    <!-- ACTION BUTTONS -->
+    <div class="ig-actions-row">
+
+    <a
+        href="<?= htmlspecialchars($link['url']); ?>"
+        target="_blank"
+        class="ig-icon-btn"
+        title="Open"
+    >
+        ↗
+    </a>
 
     <button
-        class="btn btn-danger btn-inline"
-        onclick="return confirm('Delete this link?')"
+        type="button"
+        class="ig-icon-btn"
+        onclick="editLink(<?= $link['id']; ?>)"
+        title="Edit"
     >
-        Delete
+        ✎
     </button>
-</form>                </div>
 
-            </div>
+<form method="POST" class="ig-inline-form">
 
-        <?php endwhile; ?>
+        <input
+            type="hidden"
+            name="delete_id"
+            value="<?= $link['id']; ?>"
+        >
+
+        <button
+            class="ig-icon-btn delete"
+            onclick="return confirm('Delete this link?')"
+            title="Delete"
+        >
+            ×
+        </button>
+
+    </form>
+
+</div>
+
+</div>
+
+</div>
+<?php endwhile; ?>
+     </div>
 
     </div>
 
 </div>
-</div>
+
 
 <?php include 'includes/footer.php'; ?>
