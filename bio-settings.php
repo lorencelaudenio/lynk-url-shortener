@@ -44,6 +44,22 @@ if(isset($_POST['save_profile'])) {
     $success = "Profile updated successfully.";
 }
 
+/* NEW: theme-only autosave */
+if(isset($_POST['save_theme'])) {
+
+    $theme = trim($_POST['theme']);
+
+    $stmt = $conn->prepare(
+        "UPDATE users SET theme=? WHERE id=?"
+    );
+
+    $stmt->bind_param("si", $theme, $user_id);
+    $stmt->execute();
+
+    header("Location: bio-settings.php");
+    exit;
+}
+
 /*
 |--------------------------------------------------------------------------
 | AVATAR UPLOAD
@@ -118,45 +134,35 @@ if(isset($_POST['add_link'])) {
         filter_var($url, FILTER_VALIDATE_URL)
     ) {
 
-        /*
-        |--------------------------------------------------------------------------
-        | 1. USER UPLOADED THUMBNAIL (HIGHEST PRIORITY)
-        |--------------------------------------------------------------------------
-        */
-        if(!empty($_FILES['thumbnail']['name'])) {
+        /* 1. USER UPLOAD (HIGHEST PRIORITY) */
+if (!empty($_FILES['thumbnail']['name'])) {
 
-            $file = $_FILES['thumbnail'];
+    $file = $_FILES['thumbnail'];
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $allowed = ['jpg','jpeg','png','webp'];
 
-            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-            $allowed = ['jpg','jpeg','png','webp'];
+    if (in_array($ext, $allowed)) {
 
-            if(in_array($ext, $allowed)) {
-
-                if(!is_dir("uploads/link_thumbnails")) {
-                    mkdir("uploads/link_thumbnails", 0777, true);
-                }
-
-                $filename = time() . "_" . rand(1000,9999) . "." . $ext;
-
-                $thumbnailPath = "uploads/link_thumbnails/" . $filename;
-
-                move_uploaded_file($file['tmp_name'], $thumbnailPath);
-            }
+        if (!is_dir("uploads/link_thumbnails")) {
+            mkdir("uploads/link_thumbnails", 0777, true);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 2. AUTO FALLBACK (FAVICON IF NO UPLOAD)
-        |--------------------------------------------------------------------------
-        */
-        if(empty($thumbnailPath)) {
+        $filename = time() . "_" . rand(1000,9999) . "." . $ext;
+        $thumbnailPath = "uploads/link_thumbnails/" . $filename;
 
-            $host = parse_url($url, PHP_URL_HOST);
+        move_uploaded_file($file['tmp_name'], $thumbnailPath);
+    }
+}
 
-            if($host) {
-                $thumbnailPath = "https://www.google.com/s2/favicons?sz=128&domain=" . $host;
-            }
-        }
+        /* 2. ONLY IF STILL EMPTY → FALLBACK */
+if ($thumbnailPath === null || $thumbnailPath === '') {
+
+    $host = parse_url($url, PHP_URL_HOST);
+
+    if ($host) {
+        $thumbnailPath = "https://www.google.com/s2/favicons?sz=128&domain=" . $host;
+    }
+}
 
         /*
         |--------------------------------------------------------------------------
@@ -244,9 +250,28 @@ $links = $linkStmt->get_result();
 <div class="app-wrapper">
     <div class="container" style="display:flex; justify-content:center;">
         <div class="auth-container" style="max-width:700px; width:100%;">
-        <h2 style="margin-bottom:20px;">
-            Bio Settings
-        </h2>
+<div class="bio-header">
+    <h2>Bio Settings</h2>
+
+    <form method="POST" class="theme-switcher" id="themeForm">
+    <select name="theme" class="input theme-select" onchange="document.getElementById('themeForm').submit()">
+
+    <option value="default" <?= $user['theme']=='default'?'selected':'' ?>>🌑 Default</option>
+    <option value="dark" <?= $user['theme']=='dark'?'selected':'' ?>>🌙 Dark</option>
+    <option value="light" <?= $user['theme']=='light'?'selected':'' ?>>☀️ Light</option>
+    <option value="purple" <?= $user['theme']=='purple'?'selected':'' ?>>💜 Purple</option>
+    <option value="ocean" <?= $user['theme']=='ocean'?'selected':'' ?>>🌊 Ocean</option>
+    <option value="sunset" <?= $user['theme']=='sunset'?'selected':'' ?>>🌅 Sunset</option>
+    <option value="forest" <?= $user['theme']=='forest'?'selected':'' ?>>🌲 Forest</option>
+    <option value="midnight" <?= $user['theme']=='midnight'?'selected':'' ?>>🌌 Midnight</option>
+    <option value="neon" <?= $user['theme']=='neon'?'selected':'' ?>>⚡ Neon</option>
+
+</select>
+
+    <!-- hidden flag so PHP knows it's theme-only save -->
+    <input type="hidden" name="save_theme" value="1">
+</form>
+</div>
 
         <?php if($success): ?>
             <div class="alert alert-success">
@@ -354,75 +379,87 @@ $links = $linkStmt->get_result();
 
         <form method="POST">
 
-            <div class="form-group">
+    <div class="form-group">
 
-                <label>Bio</label>
+        <label>Bio</label>
 
-                <textarea
-                    name="bio"
-                    class="input"
-                    placeholder="Tell people about yourself..."
-                ><?= htmlspecialchars($user['bio'] ?? ''); ?></textarea>
+        <textarea
+            name="bio"
+            class="input"
+            placeholder="Tell people about yourself..."
+        ><?= htmlspecialchars($user['bio'] ?? ''); ?></textarea>
 
-            </div>
+    </div>
 
-            <div class="form-group">
+    <button class="btn btn-success" name="save_profile">
+        Save Profile
+    </button>
 
-                <label>Theme</label>
+</form>
 
-                <select name="theme" class="input">
-
-    <option value="default" <?= $user['theme']=='default'?'selected':'' ?>>
-        Default
-    </option>
-
-    <option value="dark" <?= $user['theme']=='dark'?'selected':'' ?>>
-        Dark
-    </option>
-
-    <option value="light" <?= $user['theme']=='light'?'selected':'' ?>>
-        Light
-    </option>
-
-    <option value="purple" <?= $user['theme']=='purple'?'selected':'' ?>>
-        Purple
-    </option>
-
-</select>
-
-            </div>
-
-            <button
-                class="btn btn-success"
-                name="save_profile"
-            >
-                Save Profile
-            </button>
-
-        </form>
+            
 
         <hr style="margin:30px 0;border-color:#1e293b;">
 
-        <!-- =========================
-             ADD LINK
-        ========================== -->
+       <!-- =========================
+     ADD LINK (NEW LAYOUT)
+========================= -->
 
-        <form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" class="add-link-card">
 
-    <h3 style="margin-bottom:15px;">
-        Add New Link
-    </h3>
+    <h3 style="margin-bottom:15px;">Add New Link</h3>
 
-    <input type="text" name="title" class="input" placeholder="Button Title" required>
+    <div class="add-link-row">
 
-    <input type="url" name="url" class="input" placeholder="https://example.com" required>
+        <!-- LEFT: THUMBNAIL -->
+        <div class="add-link-thumb">
 
-    <!-- NEW: thumbnail upload -->
-    <input type="file" name="thumbnail" class="input" accept="image/*">
+            <img
+                src="https://via.placeholder.com/80"
+                id="addThumbPreview"
+                class="add-thumb-preview"
+                onclick="document.getElementById('addThumbInput').click();"
+            >
 
-    <button class="btn btn-primary" name="add_link">
-        Add Link
-    </button>
+            <input
+                type="file"
+                name="thumbnail"
+                id="addThumbInput"
+                accept="image/*"
+                hidden
+                onchange="previewAddThumb(event)"
+            >
+
+            <small>Click to upload</small>
+
+        </div>
+
+        <!-- RIGHT: FIELDS -->
+        <div class="add-link-fields">
+
+            <input
+                type="text"
+                name="title"
+                class="input"
+                placeholder="Button Title"
+                required
+            >
+
+            <input
+                type="url"
+                name="url"
+                class="input"
+                placeholder="https://example.com"
+                required
+            >
+
+            <button class="btn btn-primary" name="add_link">
+                Add Link
+            </button>
+
+        </div>
+
+    </div>
 
 </form>
 

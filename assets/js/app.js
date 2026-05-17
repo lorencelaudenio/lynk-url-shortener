@@ -374,3 +374,14 @@ function cancelEdit(id) {
 
     document.getElementById('edit-' + id).style.display = 'none';
 }
+
+function previewAddThumb(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('addThumbPreview').src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}

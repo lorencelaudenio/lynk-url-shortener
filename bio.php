@@ -84,7 +84,7 @@ $links = $linkStmt->get_result();
 </head>
 <body>
 
-<div class="bio-page">
+<div class="bio-page theme-<?= htmlspecialchars($user['theme'] ?? 'default'); ?>">
 
     <div class="hero-box">
 
@@ -112,12 +112,12 @@ $links = $linkStmt->get_result();
 >
 
     <!-- thumbnail -->
-    <img
-        src="<?= !empty($link['thumbnail']) 
-            ? htmlspecialchars($link['thumbnail']) 
-            : 'https://www.google.com/s2/favicons?sz=128&domain=' . parse_url($link['url'], PHP_URL_HOST); ?>"
-        class="bio-link-thumb"
-    >
+<img
+    src="<?= !empty($link['thumbnail']) 
+        ? htmlspecialchars($link['thumbnail']) 
+        : 'https://www.google.com/s2/favicons?sz=128&domain=' . parse_url($link['url'], PHP_URL_HOST); ?>"
+    class="bio-link-thumb"
+/>
 
     <!-- text -->
     <div class="bio-link-content">
@@ -126,9 +126,7 @@ $links = $linkStmt->get_result();
             <?= htmlspecialchars($link['title']); ?>
         </div>
 
-        <div class="bio-link-url">
-            <?= htmlspecialchars($link['url']); ?>
-        </div>
+        
 
     </div>
 
