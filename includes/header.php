@@ -12,8 +12,13 @@ if (session_status() === PHP_SESSION_NONE) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title><?= $pageTitle ?? 'Lynk' ?></title>
+<meta property="og:title" content="<?= htmlspecialchars($pageTitle ?? 'Lynk') ?>">
 <link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime('assets/css/style.css') ?>">
-<link rel="icon" href="/assets/images/lynk.ico?v=2" type="image/x-icon">
+<link rel="icon" href="/assets/images/lynk.png?v=2" type="image/png">
+
+<meta property="og:description" content="<?= htmlspecialchars($metaDescription ?? 'Create and share your links with Lynk Page') ?>">
+<meta property="og:type" content="website">
+<meta property="og:url" content="<?= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XVKZ3HCS93"></script>

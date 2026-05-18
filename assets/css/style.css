@@ -49,6 +49,12 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .logo {
@@ -1635,6 +1641,7 @@ select.input {
 }
 
 .ig-card {
+    
     display: flex;
     gap: 14px;
     padding: 14px;
@@ -1850,4 +1857,344 @@ select.input {
     flex-direction: column;
     gap: 8px;
 }
+
+#registerBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bio-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* =========================
+   LEFT PANEL (EDITOR)
+========================= */
+
+.bio-editor {
+    flex: 1;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+/* =========================
+   RIGHT PANEL (PREVIEW)
+========================= */
+
+.bio-preview {
+    width: 320px;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+}
+
+/* Preview card */
+.preview-card {
+    background: #0f172a;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Avatar */
+.preview-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Links */
+.preview-links {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.preview-links a {
+    background: #1e293b;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+/* =========================
+   DESKTOP LAYOUT (IMPORTANT)
+========================= */
+
+/* make sure parent behaves correctly */
+.bio-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* =========================
+   TABLET + MOBILE (NATIVE APP MODE)
+   CLEAN + NO BORDER + NO PREVIEW
+========================= */
+
+@media (max-width: 900px) {
+
+    .bio-layout {
+        flex-direction: column;
+        gap: 0;
+        padding: 0; /* 👈 removes outer spacing */
+    }
+
+    /* remove ALL outer wrappers spacing */
+    .app-wrapper,
+    .container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* hide preview */
+    .bio-preview {
+        display: none;
+    }
+
+    /* main editor becomes true app screen */
+    .bio-editor {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        padding: 16px; /* keep inner spacing only */
+        backdrop-filter: none;
+    }
+}
+
+/* =========================
+   VIRAL SAAS HOMEPAGE
+========================= */
+
+.home-viral{
+    overflow:hidden;
+}
+
+/* HERO */
+.viral-hero{
+    position:relative;
+    padding:120px 20px 60px;
+    text-align:center;
+    background: radial-gradient(circle at top, rgba(59,130,246,0.25), transparent 60%);
+}
+
+.viral-glow{
+    position:absolute;
+    top:-200px;
+    left:50%;
+    transform:translateX(-50%);
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle, rgba(124,58,237,0.35), transparent 70%);
+    filter: blur(60px);
+    z-index:-1;
+}
+
+.viral-badge{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.06);
+    font-size:12px;
+    margin-bottom:20px;
+    color:#cbd5e1;
+}
+
+.viral-title{
+    font-size:52px;
+    font-weight:900;
+    line-height:1.1;
+    margin-bottom:15px;
+}
+
+.viral-subtitle{
+    color:#94a3b8;
+    margin-bottom:30px;
+    font-size:16px;
+}
+
+/* FORM */
+.viral-form{
+    display:flex;
+    gap:10px;
+    max-width:700px;
+    margin:0 auto;
+    background:#111827;
+    padding:14px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.viral-input{
+    flex:1;
+    padding:16px;
+    border:none;
+    outline:none;
+    background:#1e293b;
+    border-radius:12px;
+    color:#fff;
+}
+
+.viral-btn{
+    padding:16px 20px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#3b82f6,#7c3aed);
+    color:#fff;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* RESULT */
+.viral-result{
+    margin-top:15px;
+    font-size:13px;
+    color:#94a3b8;
+}
+
+.viral-result a{
+    color:#60a5fa;
+    font-weight:600;
+}
+
+/* PROOF */
+.viral-proof{
+    display:flex;
+    justify-content:center;
+    gap:60px;
+    padding:40px 20px;
+    flex-wrap:wrap;
+}
+
+.proof-item{
+    text-align:center;
+}
+
+.proof-item strong{
+    font-size:22px;
+    display:block;
+}
+
+/* FEATURES */
+.viral-features{
+    padding:60px 20px;
+    text-align:center;
+}
+
+.viral-features h2{
+    font-size:30px;
+    margin-bottom:30px;
+}
+
+.viral-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    max-width:1000px;
+    margin:0 auto;
+}
+
+.viral-card{
+    background:#111827;
+    padding:20px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.06);
+    text-align:left;
+}
+
+.viral-card h3{
+    margin-top:10px;
+    margin-bottom:5px;
+}
+
+/* DEMO */
+.viral-demo{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    padding:50px 20px;
+    flex-wrap:wrap;
+}
+
+.demo-card{
+    background:#0f172a;
+    border:1px solid rgba(255,255,255,0.08);
+    padding:15px;
+    border-radius:12px;
+    max-width:320px;
+}
+
+.demo-card code{
+    color:#94a3b8;
+}
+
+.demo-card.highlight{
+    border-color:#3b82f6;
+}
+
+.demo-arrow{
+    font-size:28px;
+    color:#3b82f6;
+}
+
+/* CTA */
+.viral-cta{
+    text-align:center;
+    padding:80px 20px;
+}
+
+.viral-cta h2{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.viral-cta-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:14px 24px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#3b82f6,#7c3aed);
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .viral-title{
+        font-size:34px;
+    }
+
+    .viral-form{
+        flex-direction:column;
+    }
+
+    .viral-grid{
+        grid-template-columns:1fr;
+    }
+
+    .viral-proof{
+        gap:20px;
+    }
+}
+
+
 

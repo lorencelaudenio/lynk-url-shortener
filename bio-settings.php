@@ -1,12 +1,13 @@
 <?php
 
+
 session_start();
 
 if(!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
-
+$pageTitle = "Bio Settings - Lynk Page";
 include 'config.php';
 include 'includes/header.php';
 
@@ -248,8 +249,10 @@ $links = $linkStmt->get_result();
 ?>
 
 <div class="app-wrapper">
-    <div class="container" style="display:flex; justify-content:center;">
-        <div class="auth-container" style="max-width:700px; width:100%;">
+<div class="container bio-layout">
+    
+    <!-- LEFT: EDITOR -->
+    <div class="bio-editor">
 <div class="bio-header">
     <h2>Bio Settings</h2>
 
@@ -609,11 +612,36 @@ $links = $linkStmt->get_result();
 
 </div>
 <?php endwhile; ?>
-     </div>
+ 
 
-    </div>
+        </div> <!-- bio-editor end -->
 
-</div>
+        <!-- RIGHT: PREVIEW -->
+        <div class="bio-preview">
+            <div class="preview-card" id="livePreview">
 
+                <img src="<?= !empty($user['avatar']) ? htmlspecialchars($user['avatar']) : 'https://via.placeholder.com/120'; ?>"
+                     class="preview-avatar">
+
+                <h3><?= htmlspecialchars($user['username']); ?></h3>
+
+                <p id="previewBio">
+                    <?= htmlspecialchars($user['bio'] ?? 'Your bio will appear here...'); ?>
+                </p>
+
+                <div class="preview-links">
+                    <?php foreach($links as $l): ?>
+                        <a href="<?= htmlspecialchars($l['url']); ?>" target="_blank">
+                            <?= htmlspecialchars($l['title']); ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+
+            </div>
+        </div>
+
+    </div> <!-- container bio-layout end -->
+
+</div> <!-- app-wrapper end -->
 
 <?php include 'includes/footer.php'; ?>

@@ -61,9 +61,56 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #3b82f6;
+    border: 4px solid transparent; /* default */
     padding: 2px;
     margin-bottom: 0px; /* smaller = cleaner stack */
+    transition: 0.3s ease;
+}
+
+/* DEFAULT */
+.theme-default .profile-avatar {
+    border-color: #334155;
+}
+
+/* DARK */
+.theme-dark .profile-avatar {
+    border-color: #64748b;
+}
+
+/* LIGHT */
+.theme-light .profile-avatar {
+    border-color: #e2e8f0;
+}
+
+/* PURPLE */
+.theme-purple .profile-avatar {
+    border-color: #a855f7;
+}
+
+/* OCEAN */
+.theme-ocean .profile-avatar {
+    border-color: #06b6d4;
+}
+
+/* SUNSET */
+.theme-sunset .profile-avatar {
+    border-color: #f97316;
+}
+
+/* FOREST */
+.theme-forest .profile-avatar {
+    border-color: #22c55e;
+}
+
+/* MIDNIGHT */
+.theme-midnight .profile-avatar {
+    border-color: #0f172a;
+}
+
+/* NEON (glow effect looks better here) */
+.theme-neon .profile-avatar {
+    border-color: #39ff14;
+    box-shadow: 0 0 12px #39ff14;
 }
 
 .bio-page {

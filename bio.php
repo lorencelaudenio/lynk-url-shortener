@@ -32,55 +32,48 @@ $links = $linkStmt->get_result();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-<title>
-@<?= htmlspecialchars($user['username']); ?> | Lynk Page
-</title>
-    <link rel="stylesheet" href="assets/css/bio.css?v=<?= filemtime('assets/css/bio.css') ?>">
+<meta charset="UTF-8">
+
+<?php
+$usernameClean = htmlspecialchars($user['username'] ?? '');
+$bioText = $user['bio'] ?? "@$usernameClean on Lynk Page";
+$bioShort = htmlspecialchars(mb_substr(strip_tags($bioText), 0, 160));
+
+$profileUrl = "https://lynk.page.gd/@" . urlencode($user['username'] ?? '');
+
+$ogImage = (!empty($user['avatar']))
+    ? htmlspecialchars($user['avatar'])
+    : "https://lynk.page.gd/assets/images/default-avatar.png";
+?>
+
+<title>@<?= $usernameClean ?> | Lynk Page</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="description"
-      content="<?= htmlspecialchars($user['bio'] ?? '@' . $user['username'] . ' on Lynk Page'); ?>">
-
-<meta name="keywords"
-      content="<?= htmlspecialchars($user['username']); ?>, Lynk Page, Link in Bio">
-
-<meta name="author"
-      content="<?= htmlspecialchars($user['username']); ?>">
-
+<!-- SEO -->
+<meta name="description" content="<?= htmlspecialchars($bioShort) ?>">
+<meta name="keywords" content="<?= $usernameClean ?>, lynk page, link in bio, social links">
+<meta name="author" content="<?= $usernameClean ?>">
 <meta name="robots" content="index, follow">
 
-<!-- Open Graph -->
-<meta property="og:title"
-      content="@<?= htmlspecialchars($user['username']); ?> | Lynk Page">
+<link rel="canonical" href="<?= $profileUrl ?>">
 
-<meta property="og:description"
-      content="<?= htmlspecialchars($user['bio'] ?? 'Visit my Lynk Page'); ?>">
-
+<!-- OPEN GRAPH -->
+<meta property="og:title" content="@<?= $usernameClean ?> | Lynk Page">
+<meta property="og:description" content="<?= $bioShort ?>">
 <meta property="og:type" content="profile">
+<meta property="og:url" content="<?= $profileUrl ?>">
+<meta property="og:image" content="<?= $ogImage ?>">
+<meta property="og:site_name" content="Lynk Page">
 
-<meta property="og:url"
-      content="https://lynk.page.gd/@<?= urlencode($user['username']); ?>">
-
-<meta property="og:image"
-      content="<?= !empty($user['avatar']) 
-          ? htmlspecialchars($user['avatar']) 
-          : 'https://lynk.page.gd/assets/images/default-avatar.png'; ?>">
-
-<!-- Twitter -->
+<!-- TWITTER -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@<?= $usernameClean ?> | Lynk Page">
+<meta name="twitter:description" content="<?= $bioShort ?>">
+<meta name="twitter:image" content="<?= $ogImage ?>">
 
-<meta name="twitter:title"
-      content="@<?= htmlspecialchars($user['username']); ?> | Lynk Page">
-
-<meta name="twitter:description"
-      content="<?= htmlspecialchars($user['bio'] ?? 'Visit my Lynk Page'); ?>">
-
-<meta name="twitter:image"
-      content="<?= !empty($user['avatar']) 
-          ? htmlspecialchars($user['avatar']) 
-          : 'https://lynk.page.gd/assets/images/default-avatar.png'; ?>">
-    
+<!-- CSS -->
+<link rel="stylesheet" href="assets/css/bio.css?v=<?= filemtime('assets/css/bio.css') ?>">
 </head>
 <body>
 

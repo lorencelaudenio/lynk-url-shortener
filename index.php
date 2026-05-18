@@ -50,39 +50,138 @@ if (isset($_POST['shorten'])) {
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="page-center">
+<div class="home-viral">
 
-    <div class="hero-box">
-        <div class="hero-image">
-    <img src="assets/images/link%20in%20bio.webp" alt="Lynk Hero Image">
-</div>
+    <!-- HERO -->
+    <section class="viral-hero">
 
-        <div class="auth-title">
-            Smart URL Shortener
+        <div class="viral-hero-inner">
+
+            <div class="viral-badge">⚡ Free • Link in Bio + URL Shortener</div>
+
+            <h1 class="viral-title">
+                One Link.<br>
+                Endless Control.
+            </h1>
+
+            <p class="viral-subtitle">
+                Shorten URLs, track clicks, and build your own link-in-bio page — all in one platform.
+            </p>
+
+            <form method="POST" class="viral-form">
+
+                <input
+                    type="url"
+                    name="url"
+                    placeholder="Paste your long URL here..."
+                    required
+                    class="viral-input"
+                >
+
+                <button type="submit" name="shorten" class="viral-btn">
+                    ✨ Generate Short Link
+                </button>
+
+            </form>
+
+            <?php if (!empty($short_url)): ?>
+                <div class="viral-result">
+                    <span>🎉 Your short link is ready:</span>
+                    <a href="<?= $short_url ?>" target="_blank">
+                        <?= $short_url ?>
+                    </a>
+                </div>
+            <?php endif; ?>
+
         </div>
 
-        <div class="auth-subtitle">
-            Shorten long URLs instantly with analytics.
+        <div class="viral-glow"></div>
+
+    </section>
+
+    <!-- SOCIAL PROOF -->
+    <section class="viral-proof">
+
+        <div class="proof-item">
+            <strong>50K+</strong>
+            <span>Links Generated</span>
         </div>
 
-        <div class="form-box">
-    <form method="POST">
-        <input class="input" type="url" name="url" placeholder="Paste your long URL here..." required>
+        <div class="proof-item">
+            <strong>Realtime</strong>
+            <span>Click Tracking</span>
+        </div>
 
-        <button class="btn btn-primary" type="submit" name="shorten">
-            Shorten URL
-        </button>
-    </form>
-</div>
+        <div class="proof-item">
+            <strong>99.9%</strong>
+            <span>Uptime Reliability</span>
+        </div>
 
-<?php if (!empty($short_url)): ?>
-<script>
-    window.__SHORT_URL__ = "<?= $short_url ?>";
-    window.__SHOW_CTA__ = true;
-</script>
-<?php endif; ?>
+    </section>
 
-    </div>
+    <!-- FEATURES -->
+    <section class="viral-features">
+
+        <h2>Everything creators need in one tool</h2>
+
+        <div class="viral-grid">
+
+            <div class="viral-card">
+                ⚡
+                <h3>Instant Short Links</h3>
+                <p>Create short URLs in seconds — no setup needed.</p>
+            </div>
+
+            <div class="viral-card">
+                📊
+                <h3>Live Analytics</h3>
+                <p>Track clicks, traffic sources, and performance.</p>
+            </div>
+
+            <div class="viral-card">
+                🔗
+                <h3>Link-in-Bio Pages</h3>
+                <p>Turn your links into a personal landing page.</p>
+            </div>
+
+            <div class="viral-card">
+                🔒
+                <h3>Secure Redirects</h3>
+                <p>Fast, safe, and reliable link system.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- DEMO STRIP -->
+    <section class="viral-demo">
+
+        <div class="demo-card">
+            <span>Before</span>
+            <code>https://yourstore.com/product/item?id=928391&ref=campaign&utm_source=fb</code>
+        </div>
+
+        <div class="demo-arrow">→</div>
+
+        <div class="demo-card highlight">
+            <span>After</span>
+            <code>lynk.page.gd/x7k2p9</code>
+        </div>
+
+    </section>
+
+    <!-- CTA -->
+    <section class="viral-cta">
+
+        <h2>Start sharing smarter links today</h2>
+        <p>No credit card. No setup. Just paste and share.</p>
+
+        <a href="register.php" class="viral-cta-btn">
+            Get Started Free
+        </a>
+
+    </section>
 
 </div>
 

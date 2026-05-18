@@ -205,6 +205,7 @@ include 'includes/header.php';
                 class="input"
                 type="url"
                 name="url"
+                id="longUrlInput"
                 placeholder="Paste long URL..."
                 required
             >
@@ -394,5 +395,27 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 
 </div>
+
+<script>
+window.addEventListener("load", () => {
+
+    const input = document.getElementById("longUrlInput");
+
+    console.log("INPUT:", input);
+
+    if (!input) {
+        console.warn("Input not found");
+        return;
+    }
+
+    // HARD FOCUS ATTEMPT
+    input.focus();
+
+    setTimeout(() => {
+        input.focus();
+    }, 1000);
+
+});
+</script>
 
 <?php include 'includes/footer.php'; ?>

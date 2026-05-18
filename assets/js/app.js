@@ -385,3 +385,9 @@ function previewAddThumb(event) {
     };
     reader.readAsDataURL(file);
 }
+
+document.querySelector('textarea[name="bio"]').addEventListener('input', function () {
+    document.getElementById('previewBio').innerText = this.value;
+});
+
+
