@@ -19,6 +19,20 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 $url = trim($_POST['url'] ?? '');
+
+$blocked_domain = "lynk.page.gd";
+
+/* parse URL host */
+$parsed = parse_url($url);
+
+if (isset($parsed['host']) && strtolower($parsed['host']) === $blocked_domain) {
+
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'You cannot shorten this domain.'
+    ]);
+    exit;
+}
 $custom = trim($_POST['custom_slug'] ?? '');
 
 if (!filter_var($url, FILTER_VALIDATE_URL)) {

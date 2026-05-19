@@ -185,7 +185,7 @@ include 'includes/header.php';
     <h3 style="margin-bottom:15px;">
         Your Links
     </h3>
-
+<div id="linksContainer">
     <?php while($row = $links->fetch_assoc()): ?>
 
         <div class="link-card">
@@ -258,6 +258,12 @@ include 'includes/header.php';
     <?php endwhile; ?>
 
 </div>
+    </div>  <!-- Infinite scroll trigger -->
+    <div id="loader" style="text-align:center;padding:20px;display:none;">
+    Loading...
+</div>
+
+<div id="sentinel"></div>
 
 <!-- EDIT MODAL -->
 <div id="editModal" class="dash-modal">
@@ -325,7 +331,7 @@ window.addEventListener("load", () => {
     }, 1000);
 
 });
-</script>
+    </script>
 
 <script>
 document.getElementById("shortenForm")
@@ -373,7 +379,7 @@ document.getElementById("shortenForm")
     btn.innerHTML = "🚀 Shorten URL";
 
 });
-</script>
+    </script>
 
 <script>
 async function deleteLink(id, btn) {
