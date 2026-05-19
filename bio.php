@@ -49,6 +49,7 @@ $ogImage = (!empty($user['avatar']))
 <title>@<?= $usernameClean ?> | Lynk Page</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/assets/images/lynk.png?v=2" type="image/png">
 
 <!-- SEO -->
 <meta name="description" content="<?= htmlspecialchars($bioShort) ?>">
@@ -128,7 +129,7 @@ $ogImage = (!empty($user['avatar']))
 <?php endwhile; ?>
     </div>
 <a href="register.php" class="join-float-btn">
-    Join Lynk Page
+    Join @<?= htmlspecialchars($user['username']); ?> on Lynk Page
 </a>
 </div>
 </body>

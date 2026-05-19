@@ -36,89 +36,7 @@ $type = "";
 $short_url = "";
 $original_url = "";
 
-if (isset($_POST['shorten'])) {
 
-    $url = trim($_POST['url']);
-    $custom = trim($_POST['custom_slug'] ?? '');
-
-    if (!filter_var($url, FILTER_VALIDATE_URL)) {
-
-        $error = "Invalid URL format.";
-
-    } else {
-
-        // decide short code
-        if (!empty($custom)) {
-
-            // sanitize slug (abc123 only)
-            $short = preg_replace('/[^a-zA-Z0-9\-]/', '', $custom);
-
-            if (empty($short)) {
-                $error = "Invalid custom slug.";
-            } else {
-
-                // check if slug exists
-                $check = $conn->prepare("SELECT id FROM links WHERE short_code=? LIMIT 1");
-                $check->bind_param("s", $short);
-                $check->execute();
-                $result = $check->get_result();
-
-                if ($result->num_rows > 0) {
-                    $error = "Custom slug already taken.";
-                }
-            }
-
-        } else {
-            // auto generate
-            $short = substr(md5(uniqid()), 0, 6);
-        }
-
-        // only insert if no error yet
-        if (empty($error)) {
-
-            // CHECK EXISTING URL FOR THIS USER
-            $check = $conn->prepare(
-                "SELECT short_code FROM links 
-                 WHERE user_id=? AND original_url=? 
-                 LIMIT 1"
-            );
-
-            $check->bind_param("is", $user_id, $url);
-            $check->execute();
-            $result = $check->get_result();
-
-            if ($row = $result->fetch_assoc()) {
-
-                $short = $row['short_code'];
-                $message = "⚠️ Destination already exists.";
-                $type = "info";
-
-            } else {
-
-                $stmt = $conn->prepare(
-                    "INSERT INTO links(user_id, original_url, short_code)
-                     VALUES(?,?,?)"
-                );
-
-                $stmt->bind_param("iss", $user_id, $url, $short);
-                $stmt->execute();
-
-                $message = "🎉 New short link created!";
-                $type = "success";
-
-                
-            }
-
-            $_SESSION['toast'] = [
-                'message' => $message,
-                'type' => $type
-            ];
-
-            header("Location: dashboard.php");
-            exit;
-        }
-    }
-}
 
 /* GET USER LINKS */
 $stmt = $conn->prepare(
@@ -165,7 +83,7 @@ include 'includes/header.php';
             <h3>Total Links</h3>
 
             <h1>
-                <?php echo $links->num_rows; ?>
+                <h1 id="totalLinks"><?php echo $links->num_rows; ?></h1>
             </h1>
 
         </div>
@@ -185,7 +103,7 @@ include 'includes/header.php';
             <h3>Active Links</h3>
 
             <h1>
-                <?php echo $links->num_rows; ?>
+                <h1 id="activeLinks"><?php echo $links->num_rows; ?></h1>
             </h1>
 
         </div>
@@ -197,7 +115,7 @@ include 'includes/header.php';
 
     <h3>Create Short Link</h3>
 
-    <form method="POST">
+   <form id="shortenForm" onsubmit="return false;">
 
         <!-- LONG URL -->
         <div class="form-group">
@@ -241,20 +159,13 @@ include 'includes/header.php';
 
 </div>
 
-        <button class="btn btn-primary" name="shorten" type="submit">
+        <button class="btn btn-primary" id="shortenBtn" type="submit">
             🚀 Shorten URL
         </button>
 
     </form>
 
 </div>
-    <?php if (!empty($message)): ?>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    showToast("<?= $message ?>", "<?= $type ?>");
-});
-</script>
-<?php endif; ?>
 
 </div>
 
@@ -332,16 +243,14 @@ document.addEventListener("DOMContentLoaded", function () {
     </button>
 
     <!-- DELETE -->
-    <a
-        href="delete.php?id=<?php echo $row['id']; ?>"
-        class="action-btn action-delete"
-        onclick="return confirm('Delete this link?')"
-        title="Delete link">
+<button
+    class="action-btn action-delete"
+    onclick="deleteLink(<?php echo $row['id']; ?>, this)"
+    title="Delete link">
 
-        🗑️
+    🗑️
 
-    </a>
-
+</button>
 </div>
 
         </div>
@@ -416,6 +325,97 @@ window.addEventListener("load", () => {
     }, 1000);
 
 });
+</script>
+
+<script>
+document.getElementById("shortenForm")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const btn = document.getElementById("shortenBtn");
+
+    btn.disabled = true;
+    btn.innerHTML = "Creating...";
+
+    const formData = new FormData(this);
+
+    try {
+
+        const response = await fetch("ajax/create_link.php", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        showToast(data.message, data.status);
+
+        if(data.status === "success" || data.status === "info") {
+
+            // CLEAR INPUTS
+            this.reset();
+
+            // OPTIONAL:
+            // AUTO RELOAD LINKS
+            setTimeout(() => {
+                location.reload();
+            }, 800);
+        }
+
+    } catch(err) {
+
+        showToast("Something went wrong.", "error");
+
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = "🚀 Shorten URL";
+
+});
+</script>
+
+<script>
+async function deleteLink(id, btn) {
+
+    if (!confirm("Delete this link?")) return;
+
+    btn.disabled = true;
+
+    try {
+
+        const formData = new FormData();
+        formData.append("id", id);
+
+        const response = await fetch("ajax/delete_link.php", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        showToast(data.message, data.status);
+
+if (data.status === "success") {
+
+    const card = btn.closest(".link-card");
+
+    card.style.transition = "0.3s";
+    card.style.opacity = "0";
+
+    setTimeout(() => card.remove(), 300);
+
+    // UPDATE STATS FROM SERVER
+    document.getElementById("totalLinks").innerText = data.total_links;
+    document.getElementById("activeLinks").innerText = data.total_links;
+}    } catch (err) {
+
+        console.error(err);
+        showToast("Delete failed", "error");
+    }
+
+    btn.disabled = false;
+}
 </script>
 
 <?php include 'includes/footer.php'; ?>
