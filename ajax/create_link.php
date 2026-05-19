@@ -20,18 +20,27 @@ $user_id = $_SESSION['user_id'];
 
 $url = trim($_POST['url'] ?? '');
 
-$blocked_domain = "lynk.page.gd";
+$current_domain = strtolower($_SERVER['HTTP_HOST']);
 
-/* parse URL host */
+$blocked_domains = [
+    $current_domain, // auto-detect your site
+    'localhost',
+    '127.0.0.1'
+];
+
 $parsed = parse_url($url);
+$host = strtolower($parsed['host'] ?? '');
 
-if (isset($parsed['host']) && strtolower($parsed['host']) === $blocked_domain) {
+foreach ($blocked_domains as $blocked) {
 
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'You cannot shorten this domain.'
-    ]);
-    exit;
+    if ($host === $blocked || str_contains($host, $blocked)) {
+
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'You cannot shorten this domain.'
+        ]);
+        exit;
+    }
 }
 $custom = trim($_POST['custom_slug'] ?? '');
 
