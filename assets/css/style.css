@@ -2200,4 +2200,76 @@ html {
    scroll-behavior: smooth;
 }
 
+.skeleton-card {
+    height: 90px;
+    margin-bottom: 10px;
+    border-radius: 10px;
 
+    background: linear-gradient(
+        90deg,
+        #1e293b 25%,
+        #334155 37%,
+        #1e293b 63%
+    );
+
+    background-size: 400% 100%;
+    animation: shimmer 1.2s ease infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.end-feed {
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 20px;
+    border-radius: 12px;
+
+    background: #0f172a;
+    color: #e2e8f0;
+
+    animation: popIn 0.4s ease;
+}
+
+.end-feed-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    animation: bounce 1.5s infinite;
+}
+
+.end-feed-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.end-feed-sub {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}

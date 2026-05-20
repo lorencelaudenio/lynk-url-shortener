@@ -7,12 +7,10 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id'] ?? 0;
 
 $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
-
 $limit = 10;
-
 $stmt = $conn->prepare(
     "SELECT * FROM links
      WHERE user_id=?

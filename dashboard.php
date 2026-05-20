@@ -236,7 +236,14 @@ include 'includes/header.php';
                 <?php echo $row['clicks']; ?> clicks
 
             </div>
+<div id="skeletonLoader" style="display:none;">
+    
+    <div class="skeleton-card"></div>
+    <div class="skeleton-card"></div>
+    <div class="skeleton-card"></div>
+    <div class="skeleton-card"></div>
 
+</div>
             <!-- ACTIONS -->
 <div class="link-actions">
 
@@ -454,57 +461,82 @@ let offset = 10;
 let loading = false;
 let finished = false;
 
+const skeleton = document.getElementById("skeletonLoader");
+
+function showSkeleton(count = 5) {
+
+    if (!skeleton) return;
+
+    skeleton.innerHTML = "";
+
+    for (let i = 0; i < count; i++) {
+        const div = document.createElement("div");
+        div.className = "skeleton-card";
+        skeleton.appendChild(div);
+    }
+
+    skeleton.style.display = "block";
+}
+
 async function loadMoreLinks() {
 
     if (loading || finished) return;
 
     loading = true;
 
-    document.getElementById("loader").style.display = "block";
+showSkeleton(4);
 
     try {
 
-        const response = await fetch(
-            `ajax/load_links.php?offset=${offset}`
-        );
-
+        const response = await fetch(`ajax/load_links.php?offset=${offset}`);
         const html = await response.text();
 
         if (html.trim() === "") {
 
-            finished = true;
+    finished = true;
+    loading = false;
 
-            document.getElementById("loader").innerHTML =
-                "No more links";
+    skeleton.style.opacity = "0";
 
-        } else {
+    setTimeout(() => {
+        skeleton.style.display = "none";
+        skeleton.innerHTML = "";
+        skeleton.style.opacity = "1"; // reset for safety
+    }, 200);
 
-            document.getElementById("linksContainer")
-                .insertAdjacentHTML("beforeend", html);
+    return;
+} else {
 
-            offset += 10;
+            // simulate skeleton before render (smooth UX)
+            setTimeout(() => {
 
-            document.getElementById("loader").style.display = "none";
+                document.getElementById("linksContainer")
+                    .insertAdjacentHTML("beforeend", html);
+
+                offset += 10;
+
+                if (skeleton) skeleton.style.display = "none";
+
+            }, 500); // small delay for smooth effect
         }
 
-    } catch(err) {
-
+    } catch (err) {
         console.error(err);
-
     }
 
     loading = false;
 }
 
-const observer = new IntersectionObserver(entries => {
+if (sentinel) {
 
-    if (entries[0].isIntersecting) {
-        loadMoreLinks();
-    }
+    const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+            loadMoreLinks();
+        }
+    });
 
-});
-
-observer.observe(document.getElementById("sentinel"));
+    observer.observe(sentinel);
+}
 </script>
 
 <?php include 'includes/footer.php'; ?>

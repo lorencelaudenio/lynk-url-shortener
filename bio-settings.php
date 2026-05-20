@@ -257,7 +257,7 @@ $links = $linkStmt->get_result();
     <h2>Bio Settings</h2>
 
     <form method="POST" class="theme-switcher" id="themeForm">
-    <select name="theme" class="input theme-select" onchange="document.getElementById('themeForm').submit()">
+    <select name="theme" class="input theme-select" id="themeSelect">
 
     <option value="default" <?= $user['theme']=='default'?'selected':'' ?>>🌑 Default</option>
     <option value="dark" <?= $user['theme']=='dark'?'selected':'' ?>>🌙 Dark</option>
@@ -380,7 +380,7 @@ $links = $linkStmt->get_result();
 
 </div>
 
-        <form method="POST">
+        <form method="POST" id="bioForm">
 
     <div class="form-group">
 
@@ -408,7 +408,7 @@ $links = $linkStmt->get_result();
      ADD LINK (NEW LAYOUT)
 ========================= -->
 
-<form method="POST" enctype="multipart/form-data" class="add-link-card">
+<form method="POST" enctype="multipart/form-data" class="add-link-card" id="addLinkForm">
 
     <h3 style="margin-bottom:15px;">Add New Link</h3>
 
@@ -475,7 +475,7 @@ $links = $linkStmt->get_result();
         <h3 style="margin-bottom:15px;">
             Your Links
         </h3>
-
+<div class="links-container">
         <?php while($link = $links->fetch_assoc()): ?>
 
 <div class="ig-card" data-id="<?= $link['id']; ?>">
@@ -596,13 +596,13 @@ $links = $linkStmt->get_result();
             value="<?= $link['id']; ?>"
         >
 
-        <button
-            class="ig-icon-btn delete"
-            onclick="return confirm('Delete this link?')"
-            title="Delete"
-        >
-            ×
-        </button>
+<button
+    type="button"
+    class="ig-icon-btn delete"
+    onclick="deleteLink(<?= $link['id']; ?>)"
+>
+    ×
+</button>
 
     </form>
 
@@ -612,6 +612,7 @@ $links = $linkStmt->get_result();
 
 </div>
 <?php endwhile; ?>
+</div>
  
 
         </div> <!-- bio-editor end -->
@@ -643,5 +644,184 @@ $links = $linkStmt->get_result();
     </div> <!-- container bio-layout end -->
 
 </div> <!-- app-wrapper end -->
+
+<div id="toast" class="toast"></div>
+
+<script>
+document.querySelector("form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const bio = document.querySelector("[name='bio']").value;
+    const theme = document.querySelector("[name='theme']").value;
+
+    const res = await fetch("ajax/bio-actions.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            action: "save_profile",
+            bio,
+            theme
+        })
+    });
+
+    const data = await res.json();
+
+showToast(data.message, "success");
+});
+</script>
+
+<script>
+document.getElementById("themeSelect").addEventListener("change", async function () {
+
+    const res = await fetch("ajax/bio-actions.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: new URLSearchParams({
+            action: "save_theme",
+            theme: this.value
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+        showToast("Theme updated", "success");
+    } else {
+        showToast("Failed to update theme", "error");
+    }
+});
+</script>
+
+<script>
+async function deleteLink(id) {
+
+    if (!confirm("Delete this link?")) return;
+
+    const res = await fetch("ajax/bio-actions.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            action: "delete_link",
+            id
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+
+        const el = document.querySelector(`[data-id="${id}"]`);
+
+        if (el) {
+            el.style.transition = "0.2s ease";
+            el.style.opacity = "0";
+            el.style.transform = "scale(0.95)";
+
+            setTimeout(() => {
+                el.remove();
+            }, 200);
+        }
+
+        showToast("Link deleted", "success");
+    }
+}
+</script>
+
+<script>
+function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2000);
+}
+</script>
+
+<script>
+document.getElementById("bioForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const bio = document.querySelector("[name='bio']").value;
+    const theme = document.querySelector("#themeSelect").value;
+
+    const res = await fetch("ajax/bio-actions.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: new URLSearchParams({
+            action: "save_profile",
+            bio,
+            theme
+        })
+    });
+
+    const data = await res.json();
+
+    showToast(data.message, "success");
+});
+</script>
+
+<script>
+document.getElementById("addLinkForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    formData.append("action", "add_link");
+
+    const res = await fetch("ajax/bio-actions.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+
+    const container = document.querySelector(".links-container");
+
+    const html = `
+    <div class="ig-card" data-id="${data.id}">
+        
+        <div class="ig-thumb-wrapper">
+            <img src="${data.thumbnail}" class="ig-thumb">
+        </div>
+
+        <div class="ig-content">
+
+            <div class="ig-title">${data.title}</div>
+            <div class="ig-url">${data.url}</div>
+
+            <div class="ig-actions-row">
+                <span class="click-badge">👁 0</span>
+            </div>
+
+            <div class="ig-actions-row">
+
+                <a href="${data.url}" target="_blank" class="ig-icon-btn">↗</a>
+
+                <button type="button" class="ig-icon-btn">✎</button>
+
+                <button type="button" class="ig-icon-btn delete"
+                    onclick="deleteLink(${data.id})">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+    `;
+
+    container.insertAdjacentHTML("afterbegin", html);
+
+    this.reset();
+    showToast("Link added", "success");
+} else {
+        showToast(data.message || "Error", "error");
+    }
+});
+</script>
 
 <?php include 'includes/footer.php'; ?>
