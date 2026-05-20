@@ -2196,5 +2196,8 @@ select.input {
     }
 }
 
+html {
+   scroll-behavior: smooth;
+}
 
 

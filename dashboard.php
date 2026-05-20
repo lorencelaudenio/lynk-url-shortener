@@ -39,13 +39,17 @@ $original_url = "";
 
 
 /* GET USER LINKS */
+$limit = 10;
+
 $stmt = $conn->prepare(
     "SELECT * FROM links
      WHERE user_id=?
-     ORDER BY id DESC"
+     ORDER BY id DESC
+     LIMIT ?"
 );
 
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("ii", $user_id, $limit);
+
 
 $stmt->execute();
 
@@ -68,6 +72,23 @@ $clickRow = $result->fetch_assoc();
 
 $totalClicks = $clickRow['total_clicks'] ?? 0;
 
+/* TOTAL LINKS */
+$countStmt = $conn->prepare(
+    "SELECT COUNT(*) AS total
+     FROM links
+     WHERE user_id=?"
+);
+
+$countStmt->bind_param("i", $user_id);
+
+$countStmt->execute();
+
+$countResult = $countStmt->get_result();
+
+$totalRow = $countResult->fetch_assoc();
+
+$totalLinks = $totalRow['total'];
+
 /* INCLUDE HEADER */
 include 'includes/header.php';
 
@@ -83,7 +104,7 @@ include 'includes/header.php';
             <h3>Total Links</h3>
 
             <h1>
-                <h1 id="totalLinks"><?php echo $links->num_rows; ?></h1>
+                <h1 id="totalLinks"><?php echo $totalLinks; ?></h1>
             </h1>
 
         </div>
@@ -103,7 +124,7 @@ include 'includes/header.php';
             <h3>Active Links</h3>
 
             <h1>
-                <h1 id="activeLinks"><?php echo $links->num_rows; ?></h1>
+                <h1 id="activeLinks"><?php echo $totalLinks; ?></h1>
             </h1>
 
         </div>
@@ -311,6 +332,10 @@ include 'includes/header.php';
 
 </div>
 
+<div id="loader">
+   <div class="skeleton-card"></div>
+</div>
+
 <script>
 window.addEventListener("load", () => {
 
@@ -422,6 +447,64 @@ if (data.status === "success") {
 
     btn.disabled = false;
 }
+</script>
+
+<script>
+let offset = 10;
+let loading = false;
+let finished = false;
+
+async function loadMoreLinks() {
+
+    if (loading || finished) return;
+
+    loading = true;
+
+    document.getElementById("loader").style.display = "block";
+
+    try {
+
+        const response = await fetch(
+            `ajax/load_links.php?offset=${offset}`
+        );
+
+        const html = await response.text();
+
+        if (html.trim() === "") {
+
+            finished = true;
+
+            document.getElementById("loader").innerHTML =
+                "No more links";
+
+        } else {
+
+            document.getElementById("linksContainer")
+                .insertAdjacentHTML("beforeend", html);
+
+            offset += 10;
+
+            document.getElementById("loader").style.display = "none";
+        }
+
+    } catch(err) {
+
+        console.error(err);
+
+    }
+
+    loading = false;
+}
+
+const observer = new IntersectionObserver(entries => {
+
+    if (entries[0].isIntersecting) {
+        loadMoreLinks();
+    }
+
+});
+
+observer.observe(document.getElementById("sentinel"));
 </script>
 
 <?php include 'includes/footer.php'; ?>
