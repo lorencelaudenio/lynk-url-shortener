@@ -262,3 +262,135 @@ $mail->Body = "
         error_log("Report mail error: " . $mail->ErrorInfo);
     }
 }
+
+function sendEmailChangeVerification($email, $username, $token) {
+
+    $verifyLink = "https://lynk.page.gd/verify-email-change.php?token=$token";
+
+    $mail = new PHPMailer(true);
+
+    try {
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+
+        $mail->Username = SMTP_EMAIL;
+        $mail->Password = SMTP_PASSWORD;
+
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom(SMTP_EMAIL, SMTP_NAME);
+        $mail->addAddress($email, $username);
+
+        $mail->isHTML(true);
+        $mail->Subject = "Confirm Your Email Change";
+
+        $mail->Body = "
+        <div style='font-family:Arial;padding:30px;background:#0f172a;color:#e5e7eb;'>
+
+            <div style='max-width:600px;margin:auto;background:#111827;padding:40px;border-radius:12px;'>
+
+                <h2 style='color:#fff;'>Email Change Request</h2>
+
+                <p>Hi <strong>$username</strong>,</p>
+
+                <p>
+                    We received a request to change your email address.
+                    Please confirm this change by clicking the button below:
+                </p>
+
+                <a href='$verifyLink'
+                   style='display:inline-block;
+                          padding:14px 24px;
+                          background:#3b82f6;
+                          color:white;
+                          text-decoration:none;
+                          border-radius:8px;
+                          margin-top:15px;'>
+
+                    Confirm Email Change
+
+                </a>
+
+                <p style='margin-top:30px;font-size:13px;color:#94a3b8;'>
+                    This link expires in 1 hour for security reasons.
+                </p>
+
+            </div>
+
+        </div>
+        ";
+
+        $mail->send();
+
+    } catch (Exception $e) {
+        error_log("Email change mail error: " . $mail->ErrorInfo);
+    }
+}
+
+function sendEmailChangeNoticeToOld($oldEmail, $username, $newEmail, $recoveryToken) {
+
+    $revertLink = "https://lynk.page.gd/revert-email-change.php?token=$recoveryToken";
+
+    $mail = new PHPMailer(true);
+
+    try {
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = SMTP_EMAIL;
+        $mail->Password = SMTP_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom(SMTP_EMAIL, SMTP_NAME);
+        $mail->addAddress($oldEmail);
+
+        $mail->isHTML(true);
+        $mail->Subject = "Email Address Changed - Secure Your Account";
+
+        $mail->Body = "
+        <div style='font-family:Arial;padding:30px;background:#0f172a;color:#e5e7eb;'>
+            <div style='max-width:600px;margin:auto;background:#111827;padding:40px;border-radius:12px;'>
+
+                <h2 style='color:#fff;'>Email Address Updated</h2>
+
+                <p>Hi <strong>$username</strong>,</p>
+
+                <p>Your account email was successfully changed.</p>
+
+                <p><strong>New email:</strong> $newEmail</p>
+
+                <hr style='border:0;border-top:1px solid #1f2937;margin:20px 0;'>
+
+                <p style='color:#94a3b8;font-size:13px;'>
+                    If this was NOT you, you can secure your account immediately:
+                </p>
+
+                <a href='$revertLink'
+                   style='display:inline-block;
+                          margin-top:15px;
+                          padding:14px 24px;
+                          background:#ef4444;
+                          color:#ffffff;
+                          text-decoration:none;
+                          border-radius:8px;
+                          font-weight:bold;'>
+
+                    Secure My Account (Undo Change)
+
+                </a>
+
+            </div>
+        </div>
+        ";
+
+        $mail->send();
+
+    } catch (Exception $e) {
+        error_log("Old email notify error: " . $mail->ErrorInfo);
+    }
+}
