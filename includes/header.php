@@ -1,8 +1,34 @@
 <?php
+$base_url = "/"; 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+$usage = null;
+$plan = 'free';
+$used = 0;
+$limit = 1000;
+
+if (!empty($_SESSION['user_id'])) {
+
+    include_once __DIR__ . '/../config.php';
+
+    $stmt = $conn->prepare("
+        SELECT urls_used, url_limit, plan
+        FROM users 
+        WHERE id=?
+        LIMIT 1
+    ");
+
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+
+    $usage = $stmt->get_result()->fetch_assoc();
+
+    $used  = (int)($usage['urls_used'] ?? 0);
+    $limit = (int)($usage['url_limit'] ?? 1000);
+    $plan  = strtolower(trim($usage['plan'] ?? 'free'));
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +39,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <title><?= $pageTitle ?? 'Lynk' ?></title>
 <meta property="og:title" content="<?= htmlspecialchars($pageTitle ?? 'Lynk') ?>">
-<link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime('assets/css/style.css') ?>">
+<link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime($_SERVER['DOCUMENT_ROOT'] . '/assets/css/style.css') ?>">
 <link rel="icon" href="/assets/images/lynk.png?v=2" type="image/png">
 
 <meta property="og:description" content="<?= htmlspecialchars($metaDescription ?? 'Create and share your links with Lynk Page') ?>">
@@ -35,32 +61,46 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 <nav class="nav">
-    <a href="index.php" class="logo">Lyn<span>k</span></a>
+<div class="logo-wrapper">
+<a href="<?= $base_url ?>index.php" class="logo">Lyn<span>k</span></a>
+
+    <?php if (!empty($_SESSION['user_id'])): ?>
+        <?php if ($plan === 'free'): ?>
+            <span class="plan-badge free">FREE</span>
+        <?php else: ?>
+            <span class="plan-badge pro">PRO</span>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>
 
     <div class="nav-links">
 
 <?php if (!empty($_SESSION['user_id'])): ?>
 
-    
+    <a href="<?= $base_url ?>dashboard.php">Links</a>
+    <a href="<?= $base_url ?>bio-settings.php">Bio</a>
 
-    <a href="dashboard.php">Links</a>
-    <a href="bio-settings.php">Bio</a>
-<div class="nav-user-dropdown nav-link">
 
-    <span class="nav-user-trigger">
-        <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?> ▾
-    </span>
 
-    <div class="nav-user-menu">
-        <a href="profile.php">Profile Settings</a>
-        <a href="logout.php">Logout</a>
+
+
+
+
+    <div class="nav-user-dropdown nav-link">
+        <span class="nav-user-trigger">
+            <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?> ▾
+        </span>
+
+        <div class="nav-user-menu">
+            <a href="<?= $base_url ?>profile.php">Profile Settings</a>
+            <a href="<?= $base_url ?>logout.php">Logout</a>
+        </div>
     </div>
 
-</div>
 <?php else: ?>
 
-            <a href="login.php">Login</a>
-<a href="register.php" class="btn-signup">Signup for FREE</a>
+            <a href="<?= $base_url ?>login.php">Login</a>
+<a href="<?= $base_url ?>register.php" class="btn-signup">Signup for FREE</a>
         <?php endif; ?>
 
     </div>

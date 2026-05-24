@@ -2,6 +2,7 @@
 session_start();
 $pageTitle = "Dashboard - Lynk URL Shortener";
 
+
 include 'config.php';
 include 'rate_limit.php';
 
@@ -88,6 +89,20 @@ $countResult = $countStmt->get_result();
 $totalRow = $countResult->fetch_assoc();
 
 $totalLinks = $totalRow['total'];
+
+$limit = 1000;
+
+$stmt = $conn->prepare("
+    SELECT COUNT(*) AS total
+    FROM links
+    WHERE user_id=?
+    AND created_at >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$usage = $stmt->get_result()->fetch_assoc();
+
+$used = $usage['total'];
 
 /* INCLUDE HEADER */
 include 'includes/header.php';
@@ -203,9 +218,13 @@ include 'includes/header.php';
     <?php endif; ?>
 
     <!-- LINKS -->
-    <h3 style="margin-bottom:15px;">
-        Your Links
-    </h3>
+<h3 style="display:flex;justify-content:space-between;align-items:center;">
+    <span>Your Links</span>
+
+    <span style="font-size:12px;color:#94a3b8;">
+        <?= $used ?> / <?= $limit ?> used this month
+    </span>
+</h3>
 <div id="linksContainer">
     <?php while($row = $links->fetch_assoc()): ?>
 

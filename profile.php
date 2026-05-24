@@ -102,10 +102,13 @@ usleep(500000); // 0.5 second
 }
 
 /* GET USER DATA */
-$stmt = $conn->prepare("SELECT username, email FROM users WHERE id=? LIMIT 1");
+$stmt = $conn->prepare("SELECT username, email, plan FROM users WHERE id=? LIMIT 1");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
+
+
+$plan = strtolower($user['plan'] ?? 'free');
 
 include 'includes/header.php';
 ?>
@@ -116,6 +119,26 @@ include 'includes/header.php';
 
         <div class="auth-title">Profile <span>Settings</span></div>
         <div class="auth-subtitle">Manage your account details</div>
+
+        <div style="margin:10px 0; text-align:center;">
+
+    <?php if ($plan === 'free'): ?>
+
+        <span class="plan-badge free">FREE ACCOUNT</span>
+
+        <div style="margin-top:10px;">
+            <a href="upgrade.php" class="btn btn-primary">
+                ⚡ Upgrade to Pro
+            </a>
+        </div>
+
+    <?php else: ?>
+
+        <span class="plan-badge pro">PRO ACCOUNT</span>
+
+    <?php endif; ?>
+
+</div>
 
         <div id="alertBox"></div>
 

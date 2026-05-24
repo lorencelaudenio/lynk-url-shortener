@@ -2273,3 +2273,274 @@ html {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
 }
+
+/* =========================
+   UPGRADE PAGE
+========================= */
+
+.upgrade-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+    text-align: center;
+    color: #e5e7eb;
+}
+
+.upgrade-container h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.upgrade-container p {
+    color: #94a3b8;
+    margin-bottom: 40px;
+}
+
+/* =========================
+   ALREADY PRO BOX
+========================= */
+
+.already-pro {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 18px;
+    border-radius: 12px;
+    font-weight: bold;
+    display: inline-block;
+    box-shadow: 0 10px 30px rgba(16,185,129,0.3);
+}
+
+/* =========================
+   PRICING CARD
+========================= */
+
+.pricing-card {
+    background: rgba(17, 24, 39, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid #1f2937;
+    border-radius: 18px;
+    padding: 40px;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    transition: 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+}
+
+/* =========================
+   PRICE
+========================= */
+
+.price {
+    font-size: 32px;
+    font-weight: bold;
+    color: #3b82f6;
+    margin: 10px 0 25px;
+}
+
+/* =========================
+   FEATURES LIST
+========================= */
+
+.pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.pricing-card ul li {
+    padding: 10px 0;
+    color: #cbd5e1;
+    border-bottom: 1px solid #1f2937;
+    font-size: 15px;
+}
+
+/* =========================
+   PAYMENT BUTTONS
+========================= */
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* BASE BUTTON */
+.btn {
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 15px;
+}
+
+/* GCASH */
+.btn.gcash {
+    background: #22c55e;
+    color: white;
+}
+
+.btn.gcash:hover {
+    background: #16a34a;
+    transform: scale(1.02);
+}
+
+/* PAYPAL */
+.btn.paypal {
+    background: #2563eb;
+    color: white;
+}
+
+.btn.paypal:hover {
+    background: #1d4ed8;
+    transform: scale(1.02);
+}
+
+/* STRIPE */
+.btn.stripe {
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    color: white;
+}
+
+.btn.stripe:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.gcash-container {
+    max-width: 500px;
+    margin: 50px auto;
+    text-align: center;
+    color: #e5e7eb;
+}
+
+.gcash-qr {
+    width: 250px;
+    margin: 20px 0;
+    border-radius: 12px;
+}
+
+.gcash-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #1f2937;
+    background: #0f172a;
+    color: white;
+}
+
+.gcash-container button {
+    width: 100%;
+    padding: 12px;
+    background: #22c55e;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.gcash-container button:hover {
+    background: #16a34a;
+}
+
+.logo-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* BADGE BASE */
+.plan-badge {
+    position: absolute;
+    top: -8px;
+    right: -18px;
+
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 6px;
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* FREE */
+.plan-badge.free {
+    background: #ef4444;
+}
+
+/* PRO */
+.plan-badge.pro {
+    background: #22c55e;
+}
+
+.gcash-box {
+    max-width: 800px;
+    padding: 30px;
+}
+
+/* HEADER */
+.gcash-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* 2 COLUMN LAYOUT */
+.gcash-layout {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+/* QR SIDE */
+.gcash-qr-box {
+    flex: 1;
+    text-align: center;
+}
+
+.gcash-qr-box img {
+    width: 180px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.gcash-qr-box p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 10px;
+}
+
+/* FORM SIDE */
+.gcash-form-box {
+    flex: 1;
+}
+
+/* NOTE */
+.gcash-note {
+    margin-top: 12px;
+    font-size: 11px;
+    color: #64748b;
+    text-align: center;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .gcash-layout {
+        flex-direction: column;
+    }
+}

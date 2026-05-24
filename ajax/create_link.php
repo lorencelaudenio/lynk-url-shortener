@@ -18,6 +18,30 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+/* FREE PLAN MONTHLY LIMIT CHECK */
+$limit = 1000;
+
+$stmt = $conn->prepare("
+    SELECT COUNT(*) AS total
+    FROM links
+    WHERE user_id=?
+    AND created_at >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+");
+
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+
+$count = $stmt->get_result()->fetch_assoc()['total'];
+
+if ($count >= $limit) {
+
+    echo json_encode([
+        "status" => "error",
+        "message" => "You have reached your FREE monthly limit of 1000 links."
+    ]);
+    exit;
+}
+
 $url = trim($_POST['url'] ?? '');
 
 $current_domain = strtolower($_SERVER['HTTP_HOST']);
@@ -123,6 +147,15 @@ $stmt = $conn->prepare(
 
 $stmt->bind_param("iss", $user_id, $url, $short);
 $stmt->execute();
+
+$update = $conn->prepare("
+    UPDATE users 
+    SET urls_used = urls_used + 1 
+    WHERE id=?
+");
+
+$update->bind_param("i", $user_id);
+$update->execute();
 
 echo json_encode([
     'status' => 'success',

@@ -394,3 +394,61 @@ function sendEmailChangeNoticeToOld($oldEmail, $username, $newEmail, $recoveryTo
         error_log("Old email notify error: " . $mail->ErrorInfo);
     }
 }
+
+function sendGCashPaymentAlert($user_id, $username, $email, $payer_name, $reference) {
+
+    global $conn;
+
+    $token = bin2hex(random_bytes(32));
+
+    // SAVE TOKEN
+    $stmt = $conn->prepare("
+        INSERT INTO payment_approvals (user_id, token, created_at, used)
+        VALUES (?, ?, NOW(), 0)
+    ");
+
+    $stmt->bind_param("is", $user_id, $token);
+    $stmt->execute();
+
+    $approveLink = "https://lynk.page.gd/admin/approve-payment.php?token=$token";
+
+    $mail = new PHPMailer(true);
+
+    try {
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = SMTP_EMAIL;
+        $mail->Password = SMTP_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom(SMTP_EMAIL, SMTP_NAME);
+        $mail->addAddress(ADMIN_EMAIL);
+
+        $mail->isHTML(true);
+        $mail->Subject = "GCash Payment - Approve Upgrade";
+
+        $mail->Body = "
+            <h2>New Payment Request</h2>
+            <p><b>User:</b> $username</p>
+            <p><b>Email:</b> $email</p>
+            <p><b>Payer Name:</b> $payer_name</p>
+            <p><b>Reference:</b> $reference</p>
+
+            <a href='$approveLink'
+               style='display:inline-block;padding:12px 20px;background:#22c55e;color:#fff;text-decoration:none;border-radius:8px;'>
+               Approve & Upgrade to PRO
+            </a>
+        ";
+
+        $mail->send();
+
+        return true;
+
+    } catch (Exception $e) {
+        error_log("GCash Mail Error: " . $mail->ErrorInfo);
+        return false;
+    }
+}
