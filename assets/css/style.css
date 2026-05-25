@@ -2544,3 +2544,73 @@ html {
         flex-direction: column;
     }
 }
+
+.usage-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #0f172a;
+    font-size: 12px;
+    color: #94a3b8;
+    border: 1px solid #1f2937;
+}
+
+.usage-pill .used {
+    color: #fff;
+    font-weight: 600;
+}
+
+.usage-pill .limit {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.usage-pill .sep {
+    opacity: 0.5;
+}
+
+.usage-pill .label {
+    opacity: 0.8;
+}
+
+.faq-item{
+    border-top:1px solid #1f2937;
+}
+
+.faq-question{
+    width:100%;
+    background:none;
+    border:none;
+    color:#fff;
+    text-align:left;
+    padding:16px 0;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.faq-question span{
+    color:#94a3b8;
+    font-size:18px;
+}
+
+.faq-answer{
+    display:none;
+    padding-bottom:16px;
+    color:#94a3b8;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.faq-item.active .faq-answer{
+    display:block;
+}
+
+.faq-item.active .faq-question span{
+    transform:rotate(45deg);
+}

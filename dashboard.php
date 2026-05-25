@@ -118,9 +118,7 @@ include 'includes/header.php';
 
             <h3>Total Links</h3>
 
-            <h1>
                 <h1 id="totalLinks"><?php echo $totalLinks; ?></h1>
-            </h1>
 
         </div>
 
@@ -138,9 +136,7 @@ include 'includes/header.php';
 
             <h3>Active Links</h3>
 
-            <h1>
                 <h1 id="activeLinks"><?php echo $totalLinks; ?></h1>
-            </h1>
 
         </div>
 
@@ -221,9 +217,12 @@ include 'includes/header.php';
 <h3 style="display:flex;justify-content:space-between;align-items:center;">
     <span>Your Links</span>
 
-    <span style="font-size:12px;color:#94a3b8;">
-        <?= $used ?> / <?= $limit ?> used this month
-    </span>
+<span class="usage-pill">
+    <span class="used"><?= $used ?></span>
+    <span class="sep">/</span>
+    <span class="limit"><?= $limit ?></span>
+    <span class="label">used this month</span>
+</span>
 </h3>
 <div id="linksContainer">
     <?php while($row = $links->fetch_assoc()): ?>

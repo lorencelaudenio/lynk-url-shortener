@@ -1,57 +1,80 @@
 <?php
-session_start();
-$reported_by = "Guest";
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+header('Content-Type: text/plain; charset=utf-8');
 
-if (!empty($_SESSION['user_id'])) {
+ob_start();
 
-    include 'config.php';
-
-    $user_id = $_SESSION['user_id'];
-
-    $stmt = $conn->prepare("SELECT username FROM users WHERE id=? LIMIT 1");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    if ($row = $result->fetch_assoc()) {
-        $reported_by = $row['username'];
-    }
-}
 include 'config.php';
 include 'includes/mailer.php';
 
-$url = trim($_POST['url'] ?? '');
-$reason = trim($_POST['reason'] ?? '');
+/* INPUTS */
+$email   = trim($_POST['email'] ?? '');
+$url     = trim($_POST['url'] ?? '');
+$reason  = trim($_POST['reason'] ?? '');
 $details = trim($_POST['details'] ?? '');
 
-/* 1. CHECK REQUIRED FIELDS */
-if (empty($url) || empty($reason)) {
-    echo "error";
+/* VALIDATION */
+if ($email === '' || $url === '' || $reason === '') {
+    ob_clean();
+    echo "missing_fields";
     exit;
 }
 
-/* 2. VALIDATE DOMAIN */
-if (!preg_match('#^https?://(www\.)?lynk\.page\.gd/[a-zA-Z0-9\-]+$#', $url)) {
-    echo "invalid_domain";
+/* TOKEN + EXPIRY */
+$token = bin2hex(random_bytes(32));
+$expiresAt = date("Y-m-d H:i:s", strtotime("+24 hours"));
+
+/* INSERT DB */
+$stmt = $conn->prepare("
+    INSERT INTO report_pending (email, url, reason, details, token, created_at, expires_at)
+    VALUES (?, ?, ?, ?, ?, NOW(), ?)
+");
+
+if (!$stmt) {
+    ob_clean();
+    echo "db_error";
     exit;
 }
 
-/* 3. EXTRA SAFETY (optional but good) */
-if (!filter_var($url, FILTER_VALIDATE_URL)) {
-    echo "invalid_url";
+$stmt->bind_param("ssssss", $email, $url, $reason, $details, $token, $expiresAt);
+
+if (!$stmt->execute()) {
+    ob_clean();
+    echo "db_insert_error";
     exit;
 }
 
-/* 4. LOG REPORT */
-$log = date("Y-m-d H:i:s") .
-       " | URL: $url | Reason: $reason | Details: $details\n";
+/* CONFIRM LINK */
+$confirmLink = "https://lynk.page.gd/confirm_report.php?token=$token";
 
-file_put_contents("reports.txt", $log, FILE_APPEND);
+/* EMAIL CONTENT */
+$subject = "Confirm your report";
 
-/* 5. SEND EMAIL */
-sendReportAlert($url, $reason, $details, $reported_by);
-/* 6. SUCCESS RESPONSE */
+$message = "
+<h3>Confirm your report</h3>
+<p>Please click the button below to confirm your report:</p>
+
+<a href='$confirmLink'
+style='display:inline-block;padding:10px 15px;background:#ef4444;color:#fff;text-decoration:none;border-radius:6px;'>
+Confirm Report
+</a>
+
+<p style='margin-top:15px;color:#666;font-size:12px;'>
+This link will expire in 24 hours.
+</p>
+";
+
+/* SEND EMAIL */
+$sent = sendReportEmail($email, $subject, $message);
+
+if (!$sent) {
+    ob_clean();
+    echo "mail_failed";
+    exit;
+}
+
+/* SUCCESS */
+ob_clean();
 echo "success";
 exit;
-?>

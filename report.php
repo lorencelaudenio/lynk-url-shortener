@@ -1,4 +1,5 @@
 <?php
+
 $bodyClass = "auth-page";
 include 'includes/header.php';
 
@@ -61,6 +62,16 @@ include 'includes/header.php';
     </div>
 
 <div class="form-group">
+    <div class="form-group">
+    <label>Email Address</label>
+    <input
+        type="email"
+        name="email"
+        class="input"
+        placeholder="you@example.com"
+        required
+    >
+</div>
     <label>Reason</label>
     <select name="reason" class="input" required>
         <option value="">Select reason</option>
@@ -104,16 +115,10 @@ const submitBtn = document.getElementById("submitBtn");
 function checkInput() {
     const value = slugInput.value.trim();
 
-    // only allow letters, numbers, dash
     const validSlug = /^[a-zA-Z0-9\-]+$/.test(value);
 
-    if (validSlug && value.length > 0) {
-        submitBtn.disabled = false;
-        submitBtn.style.opacity = "1";
-    } else {
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = "0.5";
-    }
+    submitBtn.disabled = !(validSlug && value.length > 0);
+    submitBtn.style.opacity = submitBtn.disabled ? "0.5" : "1";
 }
 
 slugInput.addEventListener("input", checkInput);
@@ -125,28 +130,128 @@ document.getElementById("reportForm").addEventListener("submit", async function(
 
     const formData = new FormData(this);
 
-    // rebuild full URL
-    const fullUrl = "https://lynk.page.gd/" + slugInput.value;
+    const fullUrl = "https://lynk.page.gd/" + slugInput.value.trim();
     formData.set("url", fullUrl);
 
-    const res = await fetch("send_report.php", {
-        method: "POST",
-        body: formData
+    try {
+        const res = await fetch("send_report.php", {
+    method: "POST",
+    body: formData
+});
+
+const text = await res.text();
+
+console.log("RAW RESPONSE:", text);
+alert("RESPONSE: " + text);
+
+        if (text === "success") {
+            alert("Report submitted successfully!");
+            slugInput.value = "";
+            checkInput();
+        }
+        else if (text === "invalid_domain") {
+            alert("Invalid short link.");
+        }
+        else if (text === "mail_failed") {
+            alert("Email failed to send.");
+        }
+        else {
+            alert("Failed to submit report!");
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("Network error!");
+    }
+});
+</script>
+
+<!-- FAQ ACCORDION -->
+<div style="
+    margin-top:30px;
+    background:#0f172a;
+    border:1px solid #1f2937;
+    border-radius:12px;
+    padding:22px;
+">
+
+    <p style="color:#cbd5e1;line-height:1.7;margin-bottom:22px;">
+        Report phishing, malware, spam, copyright infringement, or other harmful use of a Lynk short link.
+        Signed-in users can submit reports directly, while guest reports may require email confirmation before review.
+    </p>
+
+    <h3 style="margin-bottom:18px;">FAQ</h3>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            What can I report here?
+            <span>+</span>
+        </button>
+        <div class="faq-answer">
+            You can report phishing pages, malware, scams, spam, impersonation,
+            copyright violations, and other harmful or abusive use of a Lynk short link.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            Why do you ask for my email?
+            <span>+</span>
+        </button>
+        <div class="faq-answer">
+            Some reports may require email verification before review.
+            We may also contact you if additional information is needed regarding your report.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            Do I need to provide details?
+            <span>+</span>
+        </button>
+        <div class="faq-answer">
+            Details are optional for most report types, but adding more context
+            helps us review the report faster and more accurately.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            What happens after I submit a report?
+            <span>+</span>
+        </button>
+        <div class="faq-answer">
+            Reports are reviewed by our team. Links violating our policies
+            may be disabled, blocked, or permanently removed.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            I still have questions — where can I get help?
+            <span>+</span>
+        </button>
+        <div class="faq-answer">
+            Contact us anytime at
+            <a href="mailto:lynkpage.support@gmail.com"
+               style="color:#60a5fa;text-decoration:none;">
+               lynkpage.support@gmail.com
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<style>
+
+</style>
+
+<script>
+document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const item = btn.parentElement;
+        item.classList.toggle("active");
     });
-
-    const text = await res.text();
-
-    if (text === "success") {
-        alert("Report submitted successfully!");
-        slugInput.value = "";
-        checkInput();
-    }
-    else if (text === "invalid_domain") {
-        alert("Invalid short link.");
-    }
-    else {
-        alert("Failed to submit report!");
-    }
 });
 </script>
 
