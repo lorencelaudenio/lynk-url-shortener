@@ -5,8 +5,13 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# PROFILE ROUTE
+# PROFILE ROUTE (@username)
 RewriteRule ^@([A-Za-z0-9_-]+)$ bio.php?username=$1 [L,QSA]
 
-# SHORT LINKS
+# SHORT LINKS (ONLY if not real file)
+RewriteCond %{REQUEST_FILENAME}.php !-f
 RewriteRule ^([A-Za-z0-9_-]+)$ redirect.php?code=$1 [L,QSA]
+
+# AUTO PHP ROUTING (clean URLs)
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([A-Za-z0-9_-]+)$ $1.php [L,QSA]

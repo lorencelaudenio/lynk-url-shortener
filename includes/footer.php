@@ -11,6 +11,8 @@
             <a href="about.php">About</a>
             <a href="privacy-policy.php">Privacy Policy</a>
             <a href="terms-of-service.php">Terms of Service</a>
+            <a href="contact.php">Contact</a>
+            <a href="unshorten.php">Unshorten URL</a>
         </div>
 <div style="text-align:center; padding:20px;">
   <a href="report.php" style="color:red;text-decoration:none;">
