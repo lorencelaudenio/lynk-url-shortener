@@ -128,7 +128,7 @@ $ogImage = (!empty($user['avatar']))
 
 <?php endwhile; ?>
     </div>
-<a href="register.php" class="join-float-btn">
+<a href="register" class="join-float-btn">
     Join @<?= htmlspecialchars($user['username']); ?> on Lynk Page
 </a>
 </div>

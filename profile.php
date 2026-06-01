@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pageTitle = "Profile - Lynk URL Shortener";
 
 include 'config.php';
@@ -127,7 +126,7 @@ include 'includes/header.php';
         <span class="plan-badge free">FREE ACCOUNT</span>
 
         <div style="margin-top:10px;">
-            <a href="upgrade.php" class="btn btn-primary">
+            <a href="upgrade" class="btn btn-primary">
                 ⚡ Upgrade to Pro
             </a>
         </div>

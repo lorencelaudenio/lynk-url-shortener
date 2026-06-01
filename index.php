@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pageTitle = "Lynk - Smart URL Shortener";
 $pageDescription = "Free URL shortener with tracking, analytics, and dashboard.";
 $pageKeywords = "url shortener, link tracker, analytics, shorten link";

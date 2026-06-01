@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 $pageTitle = "Reset Password - Lynk";
 

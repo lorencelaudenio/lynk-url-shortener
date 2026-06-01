@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pageTitle = "Upgrade to Pro - Lynk";
 
 if (!isset($_SESSION['user_id'])) {

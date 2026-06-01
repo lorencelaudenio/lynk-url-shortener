@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pageTitle = "Terms of Service - Lynk URL Shortener";
 
 include 'config.php';

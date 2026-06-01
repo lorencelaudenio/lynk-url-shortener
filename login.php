@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pageTitle = "Login - Lynk URL Shortener";
 
 include 'config.php';
@@ -11,7 +10,7 @@ include 'rate_limit.php';
 
 if(isset($_SESSION['user_id'])) {
 
-    header("Location: dashboard.php");
+    header("Location: dashboard");
     exit;
 
 }
@@ -52,7 +51,7 @@ if(isset($_POST['login'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
 
-                header("Location: dashboard.php");
+                header("Location: dashboard");
                 exit;
 
             } else {
@@ -110,11 +109,11 @@ include 'includes/header.php';
 
     </form>
 <div class="forgot-link">
-    <a href="forgot-password.php">Forgot password?</a>
+    <a href="forgot-password">Forgot password?</a>
 </div>
 
     <div style="margin-top:15px;text-align:center;">
-      <a href="register.php" style="color:#94a3b8;text-decoration:none;">
+      <a href="register" style="color:#94a3b8;text-decoration:none;">
         No account? Register
       </a>
     </div>

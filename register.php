@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pageTitle = "Register - Lynk URL Shortener";
 
 

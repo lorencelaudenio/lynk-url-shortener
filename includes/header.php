@@ -1,9 +1,5 @@
 <?php
 $base_url = "/"; 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 $usage = null;
 $plan = 'free';
 $used = 0;
@@ -62,7 +58,7 @@ if (!empty($_SESSION['user_id'])) {
 
 <nav class="nav">
 <div class="logo-wrapper">
-<a href="<?= $base_url ?>index.php" class="logo">Lyn<span>k</span></a>
+<a href="<?= $base_url ?>" class="logo">Lyn<span>k</span></a>
 
     <?php if (!empty($_SESSION['user_id'])): ?>
         <?php if ($plan === 'free'): ?>
@@ -77,8 +73,8 @@ if (!empty($_SESSION['user_id'])) {
 
 <?php if (!empty($_SESSION['user_id'])): ?>
 
-    <a href="<?= $base_url ?>dashboard.php">Links</a>
-    <a href="<?= $base_url ?>bio-settings.php">Bio</a>
+    <a href="<?= $base_url ?>dashboard">Links</a>
+    <a href="<?= $base_url ?>bio-settings">Bio</a>
 
 
 
@@ -92,15 +88,15 @@ if (!empty($_SESSION['user_id'])) {
         </span>
 
         <div class="nav-user-menu">
-            <a href="<?= $base_url ?>profile.php">Profile Settings</a>
-            <a href="<?= $base_url ?>logout.php">Logout</a>
+            <a href="<?= $base_url ?>profile">Profile Settings</a>
+            <a href="<?= $base_url ?>logout">Logout</a>
         </div>
     </div>
 
 <?php else: ?>
 
-            <a href="<?= $base_url ?>login.php">Login</a>
-<a href="<?= $base_url ?>register.php" class="btn-signup">Signup for FREE</a>
+            <a href="<?= $base_url ?>login">Login</a>
+<a href="<?= $base_url ?>register" class="btn-signup">Signup for FREE</a>
         <?php endif; ?>
 
     </div>

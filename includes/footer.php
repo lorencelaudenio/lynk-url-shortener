@@ -8,14 +8,14 @@
         </div>
 
         <div class="footer-right">
-            <a href="about.php">About</a>
-            <a href="privacy-policy.php">Privacy Policy</a>
-            <a href="terms-of-service.php">Terms of Service</a>
-            <a href="contact.php">Contact</a>
-            <a href="unshorten.php">Unshorten URL</a>
+            <a href="about">About</a>
+            <a href="privacy-policy">Privacy Policy</a>
+            <a href="terms-of-service">Terms of Service</a>
+            <a href="contact">Contact</a>
+            <a href="unshorten">Unshorten URL</a>
         </div>
 <div style="text-align:center; padding:20px;">
-  <a href="report.php" style="color:red;text-decoration:none;">
+  <a href="report" style="color:red;text-decoration:none;">
     Report Abuse
   </a>
 </div>
@@ -71,8 +71,8 @@
             </p>
 
             <div class="lynk-cta-actions">
-                <a href="register.php" class="lynk-btn-primary">Signup for FREE</a>
-                <a href="login.php" class="lynk-btn-secondary">Login</a>
+                <a href="register" class="lynk-btn-primary">Signup for FREE</a>
+                <a href="login" class="lynk-btn-secondary">Login</a>
             </div>
 
         </div>
