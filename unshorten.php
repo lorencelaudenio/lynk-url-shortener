@@ -9,8 +9,8 @@ include 'includes/header.php';
     <div class="auth-container">
 
         <div class="auth-title">
-            <a href="https://lynk.page.gd/" class="logo lynk-logo">
-                Lyn<span>k</span>
+            <a href="https://cutthis.link/" class="logo lynk-logo">
+                CutThis<span>.Link</span>
             </a>
         </div>
 

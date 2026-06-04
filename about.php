@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "About - Lynk URL Shortener";
+$pageTitle = "About - CutThis.Link URL Shortener";
 include 'includes/header.php';
 ?>
 
@@ -9,7 +9,7 @@ include 'includes/header.php';
     <div class="auth-container">
 
       <div class="auth-title">
-        About Lyn<span>k</span>
+        About CutThis<span>Link</span>
       </div>
 
       <div class="auth-subtitle">

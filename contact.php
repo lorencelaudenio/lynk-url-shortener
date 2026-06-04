@@ -9,8 +9,8 @@ include 'includes/header.php';
     <div class="auth-container">
 
         <div class="auth-title">
-            <a href="https://lynk.page.gd/" class="logo lynk-logo">
-                Lyn<span>k</span>
+            <a href="https://cutthis.link/" class="logo lynk-logo">
+                CutThis<span>.Link</span>
             </a>
         </div>
 
@@ -21,8 +21,8 @@ include 'includes/header.php';
         <p style="color:#cbd5e1;line-height:1.7;margin-top:15px;">
             Need help with a short link, your account, or an issue on the platform?
             You can email us at
-            <a href="mailto:lynkpage.support@gmail.com" style="color:#60a5fa;">
-                lynkpage.support@gmail.com
+            <a href="mailto:cutthislink@gmail.com" style="color:#60a5fa;">
+                cutthislink@gmail.com
             </a>.
         </p>
 
@@ -40,7 +40,7 @@ include 'includes/header.php';
 
         <div class="faq-item">
             <button class="faq-question">
-                Can I use Lynk without signing up?
+                Can I use CutThis.Link without signing up?
                 <span>+</span>
             </button>
             <div class="faq-answer">
@@ -50,7 +50,7 @@ include 'includes/header.php';
 
         <div class="faq-item">
             <button class="faq-question">
-                Do I need an account to use Lynk?
+                Do I need an account to use CutThis.Link?
                 <span>+</span>
             </button>
             <div class="faq-answer">
@@ -95,8 +95,8 @@ include 'includes/header.php';
             </button>
             <div class="faq-answer">
                 You can contact us anytime at
-                <a href="mailto:lynkpage.support@gmail.com" style="color:#60a5fa;">
-                    lynkpage.support@gmail.com
+                <a href="mailto:cutthislink@gmail.com" style="color:#60a5fa;">
+                    cutthislink@gmail.com
                 </a>.
             </div>
         </div>

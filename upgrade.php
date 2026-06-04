@@ -1,13 +1,13 @@
 <?php
 $pageTitle = "Upgrade to Pro - Lynk";
 
+
+
+include 'config.php';
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
-
-include 'config.php';
-
 /* GET USER */
 $stmt = $conn->prepare("SELECT username, email, plan FROM users WHERE id=? LIMIT 1");
 $stmt->bind_param("i", $_SESSION['user_id']);

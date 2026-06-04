@@ -1,15 +1,12 @@
 <?php
 
-
-
+$pageTitle = "Bio Settings - CutThis.Link Page";
+include 'config.php';
+include 'includes/header.php';
 if(!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
-$pageTitle = "Bio Settings - Lynk Page";
-include 'config.php';
-include 'includes/header.php';
-
 $user_id = $_SESSION['user_id'];
 
 $success = "";
@@ -227,7 +224,7 @@ $stmt->execute();
 
 $user = $stmt->get_result()->fetch_assoc();
 
-$profile_url = "https://lynk.page.gd/@" . $user['username'];
+$profile_url = "https://cutthis.link/@" . $user['username'];
 
 /*
 |--------------------------------------------------------------------------

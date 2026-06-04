@@ -1,17 +1,18 @@
 <?php
 
+
+
+
+$pageTitle = "Forgot Password - CutThis.Link";
+
+include 'config.php';
+include 'includes/mailer.php';
 if(isset($_SESSION['user_id'])) {
 
     header("Location: dashboard.php");
     exit;
 
 }
-
-$pageTitle = "Forgot Password - Lynk";
-
-include 'config.php';
-include 'includes/mailer.php';
-
 $success = "";
 $error = "";
 
@@ -70,7 +71,7 @@ include 'includes/header.php';
     <div class="auth-container">
 
         <div class="auth-title">
-            Lyn<span>k</span>
+            CutThis<span>.Link</span>
         </div>
 
         <div class="auth-subtitle">

@@ -36,40 +36,51 @@ $links = $linkStmt->get_result();
 
 <?php
 $usernameClean = htmlspecialchars($user['username'] ?? '');
-$bioText = $user['bio'] ?? "@$usernameClean on Lynk Page";
+$bioText = $user['bio'] ?? "@$usernameClean on Cut This Link Page";
 $bioShort = htmlspecialchars(mb_substr(strip_tags($bioText), 0, 160));
 
-$profileUrl = "https://lynk.page.gd/@" . urlencode($user['username'] ?? '');
+$profileUrl = "https://cutthis.link/@" . urlencode($user['username'] ?? '');
 
-$ogImage = (!empty($user['avatar']))
-    ? htmlspecialchars($user['avatar'])
-    : "https://lynk.page.gd/assets/images/default-avatar.png";
+$defaultOg = "https://cutthis.link/assets/images/default-avatar.png";
+
+$avatar = trim($user['avatar'] ?? '');
+
+if (filter_var($avatar, FILTER_VALIDATE_URL)) {
+    $ogImage = $avatar;
+} elseif (!empty($avatar)) {
+    $ogImage = "https://cutthis.link/" . ltrim($avatar, '/');
+} else {
+    $ogImage = $defaultOg;
+}
 ?>
 
-<title>@<?= $usernameClean ?> | Lynk Page</title>
+<title>@<?= $usernameClean ?> | Cut This Link Page</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/assets/images/lynk.png?v=2" type="image/png">
 
 <!-- SEO -->
 <meta name="description" content="<?= htmlspecialchars($bioShort) ?>">
-<meta name="keywords" content="<?= $usernameClean ?>, lynk page, link in bio, social links">
+<meta name="keywords" content="<?= $usernameClean ?>, cut this link page, link in bio, social links">
 <meta name="author" content="<?= $usernameClean ?>">
 <meta name="robots" content="index, follow">
 
 <link rel="canonical" href="<?= $profileUrl ?>">
 
 <!-- OPEN GRAPH -->
-<meta property="og:title" content="@<?= $usernameClean ?> | Lynk Page">
+<meta property="og:title" content="@<?= $usernameClean ?> | Cut This Link Page">
 <meta property="og:description" content="<?= $bioShort ?>">
 <meta property="og:type" content="profile">
 <meta property="og:url" content="<?= $profileUrl ?>">
+<meta property="og:site_name" content="Cut This Link Page">
+
 <meta property="og:image" content="<?= $ogImage ?>">
-<meta property="og:site_name" content="Lynk Page">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
 <!-- TWITTER -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="@<?= $usernameClean ?> | Lynk Page">
+<meta name="twitter:title" content="@<?= $usernameClean ?> | Cut This Link Page">
 <meta name="twitter:description" content="<?= $bioShort ?>">
 <meta name="twitter:image" content="<?= $ogImage ?>">
 
@@ -94,7 +105,7 @@ $ogImage = (!empty($user['avatar']))
         </h1>
 
         <p class="bio-text">
-            <?= htmlspecialchars($user['bio'] ?? 'Welcome to my Lynk page'); ?>
+            <?= htmlspecialchars($user['bio'] ?? 'Welcome to my Cut This Link page'); ?>
         </p>
 
         <?php while($link = $links->fetch_assoc()): ?>
@@ -129,7 +140,7 @@ $ogImage = (!empty($user['avatar']))
 <?php endwhile; ?>
     </div>
 <a href="register" class="join-float-btn">
-    Join @<?= htmlspecialchars($user['username']); ?> on Lynk Page
+    Join @<?= htmlspecialchars($user['username']); ?> on CutThis.Link
 </a>
 </div>
 </body>

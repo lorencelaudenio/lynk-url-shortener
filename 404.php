@@ -2,7 +2,7 @@
 <div style="text-align:center;margin-bottom:25px;">
 
     <img
-        src="assets/images/link_not_found-removebg-preview.webp"
+        src="assets/images/cutthislink-link-not-found.webp"
         alt="Link Not Found"
         style="
             width:100%;

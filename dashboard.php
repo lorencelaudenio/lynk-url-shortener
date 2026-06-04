@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Dashboard - Lynk URL Shortener";
+$pageTitle = "Dashboard - Cut This Link URL Shortener";
 
 
 include 'config.php';
@@ -171,13 +171,14 @@ include 'includes/header.php';
 
         <!-- FIXED DOMAIN -->
         <div class="url-domain">
-            https://lynk.page.gd/
+            https://cutthis.link/
         </div>
 
         <!-- EDITABLE SLUG -->
         <input
             type="text"
             name="custom_slug"
+            id="customSlug"
             placeholder="your-custom-link"
             class="url-slug"
         >
@@ -231,10 +232,10 @@ include 'includes/header.php';
             <!-- SHORT LINK -->
             <div class="short">
 
-                <a href="https://lynk.page.gd/<?php echo $row['short_code']; ?>"
+                <a href="https://cutthis.link/<?php echo $row['short_code']; ?>"
                    target="_blank">
 
-                    https://lynk.page.gd/<?php echo $row['short_code']; ?>
+                    https://cutthis.link/<?php echo $row['short_code']; ?>
 
                 </a>
 
@@ -280,7 +281,7 @@ include 'includes/header.php';
     <!-- COPY -->
     <button
         class="action-btn action-copy"
-        onclick="copyLink('https://lynk.page.gd/<?php echo $row['short_code']; ?>', this)"
+        onclick="copyLink('https://cutthis.link/<?php echo $row['short_code']; ?>', this)"
         title="Copy link">
 
         📋

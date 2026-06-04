@@ -1,5 +1,8 @@
 <?php
-$pageTitle = "Register - Lynk URL Shortener";
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+$pageTitle = "Register - CutThis.Link URL Shortener";
 
 
 
@@ -20,62 +23,67 @@ $error = "";
 $success = "";
 
 /* REGISTER */
-if(isset($_POST['register'])) {
-    $ip = $_SERVER['REMOTE_ADDR'];
-
-if (!rateLimit("login_$ip", 5, 60)) {
-    die("Too many requests. Please wait a moment.");
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
+    $terms = isset($_POST['terms']);
 
-    // RESET ERROR FIRST
-    $error = "";
+    // basic validation
+    if (!$terms) {
+        $error = "You must agree to the Terms of Service.";
+    } elseif (empty($username) || empty($email) || empty($password)) {
+        $error = "All fields are required.";
+    } else {
 
-    // 1. TERMS CHECK (STOP IMMEDIATELY)
-    if (!isset($_POST['terms'])) {
-        $error = "You must accept the Terms of Service and Privacy Policy.";
-    }
+        // check duplicate username OR email
+        $check = $conn->prepare("
+            SELECT id 
+            FROM users 
+            WHERE username = ? OR email = ?
+        ");
 
-    // 2. PASSWORD RULES (ONLY IF NO ERROR YET)
-    elseif(strlen($password) < 8) {
-        $error = "Password must be at least 8 characters.";
-    }
-    elseif(!preg_match('/[A-Z]/', $password)) {
-        $error = "Password must contain at least 1 uppercase letter.";
-    }
-    elseif(!preg_match('/[0-9]/', $password)) {
-        $error = "Password must contain at least 1 number.";
-    }
-    elseif(!preg_match('/[^A-Za-z0-9]/', $password)) {
-        $error = "Password must contain at least 1 special character.";
-    }
+        $check->bind_param("ss", $username, $email);
+        $check->execute();
+        $result = $check->get_result();
 
-    // 3. ONLY RUN DB INSERT IF NO ERROR
-    else {
+        if ($result->num_rows > 0) {
 
-        $hashed = password_hash($password, PASSWORD_DEFAULT);
-
-        $stmt = $conn->prepare(
-            "INSERT INTO users(username,email,password)
-             VALUES(?,?,?)"
-        );
-
-        $stmt->bind_param("sss", $username, $email, $hashed);
-
-        if($stmt->execute()) {
-
-        // SEND WELCOME EMAIL HERE (RIGHT AFTER SUCCESS)
-    sendWelcomeEmail($email, $username);
-
-            // IMPORTANT: DO NOT SET SESSION HERE
-            $success = "Account created successfully.";
+            $error = "Username or Email already exists.";
 
         } else {
 
-            $error = "Username or email already exists.";
+            // hash password
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+            try {
+
+                // insert user
+                $stmt = $conn->prepare("
+                    INSERT INTO users (username, email, password)
+                    VALUES (?, ?, ?)
+                ");
+
+                $stmt->bind_param("sss", $username, $email, $hashedPassword);
+                $stmt->execute();
+
+                // send emails AFTER successful insert
+                sendWelcomeEmail($email, $username);
+                sendNewUserAlert($username, $email);
+
+                $success = "Account created successfully! You can now login.";
+
+            } catch (mysqli_sql_exception $e) {
+
+                // fallback safety (prevents 500 error)
+                if (str_contains($e->getMessage(), 'Duplicate')) {
+                    $error = "Username or Email already exists.";
+                } else {
+                    $error = "Something went wrong. Please try again.";
+                    error_log($e->getMessage());
+                }
+            }
         }
     }
 }
@@ -92,8 +100,8 @@ include 'includes/header.php';
 
         <div class="auth-title">
 
-<a href="https://lynk.page.gd/" class="logo lynk-logo">
-  Lyn<span>k</span>
+<a href="https://cutthis.link/" class="logo lynk-logo">
+  CutThis<span>.Link</span>
 </a>
 
         </div>

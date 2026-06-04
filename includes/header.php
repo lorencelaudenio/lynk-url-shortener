@@ -33,10 +33,10 @@ if (!empty($_SESSION['user_id'])) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title><?= $pageTitle ?? 'Lynk' ?></title>
-<meta property="og:title" content="<?= htmlspecialchars($pageTitle ?? 'Lynk') ?>">
+<title><?= $pageTitle ?? 'CutThis.link' ?></title>
+<meta property="og:title" content="<?= htmlspecialchars($pageTitle ?? 'CutThis.link') ?>">
 <link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime($_SERVER['DOCUMENT_ROOT'] . '/assets/css/style.css') ?>">
-<link rel="icon" href="/assets/images/lynk.png?v=2" type="image/png">
+<link rel="icon" href="/assets/images/cutthislink-logo.png?v=2" type="image/png">
 
 <meta property="og:description" content="<?= htmlspecialchars($metaDescription ?? 'Create and share your links with Lynk Page') ?>">
 <meta property="og:type" content="website">
@@ -58,7 +58,7 @@ if (!empty($_SESSION['user_id'])) {
 
 <nav class="nav">
 <div class="logo-wrapper">
-<a href="<?= $base_url ?>" class="logo">Lyn<span>k</span></a>
+<a href="<?= $base_url ?>" class="logo">CutThis<span>.Link</span></a>
 
     <?php if (!empty($_SESSION['user_id'])): ?>
         <?php if ($plan === 'free'): ?>

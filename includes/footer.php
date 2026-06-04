@@ -4,7 +4,7 @@
     <div class="footer-inner">
 
         <div class="footer-left">
-            © <?= date("Y"); ?> Lynk URL Shortener
+            © <?= date("Y"); ?> CutThis.Link URL Shortener
         </div>
 
         <div class="footer-right">
@@ -37,7 +37,7 @@
 
         <!-- Title -->
         <div class="lynk-modal-title">
-            Your Lynk is ready
+            Your CutThis.Link is ready
         </div>
 
         <!-- Form group -->

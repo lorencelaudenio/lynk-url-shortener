@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Terms of Service - Lynk URL Shortener";
+$pageTitle = "Terms of Service - CutThis.Link URL Shortener";
 
 include 'config.php';
 include 'includes/header.php';
@@ -14,20 +14,20 @@ include 'includes/header.php';
         </div>
 
         <div class="auth-subtitle">
-            Please read these terms carefully before using Lynk.
+            Please read these terms carefully before using CutThis.Link.
         </div>
 
         <div style="margin-top:25px; color:#cbd5e1; line-height:1.8; font-size:14px;">
 
             <h3>1. Acceptance of Terms</h3>
             <p>
-                By using Lynk URL Shortener, you agree to be bound by these Terms of Service.
+                By using CutThis.Link URL Shortener, you agree to be bound by these Terms of Service.
                 If you do not agree, please do not use the platform.
             </p>
 
             <h3>2. Description of Service</h3>
             <p>
-                Lynk provides a URL shortening service that allows users to create
+                CutThis.Link provides a URL shortening service that allows users to create
                 short links and track basic click analytics.
             </p>
 
@@ -57,7 +57,7 @@ include 'includes/header.php';
 
             <h3>7. Limitation of Liability</h3>
             <p>
-                Lynk is provided "as is" without warranties. We are not responsible
+                CutThis.Link is provided "as is" without warranties. We are not responsible
                 for any damages, losses, or issues caused by the use of shortened links.
             </p>
 

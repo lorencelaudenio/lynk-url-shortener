@@ -46,7 +46,7 @@ if (!$stmt->execute()) {
 }
 
 /* CONFIRM LINK */
-$confirmLink = "https://lynk.page.gd/confirm_report.php?token=$token";
+$confirmLink = "https://cutthis.link/confirm_report.php?token=$token";
 
 /* EMAIL CONTENT */
 $subject = "Confirm your report";

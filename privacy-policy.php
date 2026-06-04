@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Privacy Policy - Lynk URL Shortener";
+$pageTitle = "Privacy Policy - CutThis.Link URL Shortener";
 
 include 'config.php';
 include 'includes/header.php';

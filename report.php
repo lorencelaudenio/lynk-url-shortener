@@ -9,7 +9,7 @@ include 'includes/header.php';
     <div class="auth-container">
         <div class="auth-title">
 
-<a href="https://lynk.page.gd/" class="logo lynk-logo">
+<a href="https://cutthis.link/" class="logo lynk-logo">
     Lyn<span>k</span>
 </a>
 
@@ -41,7 +41,7 @@ include 'includes/header.php';
             align-items:center;
             white-space:nowrap;
         ">
-            https://lynk.page.gd/
+            https://cutthis.link/
         </span>
 
         <input
@@ -130,7 +130,7 @@ document.getElementById("reportForm").addEventListener("submit", async function(
 
     const formData = new FormData(this);
 
-    const fullUrl = "https://lynk.page.gd/" + slugInput.value.trim();
+    const fullUrl = "https://cutthis.link/" + slugInput.value.trim();
     formData.set("url", fullUrl);
 
     try {
@@ -233,9 +233,9 @@ alert("RESPONSE: " + text);
         </button>
         <div class="faq-answer">
             Contact us anytime at
-            <a href="mailto:lynkpage.support@gmail.com"
+            <a href="mailto:cutthislink@gmail.com"
                style="color:#60a5fa;text-decoration:none;">
-               lynkpage.support@gmail.com
+               cutthislink@gmail.com
             </a>
         </div>
     </div>

@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Lynk - Smart URL Shortener";
+$pageTitle = "CutThis.Link - Smart URL Shortener";
 $pageDescription = "Free URL shortener with tracking, analytics, and dashboard.";
 $pageKeywords = "url shortener, link tracker, analytics, shorten link";
 include 'config.php';
@@ -33,7 +33,7 @@ if (isset($_POST['shorten'])) {
         $stmt->bind_param("ss", $url, $short);
 
         if ($stmt->execute()) {
-            $short_url = "https://lynk.page.gd/$short";
+            $short_url = "https://cutthis.link/$short";
             $show_cta = true;
         } else {
             $error = "Something went wrong.";
@@ -41,7 +41,7 @@ if (isset($_POST['shorten'])) {
     }
 }
 ?>
-<title><?= $pageTitle ?? 'Lynk URL Shortener' ?></title>
+<title><?= $pageTitle ?? 'CutThis.link URL Shortener' ?></title>
 
 <meta name="description" content="<?= $pageDescription ?? 'Free URL shortener with tracking, analytics, and dashboard.' ?>">
 
@@ -165,7 +165,7 @@ if (isset($_POST['shorten'])) {
 
         <div class="demo-card highlight">
             <span>After</span>
-            <code>lynk.page.gd/x7k2p9</code>
+            <code>cutthis.link/x7k2p9</code>
         </div>
 
     </section>
