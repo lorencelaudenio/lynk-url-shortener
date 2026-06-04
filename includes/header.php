@@ -25,6 +25,8 @@ if (!empty($_SESSION['user_id'])) {
     $limit = (int)($usage['url_limit'] ?? 1000);
     $plan  = strtolower(trim($usage['plan'] ?? 'free'));
 }
+
+$user = currentUser($conn);
 ?>
 
 <!DOCTYPE html>
@@ -82,16 +84,30 @@ if (!empty($_SESSION['user_id'])) {
 
 
 
-    <div class="nav-user-dropdown nav-link">
-        <span class="nav-user-trigger">
-            <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?> ▾
-        </span>
+<?php
+$avatar_url = !empty($user['avatar'])
+    ? $base_url . $user['avatar']
+    : 'https://api.dicebear.com/7.x/initials/svg?seed=' . urlencode($user['username']);
+?>
 
-        <div class="nav-user-menu">
-            <a href="<?= $base_url ?>profile">Profile Settings</a>
-            <a href="<?= $base_url ?>logout">Logout</a>
-        </div>
+<div class="nav-user-dropdown nav-link">
+
+    <img
+        src="<?= $avatar_url ?>"
+        class="nav-avatar"
+        alt="Avatar"
+    >
+
+    <span class="nav-user-trigger">
+        <?= htmlspecialchars($user['username']) ?> ▾
+    </span>
+
+    <div class="nav-user-menu">
+        <a href="<?= $base_url ?>profile">Profile Settings</a>
+        <a href="<?= $base_url ?>logout">Logout</a>
     </div>
+
+</div>
 
 <?php else: ?>
 

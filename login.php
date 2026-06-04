@@ -50,6 +50,7 @@ if(isset($_POST['login'])) {
 
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['avatar'] = $user['avatar'];
 
                 header("Location: dashboard");
                 exit;

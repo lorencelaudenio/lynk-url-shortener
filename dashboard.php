@@ -254,6 +254,18 @@ include 'includes/header.php';
                 <?php echo $row['clicks']; ?> clicks
 
             </div>
+
+            <!-- QR -->
+             <div class="qr">
+                <a
+                    href="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://cutthis.link/<?php echo $row['short_code']; ?>"
+                    target="_blank"
+                >
+                    <img
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://cutthis.link/<?php echo $row['short_code']; ?>"
+                    >
+                </a>
+            </div>
 <div id="skeletonLoader" style="display:none;">
     
     <div class="skeleton-card"></div>
