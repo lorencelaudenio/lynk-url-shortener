@@ -114,29 +114,18 @@ include 'includes/header.php';
     <div class="stats">
 
         <div class="card">
-
             <h3>Total Links</h3>
-
-                <h1 id="totalLinks"><?php echo $totalLinks; ?></h1>
-
+            <h1 id="totalLinks"><?php echo $totalLinks; ?></h1>
         </div>
 
         <div class="card">
-
             <h3>Total Clicks</h3>
-
-            <h1>
-                <?php echo $totalClicks; ?>
-            </h1>
-
+            <h1><?php echo $totalClicks; ?></h1>
         </div>
 
         <div class="card">
-
             <h3>Active Links</h3>
-
-                <h1 id="activeLinks"><?php echo $totalLinks; ?></h1>
-
+            <h1 id="activeLinks"><?php echo $totalLinks; ?></h1>
         </div>
 
     </div>
@@ -144,181 +133,150 @@ include 'includes/header.php';
     <!-- CREATE LINK -->
     <div class="form-box">
 
-    <h3>Create Short Link</h3>
+        <h3>Create Short Link</h3>
 
-   <form id="shortenForm" onsubmit="return false;">
+        <form method="POST">
 
-        <!-- LONG URL -->
-        <div class="form-group">
-            <input
-                class="input"
-                type="url"
-                name="url"
-                id="longUrlInput"
-                placeholder="Paste long URL..."
-                required
-            >
-        </div>
+            <!-- LONG URL -->
+            <div class="form-group">
+                <input
+                    class="input"
+                    type="url"
+                    name="url"
+                    id="longUrlInput"
+                    placeholder="Paste long URL..."
+                    required
+                >
+            </div>
 
-        <!-- CUSTOM SHORT LINK -->
-<div class="form-group">
+            <!-- CUSTOM SLUG -->
+            <label class="input-label">
+                Custom Short Link (optional)
+            </label>
 
-    <label style="font-size:12px;color:#94a3b8;">
-        Custom Short Link (optional)
-    </label>
+            <div class="url-input-group">
+                <div class="url-domain">
+                    https://cutthis.link/
+                </div>
 
-    <div class="url-input-group">
+                <input
+                    type="text"
+                    name="custom_slug"
+                    id="customSlug"
+                    placeholder="your-custom-link"
+                    class="url-slug"
+                >
+            </div>
 
-        <!-- FIXED DOMAIN -->
-        <div class="url-domain">
-            https://cutthis.link/
-        </div>
+            <small class="help-text">
+                Leave empty to auto-generate
+            </small>
 
-        <!-- EDITABLE SLUG -->
-        <input
-            type="text"
-            name="custom_slug"
-            id="customSlug"
-            placeholder="your-custom-link"
-            class="url-slug"
-        >
+            <!-- SUBMIT -->
+            <button class="btn btn-primary" id="shortenBtn" type="submit">
+                🚀 Shorten URL
+            </button>
+
+        </form>
+
+        <?php if (isset($error)): ?>
+            <div class="error">
+                <?php echo $error; ?>
+            </div>
+        <?php endif; ?>
 
     </div>
 
-    <small style="color:#64748b;font-size:11px;">
-        Leave empty to auto-generate
-    </small>
-
-</div>
-
-        <button class="btn btn-primary" id="shortenBtn" type="submit">
-            🚀 Shorten URL
-        </button>
-
-    </form>
-
-</div>
-
-</div>
-
-
-
-    <?php if(isset($error)): ?>
-
-        <div class="error">
-
-            <?php echo $error; ?>
-
-        </div>
-
-    <?php endif; ?>
-
     <!-- LINKS -->
-<h3 style="display:flex;justify-content:space-between;align-items:center;">
-    <span>Your Links</span>
+    <h3 style="display:flex;justify-content:space-between;align-items:center;">
+        <span>Your Links</span>
 
-<span class="usage-pill">
-    <span class="used"><?= $used ?></span>
-    <span class="sep">/</span>
-    <span class="limit"><?= $limit ?></span>
-    <span class="label">used this month</span>
-</span>
-</h3>
-<div id="linksContainer">
-    <?php while($row = $links->fetch_assoc()): ?>
+    <span class="usage-pill">
+        <span class="used"><?= $used ?></span>
+        <span class="sep">/</span>
+        <span class="limit"><?= $limit ?></span>
+        <span class="label">used this month</span>
+    </span>
+    </h3>
 
-        <div class="link-card">
+    <div id="linksContainer">
+        <?php while($row = $links->fetch_assoc()): ?>
+        <?php $shortUrl = "https://cutthis.link/" . $row['short_code']; ?>
+            <div class="link-card">
 
-            <!-- SHORT LINK -->
-            <div class="short">
-
-                <a href="https://cutthis.link/<?php echo $row['short_code']; ?>"
-                   target="_blank">
-
-                    https://cutthis.link/<?php echo $row['short_code']; ?>
-
-                </a>
-
-            </div>
-
-            <!-- ORIGINAL -->
-            <div class="long">
-
-                <?php echo $row['original_url']; ?>
-
-            </div>
-
-            <!-- CLICKS -->
-            <div class="clicks">
-
-                <?php echo $row['clicks']; ?> clicks
-
-            </div>
-
-            <!-- QR -->
-             <div class="qr">
-                <a
-                    href="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://cutthis.link/<?php echo $row['short_code']; ?>"
-                    target="_blank"
-                >
+                <!-- QR -->
+                <div class="link-qr">
                     <img
-                        src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://cutthis.link/<?php echo $row['short_code']; ?>"
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=<?= $shortUrl ?>"
+                        alt="QR Code"
+                        onclick="openQrModal('<?= $shortUrl ?>')"
+                        style="cursor:pointer;"
                     >
-                </a>
+                </div>
+
+                <!-- DETAILS -->
+                <div class="link-info">
+
+                    <div class="short-link">
+                        <a href="<?= $shortUrl ?>" target="_blank">
+                            <?= $shortUrl ?>
+                        </a>
+                    </div>
+
+                    <div class="original-link">
+                        <?= htmlspecialchars($row['original_url']); ?>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT SIDE -->
+                <div class="link-side">
+
+                    <div class="clicks">
+                        👆 <?= $row['clicks']; ?> clicks
+                    </div>
+
+                    <div class="link-actions">
+
+                        <button
+                            class="action-btn action-edit"
+                            onclick="openEditModal(
+                                <?= $row['id']; ?>,
+                                '<?= addslashes($row['original_url']); ?>'
+                            )"
+                            title="Edit">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+
+                        <button
+                            class="action-btn action-copy"
+                            onclick="copyLink('<?= $shortUrl ?>', this)"
+                            title="Copy">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+
+                        <button
+                            class="action-btn action-delete"
+                            onclick="deleteLink(<?= $row['id']; ?>, this)"
+                            title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
             </div>
-<div id="skeletonLoader" style="display:none;">
+
+        <?php endwhile; ?>
+    </div>
     
-    <div class="skeleton-card"></div>
-    <div class="skeleton-card"></div>
-    <div class="skeleton-card"></div>
-    <div class="skeleton-card"></div>
-
-</div>
-            <!-- ACTIONS -->
-<div class="link-actions">
-
-    <!-- EDIT -->
-    <button
-        class="action-btn action-edit"
-        onclick="openEditModal(
-            <?php echo $row['id']; ?>,
-            '<?php echo addslashes($row['original_url']); ?>'
-        )"
-        title="Edit link">
-
-        ✏️
-
-    </button>
-
-    <!-- COPY -->
-    <button
-        class="action-btn action-copy"
-        onclick="copyLink('https://cutthis.link/<?php echo $row['short_code']; ?>', this)"
-        title="Copy link">
-
-        📋
-
-    </button>
-
-    <!-- DELETE -->
-<button
-    class="action-btn action-delete"
-    onclick="deleteLink(<?php echo $row['id']; ?>, this)"
-    title="Delete link">
-
-    🗑️
-
-</button>
-</div>
-
-        </div>
-
-    <?php endwhile; ?>
-
-</div>
-    </div>  <!-- Infinite scroll trigger -->
-    <div id="loader" style="text-align:center;padding:20px;display:none;">
-    Loading...
+    <div id="skeletonLoader" style="display:none;">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+    </div>
 </div>
 
 <div id="sentinel"></div>
@@ -373,76 +331,103 @@ include 'includes/header.php';
    <div class="skeleton-card"></div>
 </div>
 
+<!-- QR Modal -->
+<div id="qrModal" class="qr-modal" onclick="closeQrModal()">
+    <div class="qr-modal-content" onclick="event.stopPropagation()">
+        <span class="qr-close" onclick="closeQrModal()">&times;</span>
+
+        <img id="qrModalImg" src="" alt="QR Code">
+    </div>
+</div>
+
+<!-- QR Modal Script Beg-->
 <script>
-window.addEventListener("load", () => {
+function openQrModal(shortUrl) {
 
-    const input = document.getElementById("longUrlInput");
+    const img = document.getElementById("qrModalImg");
 
-    console.log("INPUT:", input);
+    img.src = "https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=" + encodeURIComponent(shortUrl);
 
-    if (!input) {
-        console.warn("Input not found");
-        return;
-    }
+    document.getElementById("qrModal").style.display = "flex";
+}
 
-    // HARD FOCUS ATTEMPT
-    input.focus();
-
-    setTimeout(() => {
-        input.focus();
-    }, 1000);
-
-});
-    </script>
+function closeQrModal() {
+    document.getElementById("qrModal").style.display = "none";
+}
+</script>
+<!-- QR Modal Script End-->
 
 <script>
-document.getElementById("shortenForm")
-.addEventListener("submit", async function(e){
+    window.addEventListener("load", () => {
 
-    e.preventDefault();
+        const input = document.getElementById("longUrlInput");
 
-    const btn = document.getElementById("shortenBtn");
+        console.log("INPUT:", input);
 
-    btn.disabled = true;
-    btn.innerHTML = "Creating...";
-
-    const formData = new FormData(this);
-
-    try {
-
-        const response = await fetch("ajax/create_link.php", {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        showToast(data.message, data.status);
-
-        if(data.status === "success" || data.status === "info") {
-
-            // CLEAR INPUTS
-            this.reset();
-
-            // OPTIONAL:
-            // AUTO RELOAD LINKS
-            setTimeout(() => {
-                location.reload();
-            }, 800);
+        if (!input) {
+            console.warn("Input not found");
+            return;
         }
 
-    } catch(err) {
+        // HARD FOCUS ATTEMPT
+        input.focus();
 
-        showToast("Something went wrong.", "error");
+        setTimeout(() => {
+            input.focus();
+        }, 1000);
 
-    }
+    });
+</script>
 
-    btn.disabled = false;
-    btn.innerHTML = "🚀 Shorten URL";
+<script>
+    document.getElementById("shortenForm")
+    .addEventListener("submit", async function(e){
 
-});
-    </script>
+        e.preventDefault();
 
+        const btn = document.getElementById("shortenBtn");
+
+        btn.disabled = true;
+        btn.innerHTML = "Creating...";
+
+        const formData = new FormData(this);
+
+        try {
+
+            const response = await fetch("ajax/create_link.php", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            showToast(data.message, data.status);
+
+            if(data.status === "success" || data.status === "info") {
+
+                // CLEAR INPUTS
+                this.reset();
+
+                // OPTIONAL:
+                // AUTO RELOAD LINKS
+                setTimeout(() => {
+                    location.reload();
+                }, 800);
+            }
+
+        } catch(err) {
+
+            showToast("Something went wrong.", "error");
+
+        }
+
+        btn.disabled = false;
+        btn.innerHTML = "🚀 Shorten URL";
+
+    }); 
+</script>
+
+<!-- DELETE LINK -->
 <script>
 async function deleteLink(id, btn) {
 

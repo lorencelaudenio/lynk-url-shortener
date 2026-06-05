@@ -78,6 +78,19 @@ body {
     gap: 15px;
 }
 
+.nav-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.nav-user-trigger {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .nav-links a,
 .nav-link {
     color: #e5e7eb;
@@ -290,10 +303,48 @@ body {
 ========================= */
 
 .link-card {
-    background: #1e293b;
-    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #334155;
     border-radius: 12px;
-    margin-bottom: 10px;
+    background: #1E293B;
+    margin-bottom: 12px;
+}
+
+.link-qr img {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+}
+
+.link-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.short-link a {
+    font-weight: 600;
+    font-size: 15px;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.original-link {
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 13px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.link-side {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .link-card a {
@@ -318,8 +369,9 @@ body {
 }
 
 .clicks {
-    float: right;
-    color: #22c55e;
+    font-size: 13px;
+    color: #6b7280;
+    white-space: nowrap;
 }
 
 /* =========================
@@ -353,29 +405,21 @@ body {
 .link-actions {
     display: flex;
     gap: 8px;
-    margin-top: 10px;
 }
 
 /* base button */
 .action-btn {
-    width: 34px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: none;
     border-radius: 8px;
-    border: 1px solid #334155;
-    background: #0f172a;
-    color: #fff;
     cursor: pointer;
-    font-size: 14px;
-    transition: 0.2s ease;
-    text-decoration: none;
+    background: #334155;
+    transition: 0.2s;
 }
 
 .action-btn:hover {
-    transform: scale(1.08);
-    background: #1e293b;
+    transform: translateY(-2px);
 }
 
 /* EDIT */
@@ -1157,7 +1201,9 @@ input.input {
 }
 
 .nav-user {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     margin-right: 15px;
     color: #94a3b8;
     font-size: 14px;
@@ -1175,6 +1221,9 @@ input.input {
 
 .nav-user-dropdown {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
 }
 
@@ -1183,11 +1232,13 @@ input.input {
     position: absolute;
     top: 100%;
     right: 0;
+
     background: #0f172a;
     border: 1px solid #1f2937;
     border-radius: 8px;
+
     min-width: 160px;
-    z-index: 999;
+    z-index: 9999;
 }
 
 .nav-user-menu.show {
@@ -2627,3 +2678,36 @@ html {
     border-radius: 50%;
     object-fit: cover;
 }
+
+/* QR Modal Beg*/
+.qr-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.qr-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+    text-align: center;
+}
+
+.qr-modal-content img {
+    width: 300px;
+    height: 300px;
+}
+
+.qr-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+}
+/* QR Modal End */

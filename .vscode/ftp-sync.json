@@ -1,0 +1,27 @@
+{
+    "remotePath": "cutthis.link/htdocs",
+    "host": "ftpupload.net",
+    "username": "if0_41897365",
+    "password": "V4uBk26Dm3oks8",
+    "port": 21,
+    "secure": false,
+    "protocol": "ftp",
+    "uploadOnSave": true,
+    "passive": false,
+    "debug": false,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "agent": null,
+    "allow": [],
+    "ignore": [
+        "\\.vscode",
+        "\\.git",
+        "\\.DS_Store"
+    ],
+    "generatedFiles": {
+        "extensionsToInclude": [
+            ""
+        ],
+        "path": ""
+    }
+}

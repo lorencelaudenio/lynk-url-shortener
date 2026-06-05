@@ -44,6 +44,8 @@ $user = currentUser($conn);
 <meta property="og:type" content="website">
 <meta property="og:url" content="<?= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XVKZ3HCS93"></script>
 <script>
